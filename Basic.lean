@@ -1,4 +1,5 @@
 import Mathlib.Data.Real.Basic
+import Mathlib.GroupTheory.FreeGroup.Basic
 
 structure Group1 (α : Type*) where
   mul : α → α → α
@@ -13,6 +14,17 @@ structure Group1 (α : Type*) where
 structure Subgroup₁  (α : Type*) [Group α] where
   carrier : Set α
   is_subgroup : this ⊂ carrier
+
+
+structure Erzeugte_Untergruppe (α : Type*) (β : Set α) [Group α] where
+  carrier : Set α
+  b_in_a : β ⊂ carrier
+  mul : β -> β -> carrier
+  mul_2 : β -> carrier -> carrier
+  inv : β -> carrier
+  one : carrier
+  a : ∀ a : carrier, ∃ b_1 b_2 : β, mul b_1 b_2 = a
+  bb : ∀ x ⊆ β, ¬ (β \ x ⊂ carrier)
 
 structure Letters (α: Type*) where
   word : Type
@@ -46,7 +58,7 @@ structure Word (α : Type*) where
   carrier : Set α
   subset : Set α
   is_subset : subset ⊂ carrier
-  word: 
+  word:
   word_insert: subset.Elem -> List subset.Elem ->  List subset.Elem
 
 
