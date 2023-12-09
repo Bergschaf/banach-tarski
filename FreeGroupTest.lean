@@ -62,6 +62,8 @@ theorem union_f2 : s_a ∪ s_b ∪ s_a' ∪ s_b' ∪ e = f2 := by
 
 --------------------
 
+--def r_3_set := Set r_3
+
 noncomputable def matrix_a : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,-2/3*Real.sqrt 2; 0, 2/3*Real.sqrt 2, 1/3]
 noncomputable def matrix_a' : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,2/3*Real.sqrt 2; 0, -2/3*Real.sqrt 2, 1/3]
 noncomputable def matrix_b : Matrix (Fin 3) (Fin 3) Real := !![1/3, -2/3*Real.sqrt 2, 0;( 2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
@@ -69,5 +71,15 @@ noncomputable def matrix_b' :Matrix (Fin 3) (Fin 3) Real := !![1/3, 2/3*Real.sqr
 noncomputable def matrix_one : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1, 0; 0, 0, 1]
 
 noncomputable def matritzen : Set (Matrix (Fin 3) (Fin 3) Real) := {matrix_a, matrix_b, matrix_a', matrix_b', matrix_one}
+
+def r_3 := Matrix (Fin 3) (Fin 1) Real
+
+def rotate (matrix : Matrix (Fin 3) (Fin 3) Real) (vec : r_3) : r_3 :=
+  vec
+
+
+theorem lemma_3_1 (p: r_3 -> r_3):true := by
+
+  sorry
 
 def matrix_group := {w: Group matritzen | true}
