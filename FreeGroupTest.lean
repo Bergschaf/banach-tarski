@@ -1,4 +1,5 @@
 import Mathlib.Tactic
+import Mathlib.Algebra.Group.Basic
 import Mathlib.GroupTheory.FreeGroup.Basic
 import Mathlib.GroupTheory.FreeGroup.IsFreeGroup
 import Mathlib.Data.Matrix.Notation
@@ -20,6 +21,13 @@ open Generators
 --noncomputable def matrix_a' := Matrix.smul_of (1/3) !![1, -2*Real.sqrt 2, 0;( 2*Real.sqrt 2),1, 0; 0, 0, 3]
 --noncomputable def matrix_b := Matrix.smul_of (1/3) !![3, 0, 0; 0, 1,-2*Real.sqrt 2; 0, 2*Real.sqrt 2, 1]
 --noncomputable def matrix_b' := Matrix.smul_of (1/3) !![1, -2*Real.sqrt 2, 0;( -2*Real.sqrt 2),1, 0; 0, 0, 3]
+--noncomputable def generator_value (g : (Generators ×  Bool)) :=
+--  match g with
+--   | (Generators.a, true) => matrix_a
+--   | (Generators.b, true) => matrix_a'
+--   | (Generators.a, false) => matrix_b
+--   | (Generators.b, false) => matrix_b'
+
 
 --theorem: FreeGroup.toWord_one{α : Type u} [DecidableEq α] :
 --  FreeGroup.toWord 1 = []
@@ -29,30 +37,6 @@ def s_a := {w : FreeGroup Generators  | (FreeGroup.toWord w).head? = .some (Gene
 def s_b := {w : FreeGroup Generators  | (FreeGroup.toWord w).head? = .some (Generators.b, true)}
 def s_a' := {w : FreeGroup Generators  | (FreeGroup.toWord w).head? = .some (Generators.a, false)}
 def s_b' := {w : FreeGroup Generators  | (FreeGroup.toWord w).head? = .some (Generators.b, false)}
-
-
-inductive Matritzen where
-  | matrix_a
-
-
-
-noncomputable def matrix_a := !![1, 0, 0; 0, 1/3,-2/3*Real.sqrt 2; 0, 2/3*Real.sqrt 2, 1/3]
-noncomputable def matrix_a' := !![1, 0, 0; 0, 1/3,2/3*Real.sqrt 2; 0, -2/3*Real.sqrt 2, 1/3]
-noncomputable def matrix_b := !![1/3, -2/3*Real.sqrt 2, 0;( 2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
-noncomputable def matrix_b' := !![1/3, 2/3*Real.sqrt 2, 0;( -2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
-
-noncomputable def generator_value (g : (Generators ×  Bool)) :=
-  match g with
-   | (Generators.a, true) => matrix_a
-   | (Generators.b, true) => matrix_a'
-   | (Generators.a, false) => matrix_b
-   | (Generators.b, false) => matrix_b'
-
-
-
-#check s_a
-#check matrix_a
-#check Matritzen.matrix_a
 
 
 theorem about_s_a (z : FreeGroup Generators) : z ∈ s_a -> ((FreeGroup.toWord z).head? = .some (Generators.a, true)) := by
@@ -75,3 +59,15 @@ theorem union_f2 : s_a ∪ s_b ∪ s_a' ∪ s_b' ∪ e = f2 := by
 ---theorem s_a_in_FreeGroup (s := s_a) (w : FreeGroup Generators) : (FreeGroup.toWord w).head? = (Generators.a, true) -> w ∈ s_a :=
 
 ---  sorry
+
+--------------------
+
+noncomputable def matrix_a : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,-2/3*Real.sqrt 2; 0, 2/3*Real.sqrt 2, 1/3]
+noncomputable def matrix_a' : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,2/3*Real.sqrt 2; 0, -2/3*Real.sqrt 2, 1/3]
+noncomputable def matrix_b : Matrix (Fin 3) (Fin 3) Real := !![1/3, -2/3*Real.sqrt 2, 0;( 2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
+noncomputable def matrix_b' :Matrix (Fin 3) (Fin 3) Real := !![1/3, 2/3*Real.sqrt 2, 0;( -2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
+noncomputable def matrix_one : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1, 0; 0, 0, 1]
+
+noncomputable def matritzen : Set (Matrix (Fin 3) (Fin 3) Real) := {matrix_a, matrix_b, matrix_a', matrix_b', matrix_one}
+
+def matrix_group := {w: Group matritzen | true}
