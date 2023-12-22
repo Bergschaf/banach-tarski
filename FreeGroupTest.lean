@@ -1,10 +1,11 @@
 import Mathlib.Tactic
 import Mathlib.Algebra.Group.Basic
+import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.GroupTheory.FreeGroup.Basic
 import Mathlib.GroupTheory.FreeGroup.IsFreeGroup
 import Mathlib.Data.Matrix.Notation
 import Mathlib.Data.Matrix.Basic
-import Mathlib.Data.Nat.Sqrt
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
@@ -77,9 +78,15 @@ def r_3 := Matrix (Fin 3) (Fin 1) Real
 def rotate (matrix : Matrix (Fin 3) (Fin 3) Real) (vec : r_3) : r_3 :=
   vec
 
+#check Matrix.GLPos
 
 theorem lemma_3_1 (p: r_3 -> r_3):true := by
-
   sorry
 
-def matrix_group := {w: Group matritzen | true}
+def matrix_group := {w: GL (Fin 3) Real | true}
+
+theorem matritzen_in_GL : ∀ x ∈ matritzen, x ∈ matrix_group :=
+
+  
+
+#check matrix_group
