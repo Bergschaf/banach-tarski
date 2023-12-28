@@ -30,11 +30,13 @@ def sum_up_to (n : Nat): ℕ :=
     | 0 => 0
     | (Nat.succ n) => sum_up_to n + Nat.succ n
 
-#eval sum_up_to 3
+#eval sum_up_to 4
 
-#eval 5 / 2
 
-theorem kleiner_gauss (n: Nat) : sum_up_to n * 2 = n * (n + 1) := by
+
+theorem kleiner_gauss (n: Nat) : 
+  sum_up_to n * 2 = n * (n + 1) := by
+
   induction n with
     | zero => simp
     | succ d hd => 
@@ -43,7 +45,7 @@ theorem kleiner_gauss (n: Nat) : sum_up_to n * 2 = n * (n + 1) := by
     rw [Nat.add_mul]
     rw [Nat.mul_add]
     rw [Nat.mul_one]
-   
+    
     rw [Nat.add_mul d 1 (d + 1)]
     simp
     rw [add_assoc]
