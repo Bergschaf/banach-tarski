@@ -52,7 +52,7 @@ theorem kleiner_gauss (n: Nat) :
     rw [add_assoc]
     rw [← Nat.mul_two (d + 1)]
     simp
-    apply hd
+    exact hd
 
 
 
