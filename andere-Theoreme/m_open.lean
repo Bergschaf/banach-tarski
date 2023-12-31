@@ -26,8 +26,6 @@ theorem compl_compl_eq_set (M : Set x) : M = Mᶜᶜ := by
 -- Beweis, dass M offen ist, wenn und nur wenn Mᶜ abgeschlossen ist
 theorem open_iff_complement_closed (M : Set X) :
   is_open_set M ↔ is_closed_set Mᶜ := by
-
-
   rw [iff_def]
 
   have h: is_open_set M -> is_closed_set Mᶜ
