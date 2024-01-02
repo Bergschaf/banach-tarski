@@ -109,11 +109,12 @@ def G := Group matrix_ab
 
 abbrev r_3 := Fin 3 -> ℚ
 
-def zero_one_zero : r_3 := ![0,1,0]
+def one_zero_zero : r_3 := ![4,0,0]
 
 
 def fold (word : List ab_subtype) : matrix_3x3_q :=
   List.foldl (fun matrix1 matrix2=> matrix1 * matrix2) 1 word
+
 
 theorem fold_zero_eq_one (word : List ab_subtype) (h : word.length = 0) : fold word = 1 := by
   rw [fold]
@@ -132,26 +133,25 @@ def rotate (word : List ab_subtype) (vec : r_3) : r_3 :=
   (fold word).vecMul vec
 
 
-def a_b_c_vec (a b c n : Nat) : r_3 :=
+def a_b_c_vec (a b c : ℚ) (n : Nat) : r_3 :=
   (1/5)^n * ![4 * a, 3 * b, -4 * c]
 
-theorem lemma_3_1 (p: List ab_subtype) (a b c: ℚ) (n : Nat) (h: n = p.length):
-       ∃ a b c, rotate p zero_one_zero = a_b_c_vec a b c n:= by
+theorem lemma_3_1 (p: List ab_subtype) (a b c: ℤ) (n : Nat) (h: n = p.length):
+       ∃ a b c, rotate p one_zero_zero = a_b_c_vec a b c n:= by
 
   induction n with
     | zero =>
     rw [rotate]
     simp
-    use 0
+    rw [one_zero_zero]
     use 1
+    use 0
     use 0
     rw [a_b_c_vec]
     simp
     rw [fold_zero_eq_one]
-    rw [zero_one_zero]
-    simp
-
-
+    norm_num
+    apply symm
     exact h
 
     | succ d hd =>
@@ -160,7 +160,11 @@ theorem lemma_3_1 (p: List ab_subtype) (a b c: ℚ) (n : Nat) (h: n = p.length):
       apply symm
       rw [← Nat.succ_eq_add_one]
       exact h
-    apply?
+    rw [one_zero_zero]
+    rw [fold]
+
+
+
 
 
 
