@@ -38,10 +38,6 @@ theorem open_iff_complement_closed (M : Set X) :
   intro k1 x
   rw [compl_compl_eq_set M]
   intro kx
-
-  have p: is_closed_set Mᶜᶜ ↔ is_open_set Mᶜ
-  rw [compl_compl]
-  rfl
   exact k1 x kx
 
   exact { left := h, right := k }
