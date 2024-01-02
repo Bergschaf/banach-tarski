@@ -15,8 +15,9 @@ theorem kleiner_gauss (n: Nat) :
 
   induction n with
     | zero =>
-    simp
-    rw [sum_up_to]
+      simp
+      rw [sum_up_to]
+
     | succ d hd =>
     rw [sum_up_to]
     rw [Nat.succ_eq_add_one]

@@ -125,6 +125,7 @@ theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G) (a b c: Real) (n : Nat):
     rw [zero_mul]
     simp
     have a : p = matrix_one := by
+
       sorry
     sorry
     | succ d hd => sorry
