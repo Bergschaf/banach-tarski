@@ -14,7 +14,9 @@ theorem kleiner_gauss (n: Nat) :
   sum_up_to n * 2 = n * (n + 1) := by
 
   induction n with
-    | zero => simp
+    | zero =>
+    simp
+    rw [sum_up_to]
     | succ d hd =>
     rw [sum_up_to]
     rw [Nat.succ_eq_add_one]
