@@ -124,48 +124,88 @@ def a_inv_a' :=
 def b_inv_b' :=
   gl_b * gl_b' = matrix_one
 
-def gl_ab : Set (GL (Fin 3) Real) := {gl_a, gl_a', gl_b, gl_b'}
+def gl_ab : Set (GL (Fin 3) Real) := {gl_a, gl_a', gl_b, gl_b', gl_one}
 abbrev gl_subtype :=  {w : GL (Fin 3) Real | w ∈ gl_ab}
 
 
-def G := Subgroup.closure {gl_a, gl_b}
+def G := Subgroup.closure {gl_a, gl_b, gl_one}
 
 abbrev r_3 := Fin 3 -> ℝ
-
+#check G
 def zero_one_zero : r_3 := ![0,1,0]
 def gl_to_m (matrix: GL (Fin 3) Real) : Matrix (Fin 3) (Fin 3) Real := matrix
 
-
+def gl_to_m_one_eq_one : gl_to_m gl_one = matrix_one := by
+  rfl
+def gl_to_m_a_eq_a : gl_to_m gl_a = matrix_a := by
+  rfl
+def gl_to_m_b_eq_b : gl_to_m gl_b = matrix_b := by
+  rfl
 
 def rotate (word : List gl_subtype) (vec : r_3) : r_3 :=
   (gl_to_m (List.prod word)).vecMul vec
 
+def rotate_g (word : GL (Fin 3) Real) (vec : r_3) : r_3 :=
+  (gl_to_m word).vecMul vec
+
 
 def a_b_c_vec (a b c : Real) (n : Nat) : r_3 :=
-  1/3^n * ![a * Real.sqrt 2, b, c * Real.sqrt 2]
+   ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
 
-theorem lemma_3_1 (p: List gl_subtype) (a b c: Real) (n : Nat) (h: n = p.length):
-       ∃ a b c, rotate p zero_one_zero = a_b_c_vec a b c n:= by
-
-  induction n with
-    | zero =>
-    rw [rotate]
-    simp
+def prop_p (p: GL (Fin 3) Real) (h: p ∈ G ) : Prop  := ∃ a b c, rotate_g p zero_one_zero = a_b_c_vec a b c n
+  sorry
+#check prop_p
+  def case_one : ∃ a b c n, rotate_g 1 zero_one_zero = a_b_c_vec a b c n := by
+    rw [rotate_g]
     use 0
     use 1
     use 0
+    use 0
     rw [a_b_c_vec]
     simp
-    rw [gl_to_m]
-    rw?
+    rw [zero_one_zero]
+    rw [gl_to_m_one_eq_one]
+    rw [matrix_one]
+    simp
 
-    | succ d hd =>
-    rw [rotate]
-    have hp: p.length=d+1 := by
-      apply symm
-      rw [← Nat.succ_eq_add_one]
-      exact h
-    apply?
+def case_a : ∃ a b c n, rotate_g gl_a zero_one_zero = a_b_c_vec a b c n := by
+    rw [rotate_g]
+    rw [gl_to_m_a_eq_a]
+    rw [zero_one_zero]
+    rw [matrix_a]
+    use 0
+    use 1
+    use -2
+    use 1
+    rw [a_b_c_vec]
+    simp
+    norm_num
+
+
+def case_v : ∃ a b c n, rotate_g gl_b zero_one_zero = a_b_c_vec a b c n := by
+        rw [rotate_g]
+        rw [gl_to_m_b_eq_b]
+        rw [zero_one_zero]
+        rw [matrix_b]
+        use 2
+        use 1
+        use 0
+        use 1
+        rw [a_b_c_vec]
+        simp
+        norm_num
+
+def x : y ∈ Subgroup.closure gl_ab := sorry
+
+def hmul : G -> G ->  ∃ a b c n, rotate_g G zero_one_zero = a_b_c_vec a b c n → ∃ a b c n, rotate_g y zero_one_zero = a_b_c_vec a b c n → ∃ a b c n, rotate_g (x*y) zero_one_zero = a_b_c_vec a b c n := sorry
+
+def hk : ∀ x ∈ gl_ab, ∃ a b c n, rotate_g p zero_one_zero = a_b_c_vec a b c n := by
+  sorry
+
+theorem lemma_3_1 (p: G) (a b c: Real) (n : Nat):
+       ∃ a b c, rotate_g p zero_one_zero = a_b_c_vec a b c n:=
+  Subgroup.closure_induction x hk case_one hmul
+
 
 
 
