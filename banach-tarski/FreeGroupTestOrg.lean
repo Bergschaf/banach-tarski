@@ -8,12 +8,11 @@ import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Set.Card
 
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 
-set_option maxHeartbeats 0
+set_option maxHeartbeats 2000000
 inductive Generators where
   | a : Generators
   | b : Generators
@@ -70,14 +69,14 @@ theorem union_f2 : s_a ∪ s_b ∪ s_a' ∪ s_b' ∪ e = f2 := by
 theorem sq_2_mul_sq_2_eq_2 : Real.sqrt 2 * Real.sqrt 2 = 2 := by
   norm_num
 
-set_option maxHeartbeats 0
+set_option maxHeartbeats 200000
 
 noncomputable section
 def matrix_a : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,-2/3*Real.sqrt 2; 0, 2/3*Real.sqrt 2, 1/3]
 def matrix_a' : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1/3,2/3*Real.sqrt 2; 0, -2/3*Real.sqrt 2, 1/3]
 def matrix_b : Matrix (Fin 3) (Fin 3) Real := !![1/3, -2/3*Real.sqrt 2, 0;( 2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
 def matrix_b' :Matrix (Fin 3) (Fin 3) Real := !![1/3, 2/3*Real.sqrt 2, 0;( -2/3*Real.sqrt 2),1/3, 0; 0, 0, 1]
-def matrix_one : Matrix (Fin 3) (Fin 3) Real := 1
+def matrix_one : Matrix (Fin 3) (Fin 3) Real := !![1, 0, 0; 0, 1, 0; 0, 0, 1]
 ---def matritzen : Set (Matrix (Fin 3) (Fin 3) Real) := {matrix_a, matrix_b, matrix_a', matrix_b', matrix_one}
 
 
@@ -119,183 +118,72 @@ def gl_b'  : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_b
 def gl_one  : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_one matrix_one_det_neq_zero
 
 
-
-
 def a_inv_a' :=
   gl_a * gl_a' = matrix_one
 
 def b_inv_b' :=
   gl_b * gl_b' = matrix_one
 
-def gl_ab : Set (GL (Fin 3) Real) := {gl_a, gl_a', gl_b, gl_b', gl_one}
---abbrev gl_subtype :=  {w : GL (Fin 3) Real | w ∈ gl_ab}
+def gl_ab : Set (GL (Fin 3) Real) := {gl_a, gl_a', gl_b, gl_b'}
+abbrev gl_subtype :=  {w : GL (Fin 3) Real | w ∈ gl_ab}
 
-def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b, gl_one}
 
-def G := Subgroup.closure erzeuger
+def G := Subgroup.closure {gl_a, gl_b}
 
 abbrev r_3 := Fin 3 -> ℝ
-#check G
+
 def zero_one_zero : r_3 := ![0,1,0]
 def gl_to_m (matrix: GL (Fin 3) Real) : Matrix (Fin 3) (Fin 3) Real := matrix
 
-def gl_to_m_one_eq_one : gl_to_m 1 = matrix_one := by
-  rw [gl_to_m]
-  rw [@Units.val_one]
-  rw [matrix_one]
+
+def fold (word : List gl_subtype) : GL (Fin 3) Real :=
+  List.foldl (fun matrix1 matrix2=> matrix1 * matrix2) 1 word
+
+theorem fold_zero_eq_one (word : List gl_subtype) (h : word.length = 0) : fold word = 1 := by
+  rw [fold]
+  sorry
+
+theorem fold_p_n (word: List gl_subtype) (n : Nat) (h: word.length = n) :
+   ∃ w : gl_subtype, fold word = (fold (word.take (n - 1))) *  w := by
+  rw [fold]
+  rw [fold]
+  simp
+  rw [← h]
+  sorry
 
 
-def gl_to_m_gl_one_eq_one : gl_to_m gl_one = matrix_one := by
-  rfl
-def gl_to_m_a_eq_a : gl_to_m gl_a = matrix_a := by
-  rfl
-def gl_to_m_b_eq_b : gl_to_m gl_b = matrix_b := by
-  rfl
-
-
-def rotate_g (word : GL (Fin 3) Real) (vec : r_3) : r_3 :=
-  (gl_to_m word).vecMul vec
+def rotate (word : List gl_subtype) (vec : r_3) : r_3 :=
+  (gl_to_m (fold word)).vecMul vec
 
 
 def a_b_c_vec (a b c : Real) (n : Nat) : r_3 :=
-   ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
+  1/3^n * ![a * Real.sqrt 2, b, c * Real.sqrt 2]
 
+theorem lemma_3_1 (p: List gl_subtype) (a b c: Real) (n : Nat) (h: n = p.length):
+       ∃ a b c, rotate p zero_one_zero = a_b_c_vec a b c n:= by
 
-
-theorem case_one : ∃ a b c n, rotate_g 1 zero_one_zero = a_b_c_vec a b c n := by
-    rw [rotate_g]
+  induction n with
+    | zero =>
+    rw [rotate]
+    simp
     use 0
     use 1
-    use 0
     use 0
     rw [a_b_c_vec]
     simp
+    rw [fold_zero_eq_one]
+    rw [gl_to_m]
     rw [zero_one_zero]
-    rw [gl_to_m_one_eq_one]
-    rw [matrix_one]
     simp
+    apply symm
+    exact h
 
-  theorem case_gl_one : ∃ a b c n, rotate_g gl_one zero_one_zero = a_b_c_vec a b c n := by
-    rw [rotate_g]
-    use 0
-    use 1
-    use 0
-    use 0
-    rw [a_b_c_vec]
-    simp
-    rw [zero_one_zero]
-    rw [gl_to_m_gl_one_eq_one]
-    rw [matrix_one]
-    simp
-
-theorem case_a (x) (h: x = gl_a): ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n := by
-    rw [h]
-    rw [rotate_g]
-    rw [gl_to_m_a_eq_a]
-    rw [zero_one_zero]
-    rw [matrix_a]
-    use 0
-    use 1
-    use -2
-    use 1
-    rw [a_b_c_vec]
-    simp
-    norm_num
-
-
-theorem case_b (x) (h: x = gl_b): ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n := by
-        rw [h]
-        rw [rotate_g]
-        rw [gl_to_m_b_eq_b]
-        rw [zero_one_zero]
-        rw [matrix_b]
-        use 2
-        use 1
-        use 0
-        use 1
-        rw [a_b_c_vec]
-        simp
-        norm_num
-
-
-
-def hk (x : GL (Fin 3) Real) (h: x ∈ erzeuger): ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n := by
- cases h with
- | inl ha =>
- apply case_a
- exact ha
- | inr hx =>
- cases hx with
- | inl hb =>
-  apply case_b
-  exact hb
- | _ hc =>
-  rw [hc]
-  apply case_gl_one
-
-
-def G_one : G := 1
-theorem h_one : ∃ a b c n, rotate_g G_one zero_one_zero = a_b_c_vec a b c n := by
-  apply case_one
-
-theorem h_mul (x y) (h1: ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n)
-(h2 :∃ e f g m, rotate_g y zero_one_zero = a_b_c_vec e f g m) :
-∃ j k i o, rotate_g (x*y) zero_one_zero = a_b_c_vec j k i o := by
-  rw [rotate_g]
-  rw [gl_to_m]
-  rw [@Matrix.GeneralLinearGroup.coe_mul]
-  rw [zero_one_zero]
-
-  rw [rotate_g] at h1
-  rw [gl_to_m] at h1
-  rw [zero_one_zero] at h1
-
-  rw [rotate_g] at h2
-  rw [gl_to_m] at h2
-  rw [zero_one_zero] at h2
-
-  rcases h1 with ⟨a, b, c, n, h1'⟩
-  rcases h2 with ⟨e, f, g, m, h2'⟩
-
-
-  rw [← Matrix.vecMul_vecMul]
-
-  rw [h1']
-
-  rw [a_b_c_vec]
-
-
-
-
-
-
-
-
-  sorry
-def h_inv (x) (h1:∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n) :
-  ∃ a b c n, rotate_g (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
-  rw [rotate_g]
-  rw [gl_to_m]
-  rw [zero_one_zero]
-
-  rw [rotate_g] at h1
-  rw [gl_to_m] at h1
-  rw [zero_one_zero] at h1
-
-  rcases h1 with ⟨a, b, c, n, h1'⟩
-  simp
-
-
-
-
-
-
-theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
-       ∃ a b c n, rotate_g p zero_one_zero = a_b_c_vec a b c n:=
-  Subgroup.closure_induction h hk h_one h_mul h_inv
-
-#check lemma_3_1
-
+    | succ d hd =>
+    rw [rotate]
+    have hp: p.length=d+1 := by
+      apply symm
+      rw [← Nat.succ_eq_add_one]
+      exact h
 
 
 
