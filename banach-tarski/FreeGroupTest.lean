@@ -204,18 +204,18 @@ theorem case_a (x) (h: x = gl_a): ∃ a b c n, rotate_g x zero_one_zero = a_b_c_
 
 
 theorem case_b (x) (h: x = gl_b): ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n := by
-        rw [h]
-        rw [rotate_g]
-        rw [gl_to_m_b_eq_b]
-        rw [zero_one_zero]
-        rw [matrix_b]
-        use 2
-        use 1
-        use 0
-        use 1
-        rw [a_b_c_vec]
-        simp
-        norm_num
+    rw [h]
+    rw [rotate_g]
+    rw [gl_to_m_b_eq_b]
+    rw [zero_one_zero]
+    rw [matrix_b]
+    use 2
+    use 1
+    use 0
+    use 1
+    rw [a_b_c_vec]
+    simp
+    norm_num
 
 
 
@@ -258,20 +258,10 @@ theorem h_mul (x y) (h1: ∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c
   rcases h2 with ⟨e, f, g, m, h2'⟩
 
 
-  rw [← Matrix.vecMul_vecMul]
-
-  rw [h1']
-
-  rw [a_b_c_vec]
-
-
-
-
-
-
-
-
   sorry
+
+
+
 def h_inv (x) (h1:∃ a b c n, rotate_g x zero_one_zero = a_b_c_vec a b c n) :
   ∃ a b c n, rotate_g (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
   rw [rotate_g]
