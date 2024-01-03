@@ -86,17 +86,18 @@ def gl_to_m_one_eq_one : gl_to_m 1 = matrix_one := by
   rw [@Units.val_one]
   rw [matrix_one]
 
+def coe_gl_one_eq_one : ↑gl_one = 1 := by
+  exact Units.val_eq_one.mp rfl
 
-def gl_to_m_gl_one_eq_one : gl_to_m gl_one = matrix_one := by
-  rfl
-def gl_to_m_a_eq_a : gl_to_m gl_a = matrix_a := by
-  rfl
-def gl_to_m_b_eq_b : gl_to_m gl_b = matrix_b := by
+def coe_gl_a_eq_matrix_a : ↑gl_a = matrix_a := by
   rfl
 
+def coe_gl_b_eq_matrix_b : ↑gl_b = matrix_b := by
+  rfl
 
-def rotate (word : GL (Fin 3) Real) (vec : r_3) : r_3 :=
-  (gl_to_m word).vecMul vec
+
+def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
+  (p : Matrix (Fin 3) (Fin 3) Real).vecMul vec
 
 
 def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
@@ -113,9 +114,6 @@ theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_v
     rw [a_b_c_vec]
     simp
     rw [zero_one_zero]
-    rw [gl_to_m_one_eq_one]
-    rw [matrix_one]
-    simp
 
   theorem case_gl_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate gl_one zero_one_zero = a_b_c_vec a b c n := by
     rw [rotate]
@@ -126,15 +124,14 @@ theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_v
     rw [a_b_c_vec]
     simp
     rw [zero_one_zero]
-    rw [gl_to_m_gl_one_eq_one]
-    rw [matrix_one]
+    rw [coe_gl_one_eq_one]
     simp
 
 theorem case_a (x) (h: x = gl_a): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
     rw [h]
     rw [rotate]
-    rw [gl_to_m_a_eq_a]
     rw [zero_one_zero]
+    rw [coe_gl_a_eq_matrix_a]
     rw [matrix_a]
     use 0
     use 1
@@ -148,7 +145,7 @@ theorem case_a (x) (h: x = gl_a): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_on
 theorem case_b (x) (h: x = gl_b): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
     rw [h]
     rw [rotate]
-    rw [gl_to_m_b_eq_b]
+    rw [coe_gl_b_eq_matrix_b]
     rw [zero_one_zero]
     rw [matrix_b]
     use 2
@@ -183,16 +180,13 @@ theorem h_mul (x y) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a
 (h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m) :
 ∃ g h i : ℤ, ∃ o : ℕ, rotate (x*y) zero_one_zero = a_b_c_vec g h i o := by
   rw [rotate]
-  rw [gl_to_m]
   rw [@Matrix.GeneralLinearGroup.coe_mul]
   rw [zero_one_zero]
 
   rw [rotate] at h1
-  rw [gl_to_m] at h1
   rw [zero_one_zero] at h1
 
   rw [rotate] at h2
-  rw [gl_to_m] at h2
   rw [zero_one_zero] at h2
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
@@ -204,11 +198,9 @@ theorem h_mul (x y) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a
 def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n) :
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
   rw [rotate]
-  rw [gl_to_m]
   rw [zero_one_zero]
 
   rw [rotate] at h1
-  rw [gl_to_m] at h1
   rw [zero_one_zero] at h1
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
@@ -218,5 +210,3 @@ def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_v
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ, rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction h hk h_one h_mul h_inv
-
-#check lemma_3_1
