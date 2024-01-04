@@ -29,4 +29,4 @@ theorem kleiner_gauss (n: Nat) :
     rw [add_assoc]
     rw [← Nat.mul_two (d + 1)]
     simp
-    use hd
+    exact hd
