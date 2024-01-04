@@ -69,24 +69,42 @@ theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   norm_num
 
 theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
+  rw [matrix_a']
+  rw [Matrix.det_fin_three]
+  simp
   norm_num
-  refine Matrix.nondegenerate_iff_det_ne_zero.mp ?_
-  sorry
+  ring
+  simp
+  rw [Real.sq_sqrt]
+  norm_num
+  norm_num
 
 theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
+  rw [matrix_b]
+  rw [Matrix.det_fin_three]
+  simp
   norm_num
-  refine Matrix.nondegenerate_iff_det_ne_zero.mp ?_
-  sorry
+  ring
+  simp
+  rw [Real.sq_sqrt]
+  norm_num
+  norm_num
 
 theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
+  rw [matrix_b']
+  rw [Matrix.det_fin_three]
+  simp
   norm_num
-  refine Matrix.nondegenerate_iff_det_ne_zero.mp ?_
-  sorry
+  ring
+  simp
+  rw [Real.sq_sqrt]
+  norm_num
+  norm_num
 
 theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
-  norm_num
-  refine Matrix.nondegenerate_iff_det_ne_zero.mp ?_
-  sorry
+  rw [matrix_one]
+  rw [Matrix.det_fin_three]
+  simp
 
 noncomputable section
 def gl_a   : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_a matrix_a_det_neq_zero
