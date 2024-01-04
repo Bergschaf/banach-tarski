@@ -285,15 +285,3 @@ theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
   Subgroup.closure_induction h hk h_one h_mul h_inv
 
 #check lemma_3_1
-
-
-
-
-
-
-
-
----def matrix_group := {w: GL (Fin 3) Real | true}
-
-theorem matritzen_in_GL : ∀ x ∈ matritzen, x ∈ matrix_group :=
-  sorry
