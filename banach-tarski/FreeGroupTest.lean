@@ -114,15 +114,6 @@ def gl_b'  : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_b
 def gl_one : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_one matrix_one_det_neq_zero
 end noncomputable section
 
-theorem a_inv_a' : gl_a * gl_a' = 1 := by
-  sorry
-
-
-def a_inv_a' :=
-  gl_a * gl_a' = matrix_one
-
-def b_inv_b' :=
-  gl_b * gl_b' = matrix_one
 
 def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b, gl_one}
 
@@ -131,12 +122,6 @@ def G := Subgroup.closure erzeuger
 abbrev r_3 := Fin 3 -> ℝ
 def zero_one_zero : r_3 := ![0,1,0]
 
-def gl_to_m (matrix: GL (Fin 3) Real) : Matrix (Fin 3) (Fin 3) Real := matrix
-
-def gl_to_m_one_eq_one : gl_to_m 1 = matrix_one := by
-  rw [gl_to_m]
-  rw [@Units.val_one]
-  rw [matrix_one]
 
 def coe_gl_one_eq_one : ↑gl_one = 1 := by
   exact Units.val_eq_one.mp rfl
