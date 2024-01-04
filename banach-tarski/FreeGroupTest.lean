@@ -204,16 +204,6 @@ theorem case_b (x) (h: x = gl_b): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_on
     norm_num
 
 
-theorem hk (x : GL (Fin 3) Real) (h: x ∈ erzeuger): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
-    cases h with
-    | inl ha =>
-    apply case_a
-    exact ha
-    | inr hb =>
-      apply case_b
-      exact hb
-
-
 def G_one : G := 1
 theorem h_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate G_one zero_one_zero = a_b_c_vec a b c n := by
   apply case_one
@@ -249,7 +239,7 @@ theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
   ring
 
 
-theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
+theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y ∈ G) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
 (h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m):
 ∃ g h i : ℤ, ∃ o : ℕ, rotate (x*y) zero_one_zero = a_b_c_vec g h i o := by
   rw [rotate]
@@ -277,7 +267,7 @@ theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x
   use m
 
 
-def h_inv (x)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
+def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
   rw [rotate]
   rw [zero_one_zero]
@@ -287,12 +277,10 @@ def h_inv (x)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
-  have h2: x ∈ G := sorry
-  rcases general_word_form_exits x h2 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
+  rcases general_word_form_exits x hx with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
   rw [h2]
   rw [general_word_form]
   rw [Matrix.inv]
-  sorry
   norm_num
   rw [Matrix.det_fin_three]
   norm_num
@@ -306,9 +294,19 @@ def h_inv (x)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_
   fin_cases he1
   simp
   ring
+  sorry
 
 
 
+theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
+   ∃ a b c n, rotate x zero_one_zero = a_b_c_vec a b c n := by
+    cases h with
+    | inl ha =>
+    apply case_a
+    exact ha
+    | inr hb =>
+      apply case_b
+      exact hb
 
 
 
@@ -318,4 +316,4 @@ def h_inv (x)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_
 
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
-  Subgroup.closure_induction h hk h_one h_mul h_inv
+  Subgroup.closure_induction' h_s h_one h_mul h_inv h
