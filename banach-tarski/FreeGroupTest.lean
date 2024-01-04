@@ -117,7 +117,7 @@ def gl_one : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_o
 end noncomputable section
 
 
-def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b, gl_one}
+def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b}
 
 def G := Subgroup.closure erzeuger
 
@@ -209,33 +209,48 @@ theorem hk (x : GL (Fin 3) Real) (h: x ∈ erzeuger): ∃ a b c : ℤ, ∃ n : �
     | inl ha =>
     apply case_a
     exact ha
-    | inr hx =>
-    cases hx with
-    | inl hb =>
+    | inr hb =>
       apply case_b
       exact hb
-    | _ hc =>
-      rw [hc]
-      apply case_gl_one
 
 
 def G_one : G := 1
 theorem h_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate G_one zero_one_zero = a_b_c_vec a b c n := by
   apply case_one
 
-theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real)
+theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
   (h: ∃ j k l : ℤ, ∃ i : ℕ, rotate x zero_one_zero = a_b_c_vec j k l i) (a b c : ℤ) (n : Nat) :
   ∃ e f g : ℤ , ∃ m : Nat, Matrix.vecMul (a_b_c_vec a b c n) x = a_b_c_vec e f g m := by
   rw [a_b_c_vec]
-  rw [← Matrix.vecMulᵣ_eq]
-  rw [Matrix.vecMulᵣ]
-  simp_rw [Matrix.transpose]
+  rcases general_word_form_exits x h1 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
 
+  rw [h2]
+  rw [general_word_form]
+  simp
+  use a * a1 + b * d1 + c * g1
+  use a * b1 * 2 + c * h1 * 2 + b * e1
+  use  a * c1 + b * f1 + c * i1
+  use n
+  rw [a_b_c_vec]
+  ext hx
+  fin_cases hx
 
+  simp
+  ring
+
+  simp
+  ring
+  simp
+  rw [Real.sq_sqrt]
+  ring
+  norm_num
+
+  simp
+  ring
 
 
 theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
-(h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m) :
+(h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m):
 ∃ g h i : ℤ, ∃ o : ℕ, rotate (x*y) zero_one_zero = a_b_c_vec g h i o := by
   rw [rotate]
   rw [@Matrix.GeneralLinearGroup.coe_mul]
@@ -252,6 +267,7 @@ theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x
   rw [← @Matrix.vecMul_vecMul]
   rw [h1']
   apply vec_mul_abc_eq_abc
+  sorry
   rw [rotate]
   rw [zero_one_zero]
   rw [h2']
@@ -271,6 +287,7 @@ def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_v
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
+  apply vec_mul_abc_eq_abc
   sorry
 
 
