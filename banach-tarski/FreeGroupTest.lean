@@ -257,7 +257,9 @@ theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y �
   rw [← @Matrix.vecMul_vecMul]
   rw [h1']
   apply vec_mul_abc_eq_abc
-  sorry
+
+  apply hy
+
   rw [rotate]
   rw [zero_one_zero]
   rw [h2']
@@ -266,6 +268,8 @@ theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y �
   use g
   use m
 
+theorem adjugate_fin_three (A: Matrix (Fin 3) (Fin 3) α) :
+  Matrix.adjugate A =
 
 def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
@@ -280,6 +284,28 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
   rcases general_word_form_exits x hx with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
   rw [h2]
   rw [general_word_form]
+
+  use a1
+  use b1
+  use c1
+  use n
+  ext he
+  fin_cases he
+  simp
+  rw [Matrix.inv_def]
+  simp
+  rw [Matrix.det_fin_three]
+  simp
+  rw [Matrix.adjugate]
+  rw [Matrix.of]
+
+
+
+
+
+
+
+/-
   rw [Matrix.inv]
   norm_num
   rw [Matrix.det_fin_three]
@@ -288,13 +314,12 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
   use b1
   use c1
   use n
-
   rw [a_b_c_vec]
   ext he1
   fin_cases he1
   simp
-  ring
-  sorry
+  ring-/
+
 
 
 
@@ -307,11 +332,6 @@ theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
     | inr hb =>
       apply case_b
       exact hb
-
-
-
-
-
 
 
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
