@@ -277,7 +277,7 @@ theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x
   use m
 
 
-def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n) :
+def h_inv (x)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
   rw [rotate]
   rw [zero_one_zero]
@@ -287,10 +287,35 @@ def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_v
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
-  apply vec_mul_abc_eq_abc
+  have h2: x ∈ G := sorry
+  rcases general_word_form_exits x h2 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
+  rw [h2]
+  rw [general_word_form]
+  rw [Matrix.inv]
   sorry
+  norm_num
+  rw [Matrix.det_fin_three]
+  norm_num
+  use a1
+  use b1
+  use c1
+  use n
+
+  rw [a_b_c_vec]
+  ext he1
+  fin_cases he1
+  simp
+  ring
+
+
+
+
+
+
+
+
 
 
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
-       ∃ a b c : ℤ, ∃ n : ℕ, rotate p zero_one_zero = a_b_c_vec a b c n:=
+       ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction h hk h_one h_mul h_inv
