@@ -9,6 +9,8 @@ import Mathlib.Data.Real.Sqrt
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 
+import Mathlib.Data.Matrix.Reflection
+
 set_option maxHeartbeats 0
 
 
@@ -140,6 +142,14 @@ def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
 def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
    ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
 
+def general_word_form  (a b c d e f g h i : ℤ) : Matrix (Fin 3) (Fin 3) Real :=
+  !![(a : Real),b * Real.sqrt 2, c;
+    d * Real.sqrt 2, e, f * Real.sqrt 2;
+    g, h * Real.sqrt 2, i]
+
+def general_word_form_exits (x: GL (Fin 3) Real) (h: x ∈ G) :
+  ∃ a b c d e f g h i, x = general_word_form a b c d e f g h i := by
+    sorry
 
 
 theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_vec a b c n := by
@@ -194,26 +204,37 @@ theorem case_b (x) (h: x = gl_b): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_on
     norm_num
 
 
-def hk (x : GL (Fin 3) Real) (h: x ∈ erzeuger): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
- cases h with
- | inl ha =>
- apply case_a
- exact ha
- | inr hx =>
- cases hx with
- | inl hb =>
-  apply case_b
-  exact hb
- | _ hc =>
-  rw [hc]
-  apply case_gl_one
+theorem hk (x : GL (Fin 3) Real) (h: x ∈ erzeuger): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
+    cases h with
+    | inl ha =>
+    apply case_a
+    exact ha
+    | inr hx =>
+    cases hx with
+    | inl hb =>
+      apply case_b
+      exact hb
+    | _ hc =>
+      rw [hc]
+      apply case_gl_one
 
 
 def G_one : G := 1
 theorem h_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate G_one zero_one_zero = a_b_c_vec a b c n := by
   apply case_one
 
-theorem h_mul (x y) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
+theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real)
+  (h: ∃ j k l : ℤ, ∃ i : ℕ, rotate x zero_one_zero = a_b_c_vec j k l i) (a b c : ℤ) (n : Nat) :
+  ∃ e f g : ℤ , ∃ m : Nat, Matrix.vecMul (a_b_c_vec a b c n) x = a_b_c_vec e f g m := by
+  rw [a_b_c_vec]
+  rw [← Matrix.vecMulᵣ_eq]
+  rw [Matrix.vecMulᵣ]
+  simp_rw [Matrix.transpose]
+
+
+
+
+theorem h_mul (x y : GL (Fin 3) Real) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
 (h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m) :
 ∃ g h i : ℤ, ∃ o : ℕ, rotate (x*y) zero_one_zero = a_b_c_vec g h i o := by
   rw [rotate]
@@ -228,8 +249,16 @@ theorem h_mul (x y) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
   rcases h2 with ⟨e, f, g, m, h2'⟩
-  sorry
-
+  rw [← @Matrix.vecMul_vecMul]
+  rw [h1']
+  apply vec_mul_abc_eq_abc
+  rw [rotate]
+  rw [zero_one_zero]
+  rw [h2']
+  use e
+  use f
+  use g
+  use m
 
 
 def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n) :
@@ -243,6 +272,7 @@ def h_inv (x) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_v
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
   sorry
+
 
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ, rotate p zero_one_zero = a_b_c_vec a b c n:=
