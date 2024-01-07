@@ -121,6 +121,7 @@ def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b}
 
 def G := Subgroup.closure erzeuger
 
+
 abbrev r_3 := Fin 3 -> ℝ
 def zero_one_zero : r_3 := ![0,1,0]
 
@@ -149,6 +150,7 @@ noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (
   !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
     d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
     (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
+
 
 theorem general_word_form_exists (x: GL (Fin 3) Real) (h: x ∈ G) :
   ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
@@ -366,3 +368,14 @@ theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction' h_s h_one h_mul h_inv h
+
+
+theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat):
+  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> n = 0 := by
+    rw [zero_one_zero]
+
+    intro h1
+
+    rw [a_b_c_vec] at h1
+    simp at h1
+    sorry
