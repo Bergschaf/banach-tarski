@@ -162,7 +162,7 @@ theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_v
     simp
     rw [zero_one_zero]
 
-  theorem case_gl_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate gl_one zero_one_zero = a_b_c_vec a b c n := by
+theorem case_gl_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate gl_one zero_one_zero = a_b_c_vec a b c n := by
     rw [rotate]
     use 0
     use 1
@@ -338,7 +338,6 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
   simp
   rw [Matrix.smul_vec3]
   simp
-
 
 
 theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
