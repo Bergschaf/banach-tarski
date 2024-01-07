@@ -142,14 +142,119 @@ def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
 def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
    ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
 
-def general_word_form  (a b c d e f g h i : ℤ) : Matrix (Fin 3) (Fin 3) Real :=
-  !![(a : Real),b * Real.sqrt 2, c;
-    d * Real.sqrt 2, e, f * Real.sqrt 2;
-    g, h * Real.sqrt 2, i]
+noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
+  !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
+    d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
+    (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
 
-def general_word_form_exits (x: GL (Fin 3) Real) (h: x ∈ G) :
-  ∃ a b c d e f g h i, x = general_word_form a b c d e f g h i := by
+theorem general_word_form_exists (x: GL (Fin 3) Real) (h: x ∈ G) :
+  ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
     sorry
+
+
+theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
+  ∃ l m o p, Matrix.vecMul zero_one_zero (general_word_form a b c d e f g h i n) =
+    a_b_c_vec l m o p := by
+    rw [general_word_form]
+    use d
+    use e
+    use f
+    use n
+    rw [a_b_c_vec]
+    rw [zero_one_zero]
+
+    ext h1
+    fin_cases h1
+    simp
+    ring
+
+    simp
+    ring
+
+    simp
+    ring
+
+
+
+theorem adjugate_fin_three (a b c d e f g h i: Real) :
+  Matrix.adjugate (Matrix.of ![![a, b, c], ![d, e, f], ![g, h, i]])=
+  Matrix.of ![![e * i - f * h, -(b * i) + c * h, b * f - c * e],
+            ![-(d * i) + f * g, a * i - c * g, -(a * f) + c * d],
+            ![d * h - e * g, -(a * h) + b * g, a * e - b * d]] := by
+
+  ext h1 h2
+  fin_cases h1
+  simp
+  rw [Matrix.adjugate_apply]
+  rw [Matrix.det_fin_three]
+  repeat rw [Matrix.updateRow_apply]
+  simp
+  fin_cases h2
+  repeat simp
+
+  rw [Matrix.adjugate_apply]
+  rw [Matrix.det_fin_three]
+  repeat rw [Matrix.updateRow_apply]
+  simp
+  fin_cases h2
+  repeat simp
+
+  rw [Matrix.adjugate_apply]
+  rw [Matrix.det_fin_three]
+  repeat rw [Matrix.updateRow_apply]
+  simp
+  fin_cases h2
+  simp
+  rw [@Pi.single_apply]
+  repeat simp
+  rw [@Pi.single_apply]
+  repeat simp
+  rw [@Pi.single_apply]
+  simp
+
+
+theorem general_word_form_inv (a b c d e f g h i: ℤ) (j: Nat):
+  ∃ k l m n o p q r s t, (general_word_form a b c d e f g h i j)⁻¹ =
+    general_word_form k l m n o p q r s t:= by
+      rw [general_word_form]
+      rw [Matrix.inv_def]
+      rw [Matrix.det_fin_three]
+      rw [adjugate_fin_three]
+      simp
+      use a
+      use b
+      use c
+      use d
+      use e
+      use f
+      use g
+      use h
+      use i
+      use j
+
+      rw [general_word_form]
+      ext h1 h2
+      fin_cases h1
+
+      fin_cases h2
+
+      simp
+
+      rw [Matrix.smul_of]
+      simp
+
+      rw [Matrix.smul_cons]
+      simp
+      ring
+      simp
+      rw [Real.sq_sqrt]
+
+      repeat rw [← sub_mul]
+
+
+
+
+
 
 
 theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_vec a b c n := by
@@ -188,7 +293,6 @@ theorem case_a (x) (h: x = gl_a): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_on
     simp
     norm_num
 
-
 theorem case_b (x) (h: x = gl_b): ∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n := by
     rw [h]
     rw [rotate]
@@ -212,15 +316,14 @@ theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
   (h: ∃ j k l : ℤ, ∃ i : ℕ, rotate x zero_one_zero = a_b_c_vec j k l i) (a b c : ℤ) (n : Nat) :
   ∃ e f g : ℤ , ∃ m : Nat, Matrix.vecMul (a_b_c_vec a b c n) x = a_b_c_vec e f g m := by
   rw [a_b_c_vec]
-  rcases general_word_form_exits x h1 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
-
+  rcases general_word_form_exists x h1 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1,n1, h2⟩
   rw [h2]
   rw [general_word_form]
   simp
   use a * a1 + b * d1 + c * g1
   use a * b1 * 2 + c * h1 * 2 + b * e1
   use  a * c1 + b * f1 + c * i1
-  use n
+  use n + n1
   rw [a_b_c_vec]
   ext hx
   fin_cases hx
@@ -229,13 +332,11 @@ theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
   ring
 
   simp
-  ring
+  ring!
   simp
-  rw [Real.sq_sqrt]
+  norm_num
   ring
   norm_num
-
-  simp
   ring
 
 
@@ -268,45 +369,12 @@ theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y �
   use g
   use m
 
-theorem adjugate_fin_three (a b c d e f g h i: Real) :
-  Matrix.adjugate (Matrix.of ![![a, b, c], ![d, e, f], ![g, h, i]])=
-  Matrix.of ![![e * i - f * h, -(b * i) + c * h, b * f - c * e],
-            ![-(d * i) + f * g, a * i - c * g, -(a * f) + c * d],
-            ![d * h - e * g, -(a * h) + b * g, a * e - b * d]] := by
-  ext h1 h2
-  fin_cases h1
-  simp
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  repeat simp
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  repeat simp
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  simp
-  rw [@Pi.single_apply]
-  repeat simp
-  rw [@Pi.single_apply]
-  repeat simp
-  rw [@Pi.single_apply]
-  simp
 
 
 
 def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
+
   rw [rotate]
   rw [zero_one_zero]
 
@@ -315,29 +383,18 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
 
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
-  rcases general_word_form_exits x hx with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, h2⟩
-  rw [h2]
-  rw [general_word_form]
 
-  rw [Matrix.inv_def]
-  simp
-  rw [Matrix.det_fin_three]
-  simp
-  rw [adjugate_fin_three]
-  simp
-  rw [Matrix.smul_of]
-  simp
-  use a1
-  use b1
-  use c1
-  use n
-  ext he
-  fin_cases he
-  simp
-  rw [a_b_c_vec]
-  simp
-  rw [Matrix.smul_vec3]
-  simp
+  rcases general_word_form_exists x hx with ⟨a1, b1, c1, d1, e1, f1, g1,hh1,  i1, n1, h2⟩
+  rw [h2]
+
+
+  rcases general_word_form_inv a1 b1 c1 d1 e1 f1 g1 hh1 i1 n1 with ⟨a2, b2, c2, d2, e2, f2, g2, hh2, i2, n2, h3⟩
+  rw [h3]
+
+  apply general_word_form_abc
+
+
+
 
 
 theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
