@@ -338,38 +338,6 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
   simp
   rw [Matrix.smul_vec3]
   simp
-  apply?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/-
-  rw [Matrix.inv]
-  norm_num
-  rw [Matrix.det_fin_three]
-  norm_num
-  use a1
-  use b1
-  use c1
-  use n
-  rw [a_b_c_vec]
-  ext he1
-  fin_cases he1
-  simp
-  ring-/
-
 
 
 
