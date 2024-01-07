@@ -142,6 +142,9 @@ def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
 def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
    ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
 
+theorem x_inv_in_g (x: GL (Fin 3) Real) (h: x ∈ G): x⁻¹ ∈ G := by
+  exact Subgroup.inv_mem G h
+
 noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
   !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
     d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
@@ -211,48 +214,6 @@ theorem adjugate_fin_three (a b c d e f g h i: Real) :
   repeat simp
   rw [@Pi.single_apply]
   simp
-
-
-theorem general_word_form_inv (a b c d e f g h i: ℤ) (j: Nat):
-  ∃ k l m n o p q r s t, (general_word_form a b c d e f g h i j)⁻¹ =
-    general_word_form k l m n o p q r s t:= by
-      rw [general_word_form]
-      rw [Matrix.inv_def]
-      rw [Matrix.det_fin_three]
-      rw [adjugate_fin_three]
-      simp
-      use a
-      use b
-      use c
-      use d
-      use e
-      use f
-      use g
-      use h
-      use i
-      use j
-
-      rw [general_word_form]
-      ext h1 h2
-      fin_cases h1
-
-      fin_cases h2
-
-      simp
-
-      rw [Matrix.smul_of]
-      simp
-
-      rw [Matrix.smul_cons]
-      simp
-      ring
-      simp
-      rw [Real.sq_sqrt]
-
-      repeat rw [← sub_mul]
-
-
-
 
 
 
@@ -370,8 +331,6 @@ theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y �
   use m
 
 
-
-
 def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
   ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
 
@@ -384,17 +343,13 @@ def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ,
   rcases h1 with ⟨a, b, c, n, h1'⟩
   simp
 
-  rcases general_word_form_exists x hx with ⟨a1, b1, c1, d1, e1, f1, g1,hh1,  i1, n1, h2⟩
+  rcases general_word_form_exists (x)⁻¹ (x_inv_in_g x hx) with ⟨a1, b1, c1, d1, e1, f1, g1,hh1,  i1, n1, h2⟩
+
+  rw [← @Matrix.coe_units_inv]
+
   rw [h2]
 
-
-  rcases general_word_form_inv a1 b1 c1 d1 e1 f1 g1 hh1 i1 n1 with ⟨a2, b2, c2, d2, e2, f2, g2, hh2, i2, n2, h3⟩
-  rw [h3]
-
   apply general_word_form_abc
-
-
-
 
 
 theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
