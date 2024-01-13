@@ -290,7 +290,6 @@ theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
 
   simp
   ring
-
   simp
   ring!
   simp
