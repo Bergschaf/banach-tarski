@@ -1,7 +1,4 @@
-hallohhhhteststjekjhhelllooojjjjjj--------------------------#eval "hello"
-oiwoialkdslklkjdsflkjfdslkjdslkjdslkjdslkimport banach_tarski.Lemma_3_1
-#check rotate
-#eval 12333333import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
 def sum_up_to (n : Nat): ℕ :=
@@ -33,4 +30,3 @@ theorem kleiner_gauss (n: Nat) :
     rw [← Nat.mul_two (d + 1)]
     simp
     exact hd
-    Halloo
