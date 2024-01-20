@@ -3,6 +3,7 @@ import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.Data.Matrix.Notation
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Fin.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
@@ -107,6 +108,20 @@ theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [matrix_one]
   rw [Matrix.det_fin_three]
   simp
+  repeat rw [Matrix.one_apply_ne]
+  norm_num
+  rw [@ne_iff_lt_or_gt]
+  simp
+  exact Fin.coe_sub_iff_lt.mp rfl
+  rw [@ne_iff_lt_or_gt]
+  simp
+  exact Fin.coe_sub_iff_lt.mp rfl
+  rw [@ne_iff_lt_or_gt]
+  right
+  exact Fin.coe_sub_iff_lt.mp rfl
+  rw [@ne_iff_lt_or_gt]
+  left
+  exact Fin.coe_sub_iff_lt.mp rfl
 
 noncomputable section
 def gl_a   : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_a matrix_a_det_neq_zero
@@ -194,14 +209,126 @@ theorem adjugate_fin_three (a b c d e f g h i: Real) :
   repeat rw [Matrix.updateRow_apply]
   simp
   fin_cases h2
-  repeat simp
+  repeat
+    repeat simp
+    repeat rw [if_neg]
+    rw [Pi.single_apply]
+    repeat rw [if_neg]
+    simp
+
+    repeat
+      rw [← ne_eq]
+      rw [@ne_iff_lt_or_gt]
+      right
+      exact Fin.coe_sub_iff_lt.mp rfl
+  ---
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  simp
+  rw [Pi.single_apply]
+  rw [if_neg]
+  simp
+
+  rw [← ne_eq]
+  rw [@ne_iff_lt_or_gt]
+  right
+  exact Fin.coe_sub_iff_lt.mp rfl
+
+  repeat
+    rw [@Fin.eq_mk_iff_val_eq]
+    simp
+
+  ---
 
   rw [Matrix.adjugate_apply]
   rw [Matrix.det_fin_three]
   repeat rw [Matrix.updateRow_apply]
   simp
   fin_cases h2
-  repeat simp
+  simp
+  rw [Pi.single_apply]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_neg]
+  rw [Pi.single_apply]
+  rw [if_neg]
+  simp
+  --
+  rw [@Fin.eq_mk_iff_val_eq]
+  simp
+
+  repeat
+    rw [← ne_eq]
+    rw [@ne_iff_lt_or_gt]
+    right
+    exact Fin.coe_sub_iff_lt.mp rfl
+
+  rw [@Fin.eq_mk_iff_val_eq]
+  simp
+
+  rw [← ne_eq]
+  rw [@ne_iff_lt_or_gt]
+  right
+  exact Fin.coe_sub_iff_lt.mp rfl
+  ---
+  simp
+  repeat rw [if_neg]
+  repeat rw [Pi.single_apply]
+  rw [if_pos]
+  rw [if_neg]
+  simp
+  --
+  rw [@Fin.eq_mk_iff_val_eq]
+  simp
+
+  rw [@Fin.eq_mk_iff_val_eq]
+  simp
+
+  repeat
+    rw [← ne_eq]
+    rw [@ne_iff_lt_or_gt]
+    right
+    exact Fin.coe_sub_iff_lt.mp rfl
+
+  ---
+  simp
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
+  simp
+  repeat rw [Pi.single_apply]
+  rw [if_neg]
+  rw [if_pos]
+  simp
+  --
+  repeat
+    rw [@Fin.eq_mk_iff_val_eq]
+    simp
 
   rw [Matrix.adjugate_apply]
   rw [Matrix.det_fin_three]
@@ -209,12 +336,51 @@ theorem adjugate_fin_three (a b c d e f g h i: Real) :
   simp
   fin_cases h2
   simp
-  rw [@Pi.single_apply]
-  repeat simp
-  rw [@Pi.single_apply]
-  repeat simp
-  rw [@Pi.single_apply]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_neg]
+  repeat rw [Pi.single_apply]
+  rw [if_neg]
+  rw [if_neg]
+  rw [if_pos]
   simp
+  --
+  repeat
+    rw [@Fin.eq_mk_iff_val_eq]
+    simp
+  ---
+  simp
+
+  repeat rw [if_neg]
+  repeat rw [Pi.single_apply]
+  rw [if_neg]
+  rw [if_pos]
+  rw [if_neg]
+  simp
+  --
+  repeat
+    rw [@Fin.eq_mk_iff_val_eq]
+    simp
+
+  ---
+  repeat simp
+  repeat
+    rw [if_pos]
+    rw [if_neg]
+    rw [if_neg]
+
+  repeat rw [Pi.single_apply]
+  rw [if_pos]
+  rw [if_neg]
+  rw [if_neg]
+  --
+  simp
+  repeat
+    rw [@Fin.eq_mk_iff_val_eq]
+    simp
 
 
 theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_vec a b c n := by
@@ -290,6 +456,7 @@ theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
 
   simp
   ring
+
   simp
   ring!
   simp
