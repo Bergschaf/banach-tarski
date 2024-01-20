@@ -5,7 +5,8 @@ from pathlib import Path
 from invoke import run, task
 import json
 import re
-
+import sys
+sys.setrecursionlimit(100000)
 from blueprint.tasks import web, bp, print_bp, serve
 
 ROOT = Path(__file__).parent

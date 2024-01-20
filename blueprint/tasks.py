@@ -4,6 +4,7 @@ from pathlib import Path
 import http.server
 import socketserver
 
+
 from invoke import run, task
 
 BP_DIR = Path(__file__).parent
@@ -58,7 +59,7 @@ def serve(ctx, random_port=False):
     httpd = socketserver.TCPServer(("", port), Handler)
     try:
         (ip, port) = httpd.server_address
-        ip = ip or 'localhost'
+        ip = "localhost" # TODO ip or 'localhost'
         print(f'Serving http://{ip}:{port}/ ...')
         httpd.serve_forever()
     except KeyboardInterrupt:
