@@ -1,4 +1,5 @@
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Sign
 
 structure complex where
   re : Real
@@ -14,11 +15,11 @@ instance : One complex :=
 instance : Add complex :=
   ⟨ fun x y  ↦  ⟨ x.re + y.re, x.im + y.im ⟩ ⟩
 
-instance : Neg.Add complex :=
+instance : Neg complex :=
   ⟨ fun x ↦ ⟨ -x.re, -x.im⟩ ⟩
 
 instance : Mul complex :=
   ⟨ fun x y  ↦  ⟨ x.re * y.re - x.im * y.im, x.re * y.im + x.im * y.re⟩⟩
 
-instance : Neg.Mul complex :=
+noncomputable instance : Inv complex :=
   ⟨ fun x  ↦  ⟨ x.re / (x.re^2+x.im^2), -x.im / (x.re^2+x.im^2)⟩⟩

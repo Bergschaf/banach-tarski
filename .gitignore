@@ -1,3 +1,9 @@
 /build
 /lakefile.olean
 /lake-packages/*
+/venv/
+*.olean
+*.ilean
+*.hash
+*.trace
+/.lake
