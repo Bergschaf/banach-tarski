@@ -1,7 +1,4 @@
-#eval 123
-
-jdjdjdj
-#check trueimport Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
 def sum_up_to (n : Nat): ℕ :=
