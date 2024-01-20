@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-
-def sum_up_to (n : Nat): ℕ :=
+import Math ℕ :=
   match n with
     | 0 => 0
     | (Nat.succ n) => sum_up_to n + Nat.succ n
