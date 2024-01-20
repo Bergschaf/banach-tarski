@@ -7,3 +7,6 @@
 *.hash
 *.trace
 /.lake
+/blueprint/web/
+/blueprint/print/
+/docs/
