@@ -12,8 +12,9 @@ def elements(directory):
     return elements
 
 # Write the file structure to a file (as json)
-root_dirs = ["./banach_tarski", "./andere-Theoreme"]
+root_dirs = ["banach_tarski", "andere-Theoreme"]
 
 file_structure = {x:elements(x + "/") for x in root_dirs}
 
-print(json.dumps(file_structure, indent=4))
+with open(filename, "w") as f:
+    json.dump(file_structure, f, indent=4)
