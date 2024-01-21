@@ -13,28 +13,35 @@ Wir wählen nun konkret zwei Rotationen der Kugel, mit welchen wir die Zerlegung
 \begin{definition}\label{def:konk_rot}
 Unsere Rotationsmatrizen sind: 
 $A=\frac{1}{3}\begin{pmatrix} 3 & 0 & 0 //
-                              0 & 1 & 2\sqrt{2} //
-$
-
+                              0 & 1 & -2\sqrt{2} //
+                              0 & 2\sqrt{2} & 1 //
+\end{pmatrix}
+B=\frac{1}{3}\begin{pmatrix} 1 & -2\sqrt{2} & 0 //
+                             2\sqrt{2} & 1 & 0 //
+                             0 & 0 & 3 //
+\end{pmatrix}$
 \end{definition}
 
-\begin{lemma}\label{lem:konk_rot_sind_rot}
-Dies sind in der Tat Rotationen
+\begin{lemma}[Invertierbarkeit von A und B] \label[lemma:a_b_invertierbar]
+Es gilt $det A\neq 0$ und $det B\neq 0$ und damit sind $A$ und $B$ invertierbar.
 \end{lemma}
-\begin{proof}\uses{def:rot,def:konk_rot}
-Direkte Rechnung.
+\begin{proof} \uses{def:konk_rot}
+Folgt durch Nachrrechnen.
 \end{proof}
 
-Diese erzeugen uns somit eine Untergruppe der Gruppe der invertierbaren $3\times3$-Matrizen.
+$A$ und $B$ erzeugen uns daher eine Untergruppe der Gruppe der invertierbaren $3\times3$-Matrizen.
 \begin{definition}\label{def:konk_rot_erzeugt}
-Die beiden
+$G$ bezeichnet die von $A$ und $B$ erzeugte Untergruppe.
 \end{definition}
 
-
-Nun hat jedes Element dieser erzeugten Untergruppe eine besondere Darstellung.
+Die Elemente von $G$ können wir durch eine bestimmte Schreibweise darstellen.
 \begin{lemma}\label{lem:darst_von_rot_matrix}
+$\forall x\in G:\exists a,b,c,d,e,f,g,h,i\in\mathbb{Z}:\exists n\in\mathbb{N}: x=\frac{1}{3}\begin{pmatrix} a & b\sqrt{2} & c //
+                                                                                                            d\sqrt{2} & e & f\sqrt{2} //
+                                                                                                            g & h\sqrt{2} & i //
+\end{pmatrix}$ 
 \end{lemma}
-\begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot}
+\begin{proof}\uses{def:konk_rot_erzeugt def:konk_rot}
 sorry
 \end{proof}
 
