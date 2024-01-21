@@ -532,13 +532,3 @@ theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction' h_s h_one h_mul h_inv h
 
-
-theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat):
-  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> n = 0 := by
-    rw [zero_one_zero]
-
-    intro h1
-
-    rw [a_b_c_vec] at h1
-    simp at h1
-    sorry
