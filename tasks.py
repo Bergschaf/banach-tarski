@@ -34,6 +34,8 @@ def dev(ctx):
 
     def callback(changes):
         print('Changes detected:', changes)
+        # kill the serve task
+        #subprocess.run("pkill serve", shell=True)
         bp(ctx)
         web(ctx)
 
