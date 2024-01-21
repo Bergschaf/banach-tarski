@@ -10,5 +10,6 @@ theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat):
 
     rw [a_b_c_vec] at h1
     simp at h1
-    sorry
+    
+    
   
