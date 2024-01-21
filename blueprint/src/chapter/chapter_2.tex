@@ -1,12 +1,64 @@
 \chapter{Freie Gruppe der Rotationen}
 
-\begin{lemma}[Konkrete darstellung der Drehungen]\label{Konkrete_Darstellung_Drehungen}
+
+\section{Wahl der Rotationen und Zerlegung des Großteils der Kugel}
+
+Zunächst definieren wir, was wir unter einer Rotation formal verstehen.
+\begin{definition}[Rotationsmatrix]\label{def:rot}
+Eine Rotation der Sphäre wird durch Rotationsmatrizen blablabla gegeben
+\end{definition}
+
+
+Wir wählen nun konkret zwei Rotationen der Kugel, mit welchen wir die Zerlegung im Satz konstruieren werden.
+\begin{definition}\label{def:konk_rot}
+Unsere Rotationsmatrizen sind: 
+$A=\frac{1}{3}\begin{pmatrix} 3 & 0 & 0 //
+                              0 & 1 & 2\sqrt{2} //
+
+\end{definition}
+
+\begin{lemma}\label{lem:konk_rot_sind_rot}
+Dies sind in der Tat Rotationen
+\end{lemma}
+\begin{proof}\uses{def:rot,def:konk_rot}
+Direkte Rechnung.
+\end{proof}
+
+Diese erzeugen uns somit eine Untergruppe der Gruppe der invertierbaren $3\times3$-Matrizen.
+\begin{definition}\label{def:konk_rot_erzeugt}
+Die beiden
+\end{definition}
+
+
+Nun hat jedes Element dieser erzeugten Untergruppe eine besondere Darstellung.
+\begin{lemma}\label{lem:darst_von_rot_matrix}
+\end{lemma}
+\begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot}
+sorry
+\end{proof}
+
+\begin{lemma}[Konkrete darstellung der Drehungen]\label{lem:darst_von_rot_res}
 \lean{banach_tarski.Lemma_3_1.lemma_3_1}\leanok
 Wenn $\rho : \mathbb{R}³\Rightarrow\mathbb{R}³$ ein Ausdruck in $G$ der Länge 
 $n$ in reduzierter Form ist, dann ist $\rho(0,1,0)$ von der folgenden Form, wobei
 $a, b$ und $c$ ganze Zahlen sind: $\rho(0,1,0)=\frac{1}{3^n}(a\sqrt{2},b,c\sqrt{2})$.
 \end{lemma}
-
-\begin{proof}[halloo]\leanok Diese Behauptung folgt aus den Erzeugermatrizen
-     und durch konkretes Multiplizieren eines reduzierten Wortes an (0,1,0).
+\begin{proof} \uses {lem:darst_von_rot_matrix}
+\leanok Diese Behauptung folgt aus den Erzeugermatrizen
+und durch konkretes Multiplizieren eines reduzierten Wortes an (0,1,0).
 \end{proof}
+Damit können wir zeigen, dass diese Untergruppe an Rotationen eine freie Gruppe in zwei Erzeugern ist.
+
+
+\begin{definition}\label{def:freie_grp}
+Eine Freie Gruppe in Erzeugern $M$ ist...
+\end{definition}
+
+\begin{theorem}\label{thm:freie_grp_an_rot}
+Die von unseren konkreten Rotationen aus \ref{def:konk_rot} erzeugte untergruppe ist eine Freie Gruppe
+\end{theorem}
+\begin{proof}\uses{lem:darst_von_rot_res,def:freie_grp}
+chillig.
+\end{proof}
+
+

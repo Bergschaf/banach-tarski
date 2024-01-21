@@ -8,6 +8,7 @@ import socketserver
 from invoke import run, task
 
 BP_DIR = Path(__file__).parent
+httpd = None
 
 @task
 def print_bp(ctx):
@@ -48,6 +49,7 @@ def web(ctx):
 
 @task
 def serve(ctx, random_port=False):
+    print("Serving")
     cwd = os.getcwd()
     os.chdir(BP_DIR/'web')
     Handler = http.server.SimpleHTTPRequestHandler

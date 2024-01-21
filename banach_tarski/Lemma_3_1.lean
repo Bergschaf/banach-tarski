@@ -167,9 +167,11 @@ noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (
     (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
 
 
-theorem general_word_form_exists (x: GL (Fin 3) Real) (h: x ∈ G) :
+theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
   ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
     sorry
+
+
 
 
 theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
@@ -531,4 +533,3 @@ theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
        ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction' h_s h_one h_mul h_inv h
-
