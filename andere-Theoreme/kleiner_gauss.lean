@@ -9,7 +9,6 @@ def sum_up_to (n : Nat): ℕ :=
 #eval sum_up_to 4
 
 
-
 theorem kleiner_gauss (n: Nat) :
   sum_up_to n * 2 = n * (n + 1) := by
 
