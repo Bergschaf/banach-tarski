@@ -6,6 +6,7 @@
 *.ilean
 *.hash
 *.trace
+*.paux
 /.lake
 /blueprint/web/
 /blueprint/print/
