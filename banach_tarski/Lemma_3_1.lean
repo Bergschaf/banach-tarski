@@ -12,6 +12,8 @@ import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 
 import Mathlib.Data.Matrix.Reflection
 
+import banach_tarski.Definitions
+
 set_option maxHeartbeats 0
 
 
@@ -137,9 +139,6 @@ def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b}
 def G := Subgroup.closure erzeuger
 
 
-abbrev r_3 := Fin 3 -> ℝ
-def zero_one_zero : r_3 := ![0,1,0]
-
 
 def coe_gl_one_eq_one : ↑gl_one = 1 := by
   exact Units.val_eq_one.mp rfl
@@ -149,10 +148,6 @@ def coe_gl_a_eq_matrix_a : ↑gl_a = matrix_a := by
 
 def coe_gl_b_eq_matrix_b : ↑gl_b = matrix_b := by
   rfl
-
-
-def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
-  (p : Matrix (Fin 3) (Fin 3) Real).vecMul vec
 
 
 def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
@@ -170,8 +165,6 @@ noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (
 theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
   ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
     sorry
-
-
 
 
 theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):

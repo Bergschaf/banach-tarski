@@ -12,4 +12,4 @@ def all_orbits := List (orbit_A origin)
 
 #check all_orbits
 
-def M := Real.choose
+--def M := Real.choose
