@@ -48,7 +48,7 @@ jobs:
         run: ~/.elan/bin/lake -Kenv=dev exe cache get || true
 
       - name: Build project
-        run: ~/.elan/bin/lake -Kenv=dev build PFR
+        run: ~/.elan/bin/lake -Kenv=dev build banach_tarski
 
       - name: Cache mathlib docs
         uses: actions/cache@v3
