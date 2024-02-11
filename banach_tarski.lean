@@ -1,2 +1,4 @@
 import banach_tarski.Lemma_3_1
 import banach_tarski.Lemma_3_2
+import banach_tarski.Equidecomposable
+import banach_tarski.Orbit

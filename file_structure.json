@@ -1,7 +1,10 @@
 {
     "banach_tarski": {
+        "Equidecomposable.lean": null,
+        "Lemma_3_2.lean": null,
+        "Orbit.lean": null,
         "Lemma_3_1.lean": null,
-        "Lemma_3_2.lean": null
+        "Definitions.lean": null
     },
     "andere-Theoreme": {
         "complex_numbers.lean": null,

@@ -114,16 +114,10 @@ theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   norm_num
   rw [@ne_iff_lt_or_gt]
   simp
-  exact Fin.coe_sub_iff_lt.mp rfl
-  rw [@ne_iff_lt_or_gt]
-  simp
-  exact Fin.coe_sub_iff_lt.mp rfl
-  rw [@ne_iff_lt_or_gt]
-  right
-  exact Fin.coe_sub_iff_lt.mp rfl
-  rw [@ne_iff_lt_or_gt]
-  left
-  exact Fin.coe_sub_iff_lt.mp rfl
+  exact Fin.ne_of_lt (Nat.le.step Nat.le.refl)
+  exact Fin.ne_of_gt Nat.le.refl
+  exact Fin.ne_of_lt Nat.le.refl
+
 
 noncomputable section
 def gl_a   : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_a matrix_a_det_neq_zero
