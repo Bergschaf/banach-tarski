@@ -5,27 +5,27 @@
 Sei $L=\{(x,y,z):x²+y²+z²\leq1\}$ die Einheitskugel. Wir definieren $L'=L\backslash {(0,0,0)}$ als Einheitskugel ohne Mittelpunkt.
 \end{definition}
 
-\begin{definition}[Orbit] \label{def:orbit} \uses{lem:darst_von_rot_res}
+\begin{definition}[Orbit] \label{def:orbit} \uses{lem:darst_von_rot_res,thm:freie_grp_an_rot}
 Zwei Punkte $a$ und $b$ gehören zum selben Orbit, genau dann, wenn ein $\rho$ in $G$ existiert, sodass $\rho(a)=b$ gilt.
 \end{definition}
 
-\begin{definition}[Auswahlfunktion] \label{def:auswahlfunktion}
-Sei $A$ eine Menge nichtleerer Mengen. Dann heißt $F:A\rightarrow\bigcup\limits_{I\in A}I$ eine Auswahlfunktion von $A$,
-falls zu jedem Element $I\in A$ ein Element $F(I)\in I$ zugeordnet wird.    
-\end{definition}  
+%\begin{definition}[Auswahlfunktion] \label{def:auswahlfunktion}
+%Sei $A$ eine Menge nichtleerer Mengen. Dann heißt $F:A\rightarrow\bigcup\limits_{I\in A}I$ eine Auswahlfunktion von $A$,
+%falls zu jedem Element $I\in A$ ein Element $F(I)\in I$ zugeordnet wird.    
+%\end{definition}  
 
-\begin{theorem}[Auswahlaxiom] \label{theorem:auswahlaxiom}
-Zu jeder Menge $A$ bestehend aus nichtleeren Mengen gibt es eine Auswahlfunktion.
-\end{theorem}
-\begin{proof} \uses{def:auswahlfunktion}
-Folgt aus der Definition der Auswahlfunktion.
-\end{proof}    
+%\begin{theorem}[Auswahlaxiom] \label{theorem:auswahlaxiom}
+%Zu jeder Menge $A$ bestehend aus nichtleeren Mengen gibt es eine Auswahlfunktion.
+%\end{theorem}
+%\begin{proof} \uses{def:auswahlfunktion}
+%Folgt aus der Definition der Auswahlfunktion.
+%\end{proof}    
 
 \begin{lemma}[repräsentative Punkte] \label{theorem:rep_punkte}
 Wir können uns aus jedem Orbit einen repräsentativen Punkt auswählen.
 \end{lemma}
-\begin{proof} \uses{theorem:auswahlaxiom}
-Dies folgt direkt aus dem Auswahlaxiom.
+\begin{proof} \uses{def:orbit}
+Dies folgt direkt mit dem Auswahlaxiom.
 \end{proof}
 
 \begin{definition}[Menge aller  Repräsentaten] \label{def:menge_rep_punkte} \uses{theorem:rep_punkte}
@@ -39,12 +39,12 @@ Wir können nun jeden Punkt aus $L'$ erreichen, indem wir eine Rotation aus $G$ 
 Wir wollen aber, dass jeder Punkt aus $L'$ nur von einer Rotation in $G$ erreicht wird. Daher zerlegen wir nun $L'$ entsprechend
 der Rotationen, welche einen Punkt treffen. Ein Punkt, der von mehreren Rotationen getroffen wird, kann dabei in mehreren Mengen landen.
 
-\begin{lemma}[Punkte auf Rotationsachse] \label{lemma:punkte_auf_rot_achse}
-Alle Punkte auf einer Rotationsachse können durch mehrere Rotationen getroffen werden.
-\end{lemma}
-\begin{proof}
-Steht noch aus.
-\end{proof}
+%\begin{lemma}[Punkte auf Rotationsachse] \label{lemma:punkte_auf_rot_achse}
+%Alle Punkte auf einer Rotationsachse können durch mehrere Rotationen getroffen werden.
+%\end{lemma}
+%\begin{proof}
+%Steht noch aus.
+%\end{proof}
 
 \begin{definition}[Fixpunkte] \label{def:fixpunkte}
 Sei $Y$ eine Menge und $f:Y\rightarrow Y$ eine Funktion. Dann heißt ein Punkt $y\in Y$ Fixpunkt, falls er die Gleichung $f(y)=y$
@@ -76,18 +76,18 @@ Die Punkte in $D$ liegen auf abzählbar vielen Linien.
 Steht noch aus.
 \end{proof}
 
-\begin{lemma}[Lebesgue Maß D] \label{lemma:lebesgue_mass_D}
-$D$ hat ein Lebesgue-Maß von $0$.
-\end{lemma}
-\begin{proof} \uses{lemma:abz_fixpunkte}
-Steht noch aus.
-\end{proof}
+%\begin{lemma}[Lebesgue Maß D] \label{lemma:lebesgue_mass_D}
+%$D$ hat ein Lebesgue-Maß von $0$.
+%\end{lemma}
+%\begin{proof} \uses{lemma:abz_fixpunkte}
+%Steht noch aus.
+%\end{proof}
 
 Daher kann fast jeder Punkt in $L'$ durch eine bestimmte Rotation erreicht werden. Wir betrachten nun zunächst eine 
 Zerlegung von $L'\backslash D$ und kümmern uns später um die Fixpunkte.
 
 \begin{definition}[Vereinigung X] \label{def:vereinigung_x} \uses{def:menge_rep_punkte,def:konk_rot}
-$X=\bigcup\limits_{k=1}{\infty}A^{-k}M$. $X$ ist also die Menge aller Elemente von $M$, welche ausschließlich aus Rotationen
+$X=\bigcup\limits_{k=1}^{\infty}A^{-k}M$. $X$ ist also die Menge aller Elemente von $M$, welche ausschließlich aus Rotationen
 um $A^{-1}$ bestehen.
 \end{definition}
 
@@ -117,7 +117,7 @@ Steht noch aus.
 $L'\backslash D=P_1\cup AP_2$
 $L'\backslash D=P_3\cup BP_4$
 \end{lemma}
-\begin{proof} \uses{lemma:rot_zerlegte_mengen}
+\begin{proof} \uses{lemma:rot_zerlegte_mengen,lemma:vereinigung_zerlegung}
 Steht noch aus.
 \end{proof}
 
@@ -130,15 +130,20 @@ Zwei Mengen $C$ und $D$ heißen äquidekomponierbar, wenn $C$ in endlich viele T
 Rotationen und Translationen zu $D$ wieder zusammengefügt werden können.
 \end{definition}
 
+<<<<<<< Updated upstream
 \begin{lemma}[Äquidekomponierbarkeit von L'\\D und L'] \label{lem:aequidekomponierbarkeit}
 $L'\backslash D$ und $L'$ sind Äquidekomponierbar
+=======
+\begin{lemma}[Äquidekomponierbarkeit von L'\D und L'] \label{lem:aequidekomponierbarkeit}
+$L'\backslash D$ und $L'$ sind äquidekomponierbar
+>>>>>>> Stashed changes
 \end{lemma}
 \begin{proof}\uses{def:aequidekomponierbar,lemma:abz_fixpunkte}
 Da die Punkte in $D$ auf abzählbar vielen Achsen liegen, kann man eine Linie $l$ durch den Ursprung finden, die $D$ nicht durchläuft.
 Außerdem gibt es einen Winkel $\theta$, sodass eine Drehung um $\theta$ um $l$ keinen Punkt in $D$ auf einen anderen Punkt in $D$ abbildet.
 Definiere $E=D\cup \rho(D)\cup \rho²(D)\cup \rho³(D)\cup...$. Es folgt sofort, dass
-$L'=E\cup (L' \backslash E)$, was äquidekomponierbar mit $p(E) \cup (L' \backslash E)$ ist.
-Aus der Definition von $E$ folgt, dass $p(E)=E\backslash D$ also gilt $p(E)\cup (L'\backslash E)=(E\backslash D)\cup (L'\backslash E)=
+$L'=E\cup (L' \backslash E)$, was äquidekomponierbar mit $\rho(E) \cup (L' \backslash E)$ ist.
+Aus der Definition von $E$ folgt, dass $\rho(E)=E\backslash D$ also gilt $\rho(E)\cup (L'\backslash E)=(E\backslash D)\cup (L'\backslash E)=
 L'\backslash D$. Daher folgt, dass $L'$ mit $L'\backslash D$ äquidekomponierbar ist.
 \end{proof}
 

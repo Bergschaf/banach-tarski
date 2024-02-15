@@ -3,26 +3,19 @@
 
 \section{Wahl der Rotationen und Zerlegung des Großteils der Kugel}
 
-Zunächst definieren wir, was wir unter einer Rotation formal verstehen.
-\begin{definition}[Rotationsmatrix]\label{def:rot}
-Eine Rotation der Sphäre wird durch Rotationsmatrizen blablabla gegeben
-\end{definition}
+
+%\begin{definition}[Rotationsmatrix]\label{def:rot}
+%Eine Rotation der Sphäre wird durch Rotationsmatrizen blablabla gegeben
+%\end{definition}
 
 
-Wir wählen nun konkret zwei Rotationen der Kugel, mit welchen wir die Zerlegung im Satz konstruieren werden.
+Wir wählen konkret zwei Rotationen der Kugel, mit welchen wir die Zerlegung im Satz konstruieren werden.
 \begin{definition}\label{def:konk_rot}
 Unsere Rotationsmatrizen sind: 
-$A=\frac{1}{3}\begin{pmatrix} 3 & 0 & 0 /
-                              0 & 1 & -2\sqrt{2} //
-                              0 & 2\sqrt{2} & 1 //
-\end{pmatrix}
-B=\frac{1}{3}\begin{pmatrix} 1 & -2\sqrt{2} & 0 //
-                             2\sqrt{2} & 1 & 0 //
-                             0 & 0 & 3 //
-\end{pmatrix}$
+
 \end{definition}
 
-\begin{lemma}[Invertierbarkeit von A und B] \label{lemma:a_b_invertierbar}
+\begin{lemma}[Invertierbarkeit von A und B] \label[lemma:a_b_invertierbar]
 Es gilt $det A\neq 0$ und $det B\neq 0$ und damit sind $A$ und $B$ invertierbar.
 \end{lemma}
 \begin{proof} \uses{def:konk_rot}
@@ -36,10 +29,7 @@ $G$ bezeichnet die von $A$ und $B$ erzeugte Untergruppe.
 
 Die Elemente von $G$ können wir durch eine bestimmte Schreibweise darstellen.
 \begin{lemma}\label{lem:darst_von_rot_matrix}
-$\forall x\in G:\exists a,b,c,d,e,f,g,h,i\in\mathbb{Z}:\exists n\in\mathbb{N}: x=\frac{1}{3}\begin{pmatrix} a & b\sqrt{2} & c //
-                                                                                                            d\sqrt{2} & e & f\sqrt{2} //
-                                                                                                            g & h\sqrt{2} & i //
-\end{pmatrix}$ 
+Matrizen einfügen
 \end{lemma}
 \begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot}
 sorry
@@ -51,7 +41,7 @@ Wenn $\rho : \mathbb{R}³\Rightarrow\mathbb{R}³$ ein Ausdruck in $G$ der Länge
 $n$ in reduzierter Form ist, dann ist $\rho(0,1,0)$ von der folgenden Form, wobei
 $a, b$ und $c$ ganze Zahlen sind: $\rho(0,1,0)=\frac{1}{3^n}(a\sqrt{2},b,c\sqrt{2})$.
 \end{lemma}
-\begin{proof} \uses{lem:darst_von_rot_matrix}
+\begin{proof} \uses {lem:darst_von_rot_matrix}
 \leanok Diese Behauptung folgt aus den Erzeugermatrizen
 und durch konkretes Multiplizieren eines reduzierten Wortes an (0,1,0).
 \end{proof}
@@ -59,13 +49,13 @@ Damit können wir zeigen, dass diese Untergruppe an Rotationen eine freie Gruppe
 
 
 \begin{definition}\label{def:freie_grp}
-Eine Freie Gruppe in Erzeugern $M$ ist...
+Eine freie Gruppe $G$ ist eine Gruppe, in welcher zwei Wörter auf einer spezifischen Erzeugermenge unterschiedlich 
+sind, außer ihre Gleichheit folgt aus den Gruppenaxiomen.
 \end{definition}
 
 \begin{theorem}\label{thm:freie_grp_an_rot}
-Die von unseren konkreten Rotationen aus \ref{def:konk_rot} erzeugte untergruppe ist eine Freie Gruppe
+Die von unseren konkreten Rotationen aus \ref{def:konk_rot} erzeugte Untergruppe $G$ ist eine freie Gruppe.
 \end{theorem}
-
 \begin{proof}\uses{lem:darst_von_rot_res,def:freie_grp}
 chillig.
 \end{proof}
