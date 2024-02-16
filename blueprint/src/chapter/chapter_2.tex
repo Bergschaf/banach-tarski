@@ -11,24 +11,28 @@
 
 Wir wählen konkret zwei Rotationen der Kugel, mit welchen wir die Zerlegung im Satz konstruieren werden.
 \begin{definition}\label{def:konk_rot}
+\leanok \lean{matrix_a}
 Unsere Rotationsmatrizen sind: 
 
 \end{definition}
 
 \begin{lemma}[Invertierbarkeit von A und B] \label{lemma:a_b_invertierbar}
 Es gilt $det A\neq 0$ und $det B\neq 0$ und damit sind $A$ und $B$ invertierbar.
+\lean{matrix_a_det_neq_zero}\leanok
 \end{lemma}
-\begin{proof} \uses{def:konk_rot}
+\begin{proof} \uses{def:konk_rot} \leanok 
 Folgt durch Nachrrechnen.
 \end{proof}
 
 $A$ und $B$ erzeugen uns daher eine Untergruppe der Gruppe der invertierbaren $3\times3$-Matrizen.
 \begin{definition}\label{def:konk_rot_erzeugt} \uses{lemma:a_b_invertierbar}
 $G$ bezeichnet die von $A$ und $B$ erzeugte Untergruppe.
+\leanok \lean{G}
 \end{definition}
 
-Die Elemente von $G$ können wir durch eine bestimmte Schreibweise darstellen.
 \begin{lemma}\label{lem:darst_von_rot_matrix}
+Die Elemente von $G$ können wir durch eine bestimmte Schreibweise darstellen.
+\lean{general_word_form_exists}
 Matrizen einfügen
 \end{lemma}
 \begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot}
