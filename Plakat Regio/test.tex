@@ -1,0 +1,35 @@
+\documentclass[tikz,border=5]{standalone}
+\usepackage{etoolbox}
+\usetikzlibrary{lindenmayersystems,arrows.meta}
+\newcount\quadrant
+\pgfdeclarelindenmayersystem{cayley}{
+  \rule{A -> B [ R [A] [+A] [-A] ]}
+  \symbol{R}{ \pgflsystemstep=0.5\pgflsystemstep } 
+  \symbol{-}{
+    \pgfmathsetcount\quadrant{Mod(\quadrant+1,4)}
+    \tikzset{rotate=90}
+  }
+  \symbol{+}{
+    \pgfmathsetcount\quadrant{Mod(\quadrant-1,4)}
+    \tikzset{rotate=-90}
+  }
+  \symbol{B}{
+    \ifnumodd{\quadrant}{%true
+        \tikzset{dot-cayley/.append style={draw=red}}
+    }{%false
+        \tikzset{dot-cayley/.append style={draw=blue}}
+    }   
+    \draw [dot-cayley] (0,0) -- (\pgflsystemstep,0) 
+       node [font=\footnotesize, midway, 
+         anchor={270-mod(\the\quadrant,2)*90}, inner sep=.5ex] 
+           {};
+    \tikzset{xshift=\pgflsystemstep}
+  }
+}\tikzset{
+  dot/.tip={Circle[sep=-1.5pt,length=3pt]}, cayley/.tip={dot[]}
+}
+\begin{document}
+\begin{tikzpicture}
+\draw l-system [l-system={cayley, axiom=[A] [+A] [-A] [++A], step=5cm, order=4}];
+\end{tikzpicture}
+\end{document}
