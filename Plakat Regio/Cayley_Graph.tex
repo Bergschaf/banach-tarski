@@ -1,0 +1,101 @@
+\documentclass[tikz,border=5]{standalone}
+\usetikzlibrary{lindenmayersystems,calc}
+\pgfdeclarelindenmayersystem{cayley}{% https://tex.stackexchange.com/a/223078
+  \rule{F -> F [ R [F] [+F] [-F] ]}
+  \symbol{R}{
+    \pgflsystemstep=0.5\pgflsystemstep
+  } 
+}
+\newcommand\mysymb[1]{\pgfmathtruncatemacro{\itest}{Mod(#1,8)}%
+\ifcase\itest
+a%
+\or
+b%
+\or
+a^{-1}%
+\or
+b^{-1}%
+\or
+a^2%
+\or
+b^2%
+\or
+a^{-2}%
+\or
+b^{-2}%
+\fi}
+\begin{document}
+\begin{tikzpicture}
+ \draw l-system 
+ [l-system={cayley, axiom=[F] [+F] [-F] [++F], step=5cm, order=4}];
+\begin{scope}[shift={(current bounding box.center)},
+  x={($(current bounding box.east)-(current bounding box.center)$)},
+  y={($(current bounding box.north)-(current bounding box.center)$)}] 
+  \path[nodes={fill=white}] (0,0) node[scale=2]{$e$}
+  foreach \X in {0,...,3} {(\X*90:1/2) node[scale={2/sqrt(2)}] {$\mysymb{\X}$}
+   foreach \Y [evaluate=\Y as \Ymod using {int(Mod(\Y,4))}] in {\the\numexpr\X-1\relax,\X,\the\numexpr\X+1\relax}
+   {($(\X*90:1/2)+(\Ymod*90:1/4)$)node[scale={2/sqrt(3)}] 
+   {$\ifnum\X=\Ymod 
+   \mysymb{\the\numexpr\X+4}
+   \else
+   \mysymb{\X}\mysymb{\Ymod}
+   \fi$}}};
+\end{scope} 
+\end{tikzpicture}
+\end{document}
+
+
+
+
+
+\documentclass[tikz,border=5]{standalone}
+\usetikzlibrary{lindenmayersystems,calc}
+\pgfdeclarelindenmayersystem{cayley}{% https://tex.stackexchange.com/a/223078
+  \rule{F -> F [ R [F] [+F] [-F] ]}
+  \symbol{R}{
+    \pgflsystemstep=0.5\pgflsystemstep
+  } 
+}
+\newcommand\mysymb[1]{\pgfmathtruncatemacro{\itest}{Mod(#1,8)}%
+\ifcase\itest
+a%
+\or
+b%
+\or
+a^{-1}%
+\or
+b^{-1}%
+\or
+a^2%
+\or
+b^2%
+\or
+a^{-2}%
+\or
+b^{-2}%
+\fi}
+\begin{document}
+\begin{tikzpicture}
+ \draw l-system 
+ [l-system={cayley, axiom=[F] [+F] [-F] [++F], step=5cm, order=4}];
+\begin{scope}[shift={(current bounding box.center)},
+  x={($(current bounding box.east)-(current bounding box.center)$)},
+  y={($(current bounding box.north)-(current bounding box.center)$)}] 
+  \path[nodes={fill=white}] (0,0) node[scale=2]{$e$}
+  foreach \X in {0,...,3} {(\X*90:1/2) node[scale={2/sqrt(2)}] {$\mysymb{\X}$}
+   foreach \Y [evaluate=\Y as \Ymod using {int(Mod(\Y,4))}] in {\the\numexpr\X-1\relax,\X,\the\numexpr\X+1\relax}
+   {($(\X*90:1/2)+(\Ymod*90:1/4)$)node[scale={2/sqrt(3)}] 
+   {$\ifnum\X=\Ymod 
+   \mysymb{\the\numexpr\X+4}
+   \else
+   \mysymb{\X}\mysymb{\Ymod}
+   \fi$}}};
+\end{scope} 
+\end{tikzpicture}
+\end{document}
+
+
+
+
+
+
