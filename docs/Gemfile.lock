@@ -216,6 +216,7 @@ GEM
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
       jekyll (>= 3.0, < 5.0)
+    json (2.7.1)
     kramdown (2.3.2)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -278,6 +279,7 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   http_parser.rb (~> 0.6.0)
+  json (~> 2.7)
   tzinfo (~> 1.2)
   tzinfo-data
   wdm (~> 0.1.1)
