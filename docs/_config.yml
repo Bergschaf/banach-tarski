@@ -18,9 +18,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: The Banach-Tarski Paradox
+title: The Banach-Tarski paradox
 #email: your-email@example.com
-description: TODO
+description: The project to formalize the Banach-Tarski Paradox in Lean 4
 baseurl: "/_site" # the subpath of your site, e.g. /blog
 url: "https://bergschaf.github.io/banach-tarski/" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
