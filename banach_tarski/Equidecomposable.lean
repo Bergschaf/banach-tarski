@@ -26,6 +26,7 @@ def remove_first {α : Type} (x : List α ):List α :=
   | []       => []
   | (x::xs)  => xs
 
+
 def rotate_list_wrapper (x : List (Set r_3)) (p : List G) : List (Set r_3) :=
   sorry
 
