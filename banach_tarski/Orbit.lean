@@ -4,6 +4,8 @@ def L := {x: r_3 | x ∈ Metric.ball 0 1}
 def origin : r_3 := ![0,0,0]
 def L' := L \ {origin}
 
+
+
 def same_orbit (a b: r_3) := ∃ p : G, rotate p a = b
 
 def orbit_A (a : r_3) := {b: r_3 | same_orbit a b}

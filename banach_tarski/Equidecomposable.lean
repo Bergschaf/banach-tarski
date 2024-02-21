@@ -22,36 +22,44 @@ def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
 
 -- Define a function to remove the first element of a list
 def remove_first {α : Type} (x : List α ):List α :=
-  match  x with
-  | []       => []
-  | (x::xs)  => xs
+  x.tail
 
+lemma remove_first_length_eq {a: Type} {n: Nat} (x : List α ) (h_n: n = x.length): (remove_first x).length = n - 1 := by
+  rw [remove_first]
+  simp
+  rw [h_n]
 
-def rotate_list_wrapper (x : List (Set r_3)) (p : List G) : List (Set r_3) :=
-  sorry
+variable (n : Nat)
 
-def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) (h : x.length = p.length) (h1 : 0 < x.length): List (Set r_3) :=
+def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
   -- n eq list.length
-  have h2 : 0 < p.length := by
-    exact Nat.lt_of_lt_of_eq h1 h
   match n with
   | 0 => []
-  | 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
+  --| 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
   | (Nat.succ m) =>
       have h_new : (remove_first x).length = (remove_first p).length := by
-        sorry
+        rw [remove_first]
+        rw [remove_first]
+        simp
+        rw [h]
 
       have h_n_new : m = (remove_first x).length := by
-        sorry
+        rw [remove_first]
+        simp
+        exact eq_tsub_of_add_eq h_n
 
-      have h1_new : 0 < (remove_first x).length := by
-        sorry
+      have h1 : 0 < x.length :=  by
+        exact (Nat.mem_range_succ (List.length x)).mp (Exists.intro m h_n)
+
+      have h2: 0 < p.length := by
+        rw [← h]
+        exact h1
 
       rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
-                    :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new h1_new
+                    :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
 
 
 def equidecomposable (X Y : Set r_3) :=
-  ∃ Parts_X, list_intersection r_3 Parts_X X = ∅ →
+  ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
   list_union r_3 Parts_X = X →
-  ∃ g_s, g_s.length = Parts_X.length → list_union r_3 (rotate_list_wrapper Parts_X g_s) = Y
+  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
