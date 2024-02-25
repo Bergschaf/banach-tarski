@@ -27,6 +27,8 @@
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb}
 
+\usepackage{svg}
+\usepackage{subcaption}
 
 %---------- Lean Syntax Highlighting ----------
 \usepackage{fontspec}
@@ -215,7 +217,7 @@ Auf der Suche nach einem spannenden und alltagsnahen mathematischen Satz, der no
 \section{Material und Methoden}
 
 \subsection{Entwicklungsumgebung}
-Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plugin \cite{Q3}. Dieses implementiert einen Language Server, der die Lean Programme in Echtzeit kompiliert und auf Fehler überprüft. Außerdem werden in einem Fenster neben dem Programm Informationen, z.B. zu dem aktuellen Theorem angezeigt.
+Als Entwicklungsumgebung für Lean wird normalerweise VS Code in Kombination mit dem Lean4 Plugin \cite{Q3} verwendet. Dieses implementiert einen Language Server, der die Lean Programme in Echtzeit kompiliert und auf Fehler überprüft. Außerdem werden in einem Fenster neben dem Programm Informationen, z.B. zu dem aktuellen Theorem angezeigt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{Abbildung sum_up_to.png}
@@ -230,13 +232,33 @@ Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plug
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\linewidth]{kleiner_gauss.png}
-    \caption{Enter Caption}
-    \label{Abb Enter Caption}
+    \caption{Kleiner Gauss}
+    \label{kleiner gauss}
 \end{figure}
 \noindent Die Anzeige des Lean Plugins während eines Beweises ist beispielhaft in Abbildung \ref{Abb Enter Caption} zu erkennen. Es wird der Zwischenstand des Beweises an der Position des Cursors angezeigt. Das ist vor allem bei Beweisen, die mit Taktiken arbeiten, hilfreich.
 
 \subsection{Lean 4 Web}
-Um das schreiben von Lean Programmen einfacher und zugänglicher für Mathematiker, die keine Erfahrung mit Vscode oder Emacs haben, hat die Lean Community den Lean 4 Webeditor entwicklet (TODO Quelle: https://github.com/leanprover-community/lean4web). Auf der Internetseite \href{https://live.lean-lang.org/}{https://live.lean-lang.org/} können im Browser Lean Programme erstellt werden. Ein wichtiges Feature ist die Lean Infoansicht, die wie in Vscode auf der rechten Seite des Bildschirms angezeigt wird. Die Informationen, die dort angezeigt werden, werden im Browser genauso wie in Vscode von einem Lean Language Server erzeugt. Dieser kommuniziert über das Language Server Protocol (TODO Quelle https://microsoft.github.io/language-server-protocol/) mit dem Editor. Dabei werden die Änderungen, die der Nutzer im Programm vornimmt über das LSP an den Language Server geschickt. Dieser überprüft dann das Programm und schickt die Informationen über die Beweise an den Editor, der diese dann anzeigt. Die Lean4 Vscode Erweiterung startet einen Language Server lokal auf dem Computer, auf dem auch Vscode ausgeführt wird.  
+Um das schreiben von Lean Programmen einfacher und zugänglicher für Mathematiker zu machen, die keine Erfahrung mit Vscode oder Emacs haben, hat die Lean Community den Lean 4 Webeditor entwickelt (TODO Quelle: https://github.com/leanprover-community/lean4web). Auf der Internetseite \href{https://live.lean-lang.org/}{https://live.lean-lang.org/} können im Browser Lean Programme erstellt werden. Ein wichtiges Feature ist die Lean Infoansicht, die, wie in Vscode auf der rechten Seite des Bildschirms angezeigt wird. Die Informationen, die dort angezeigt werden, werden im Browser genauso wie in Vscode von einem Lean Language Server erzeugt. Dieser kommuniziert über das Language Server Protocol (LSP)(TODO Quelle https://microsoft.github.io/language-server-protocol/) mit dem Editor. Dabei werden die Änderungen, die der Nutzer im Programm vornimmt über das LSP an den Language Server geschickt. Dieser überprüft dann das Programm und schickt die Informationen über die Beweise an den Editor, der diese in einem Fenster auf der rechten Seite des Programms anzeigt. Die Lean4 Vscode Erweiterung startet einen Language Server lokal auf dem Computer, auf dem auch Vscode ausgeführt wird. Der Language Server für den Lean 4 Webeditor wird aber nicht im Browser, sondern auf einem Webserver ausgeführt. Das hat viele Vorteile, z.B. muss muss Lean nicht im Browser installiert werden. Außerdem hat man die Möglichkeit einen Webserver einzusetzen, der deutlich Leistungsfähiger ist, als der Computer, der benutzt wird um den Webeditor aufzurufen. Das ist vor allem bei großen Projekten hilfreich, da z.B. ein Laptop, auf dem Vsocde mit der Lean 4 Erweiterung läuft durchaus an seine Grenzen kommen kann. 
+
+\noindent Lean 4 Web ist allerdings nicht für große Projekte geeignet, es wird sogar im offiziellen Readme als \glqq lean playground\grqq \space bezeichnet. Das Hauptproblem, warum der LiveLean Editor nur zum  \glqq herumspielen\grqq \space geeignet ist, ist dass sich die Dateien nicht sinnvoll abspeichern und versionieren lassen, was es schwierig macht, mit anderen zusammenzuarbeiten. Die Dateien, die im Lean 4 Webeditor bearbeitet werden, sind nämlich nur in der URL gespeichert. Es gibt zwar die Möglichkeit, den Code als Datei herunterzuladen oder eine neue Datei hochzuladen, aber es gibt keine Möglichkeit mehrere Dateien zu öffnen und die Dateien mit einem Git Repository zu synchronisieren, was für größere Projekte essentiell wäre. 
+\begin{figure}[H]
+\centering
+    
+\begin{subfigure}{.4\textwidth}
+      \centering
+    \includesvg[height=0.75\linewidth]{livelean-org.drawio.svg}
+    \caption{Architektur des Lean 4 Webeditors}
+    \label{Architektur des Lean 4 Webeditors}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+      \centering
+    \includesvg[height=0.5\linewidth]{livelean.drawio.svg}
+    \caption{Architektur von unserer Version des Lean 4 Webeditors}
+    \label{Architektur des Lean 4 Webeditors}
+\end{subfigure}
+\end{figure}
+\noindent Um diese Probleme zu lösen haben wir eine eigene, erweiterte Version des Lean 4 Webeditors entwickelt. Auf dem Webserver liegt in unserer Version neben dem Lean Language Server eine lokale Kopie von unserem Github Repository. Der Editor im Browser kann damit auf alle Dateien in unserem Repository zugreifen. Die Änderungen an der bearbeiteten Datei, die an den Language Server geschickt werden, werden in unserer Version auch in der lokalen Kopie von unserem Repository gespeichert. Dieses wird dann automatisch mit unserem Github Reposiory synchronisiert. Damit ist es nicht mehr notwendig Vscode, Lean und Git zu installieren, um an unserem Projekt zu arbeiten. 
+
 
 \subsection{Mathlib Bibliothek}
 Eines der großen Ziele von Lean ist es, alle Beweise der Mathematik zu formalisieren und so zu überprüfen. Davon ist die Lean-Community zwar noch weit entfernt, aber es sind bereits viele grundlegende mathematische Theoreme und Lemmata aus vielen verschiedenen Bereichen in Lean implementiert. Diese Theoreme und Lemmata sind in der Mathlib \cite{Q10} katalogisiert und können so auch in darauf aufbauenden Beweisen verwendet werden. Die Mathlib wurde ursprünglich in einer älteren Lean3-Version verfasst, ist aber mittlerweile vollständing in Lean4 übersetzt. Außerdem ist sie frei zugänglich, d.h. jeder kann sie in eigenen Lean Projekten verwenden und auch Erweiterungsvorschläge machen. 
@@ -873,7 +895,7 @@ theorem CC_satz_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
 
 \noindent Außer diesem Satz ist es uns außerdem gelungen, die Äquidekomponierbarkeit von zwei beliebigen Mengen $X$ und $Y$ in Lean zu definieren. D. h., dass wir $X$ in eine endliche Anzahl an disjunkten Teilmengen zerlegen können, diese dann jeweils durch Rotationen so verändern können, sodass die Vereinigung der gedrehten Teilmengen die Menge $Y$ ergibt. Bevor uns dies aber gelungen ist, mussten wir vorab aber noch einige Dinge der Übersicht halber definieren. Als erstes definieren wir uns den Schnitt von zwei Mengen $A$ und $B$:
 \begin{leancode}
-def intersection (α : Type) (a b:Set α) :Set α := a ∩ b
+def intersection (α : Type) (a b : Set α) : Set α := a ∩ b
 \end{leancode}
 \noindent Anschließend benutzen wir diese, um den Schnitt von mehreren Mengen zu definieren. Die Mengen, von denen der Schnitt gebildet werden soll, ordnen wir in Lean zuerst in einer Liste $x$ an. Dann falten wir die Liste $x$ von links her mit der oben definierten Funktion \lean/intersection/ zusammen.
 \begin{leancode}
@@ -887,7 +909,9 @@ def union (α : Type) (a b:Set α) :Set α := a ∪ b
 def list_union (α : Type) (x : List (Set α)): Set α :=
   x.foldl (union α) ∅
 \end{leancode}
-\noindent Zudem definieren wir uns, was wir unter einer rotierten Menge verstehen.
+%\noindent Zudem definieren wir uns, was wir unter einer rotierten Menge verstehen.
+\noindent Zudem definieren wir uns, was wir unter der Rotation einer Menge verstehen.
+
 \begin{leancode}
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
@@ -920,7 +944,8 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length)
       rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
                     :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
 \end{leancode}
-\noindent Damit diese Definition stimmt, nutzen wir unsere eigens definierte Funktion, die den ersten Eintrag einer Liste entfernt und den dabei entstehenden Rest heraus gibt.
+%\noindent Damit diese Definition stimmt, nutzen wir unsere eigens definierte Funktion, die den ersten Eintrag einer Liste entfernt und den dabei entstehenden Rest heraus gibt.
+\noindent Um diese Definition übersichtlicher und einfacher lesbar zu machen, haben wir die \lean/remove_first/ Funktion definiert, das erste Element aus einer Liste entfernt und den Rest zurückgibt.
 \begin{leancode}
 def remove_first {α : Type} (x : List α ):List α :=
   x.tail
