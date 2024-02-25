@@ -229,10 +229,41 @@ noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (
 def general_word_form_prop (x: GL (Fin 3) Real ) :=
   ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n
 
-theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x := by sorry
+theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x := by
+  intro x h
+  rw [general_word_form_prop]
+  cases h with
+  | inl ha =>
+    use 3
+    use 0
+    use 0
+
+    use 0
+    use 1
+    use -2
+
+    use 0
+    use 2
+    use 1
+    use 1
+
+    rw [general_word_form]
+    simp
+    rw [ha]
+    rw [coe_gl_a_eq_matrix_a]
+    rw [matrix_a]
+    simp
+    ring_nf
+
+  | inr h_b =>
+    sorry
+
+
+
 
 theorem general_word_form_h_1 : general_word_form_prop 1 := by
   rw [general_word_form_prop]
+
   sorry
 
 theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_prop x ->
@@ -268,12 +299,15 @@ theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_p
     fin_cases h3
     fin_cases h4
     simp
+    sorry
+
 
 
 
 
 theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_prop x ->
     general_word_form_prop (x⁻¹) := by
+    sorry
     intro x h1
 
     rw [general_word_form_prop] at h1
@@ -307,6 +341,7 @@ theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_pro
     fin_cases h3
     fin_cases h4
     simp
+
 
 
 
