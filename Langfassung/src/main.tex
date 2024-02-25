@@ -6,8 +6,8 @@
 
 % Set page size and margins
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[letterpaper,top=2.5cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
-% \usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+%\usepackage[letterpaper,top=2.5cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
 
 % Useful packages
 \usepackage{amsmath,amsthm}
@@ -27,6 +27,8 @@
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb}
 
+\usepackage{svg}
+\usepackage{subcaption}
 
 %---------- Lean Syntax Highlighting ----------
 \usepackage{fontspec}
@@ -57,23 +59,18 @@
 \newcommand{\grun}[1]{\textcolor{green}{{#1}}}
 \newcommand{\gelb}[1]{\textcolor{yellow}{{#1}}}
 
+% Zeilenabstand
+\usepackage{setspace}
+\setstretch{1.5}
 
 
 
 
-% \title{Jufo-2021-Kreislaufprobleme in der Mathematik! }
-
-% \author{}
-
-% \date{\today}
 
 \pagestyle{fancy}
 
 \begin{document}
 
-%\maxtocdepth{subsection}
-
- 
 
 \fancyhf{}
 
@@ -131,24 +128,6 @@
 
  
 
-%\begin{figure*}[ht]
-
-   % \centering
-
-    %\includegraphics[scale=0.15]{Standfoto Jufo2023.jpg}
-
-%\end{figure*}
-
-%\begin{center}
-
-%\vspace{-0.5cm}   
-
-% \tiny Bild von: \url{Quelle} (22.02.2022)
-
-%\end{center}
-
- 
-
 \vspace{0.4cm}
 \begin{figure*}[ht]
 
@@ -185,10 +164,18 @@
 
 \setcounter{page}{1}
 \section{Motivation} %/Einführung}
-Die Forschung in der Mathematik ist eine aktive und sehr lebendige Welt. Weltweit wurden vom Fachbereich Mathematik seit 1996 insgesamt 4,5 Millionen Dokumente publiziert. Davon sind rund 300 000 alleine im Jahr 2022 entstanden. Das entspricht einem Anstieg von rund 10\% im Vergleich zum Vorjahr \cite{Q1}. All diese Aufsätze und ihre enthaltenden Beweise müssen selbstverständlich auch auf Korrektheit geprüft werden und mit den stetig steigenden jährlichen Veröffentlichungszahlen gibt es immer mehr zu kontrollieren. Dies ist schwierig, zumal ein auf einem fehlerhaften Resultat aufbauender Beweis ebenfalls ungültig ist. Da mathematische Beweise aber nichts anderes als formale Objekte sind, ist die Idee naheliegend, einen Beweisassistenten zu entwickeln, mit dessen Hilfe Beweise diverser mathematischer Theoreme, Lemmata o.ä. schnell formalisiert und zweifelsfrei verifiziert werden können. 
+%Die Forschung in der Mathematik ist eine aktive und sehr lebendige Welt. Weltweit wurden vom Fachbereich Mathematik seit 1996 insgesamt 4,5 Millionen Dokumente publiziert. Davon sind rund 300 000 alleine im Jahr 2022 entstanden. Das entspricht einem Anstieg von rund 10\% im Vergleich zum Vorjahr \cite{Q1}. All diese Aufsätze und ihre enthaltenden Beweise müssen selbstverständlich auch auf Korrektheit geprüft werden und mit den stetig steigenden jährlichen Veröffentlichungszahlen gibt es immer mehr zu kontrollieren. Dies ist schwierig, zumal ein auf einem fehlerhaften Resultat aufbauender Beweis ebenfalls ungültig ist. Da mathematische Beweise aber nichts anderes als formale Objekte sind, ist die Idee naheliegend, einen Beweisassistenten zu entwickeln, mit dessen Hilfe Beweise diverser mathematischer Theoreme, Lemmata o.ä. schnell formalisiert und zweifelsfrei verifiziert werden können. 
+Die Forschung in der Mathematik ist eine aktive und sehr lebendige Welt. Weltweit wurden vom Fachbereich Mathematik seit 1996 insgesamt 4,5 Millionen Dokumente publiziert. Davon sind rund 300 000 alleine im Jahr 2022 entstanden. Das entspricht einem Anstieg von rund 10\% im Vergleich zum Vorjahr \cite{Q1}. All diese Aufsätze und ihre enthaltenden Beweise müssen selbstverständlich auch auf Korrektheit geprüft werden und mit den stetig steigenden jährlichen Veröffentlichungszahlen gibt es immer mehr zu kontrollieren. Dies ist schwierig, zumal ein auf einem fehlerhaften Resultat aufbauender Beweis ebenfalls ungültig ist. \glqq Man arbeitet nicht mit Leuten zusammen, die man nicht kennt\grqq, sagt Leonardo de Moura, Mitbegründer von Lean. \glqq Ist diese Person wirklich ernst zu nehmen? Weiß sie, was sie tut? \grqq. Dieses Misstrauen wird zusätzlich durch die rasant ansteigende Komplexität moderner Mathematischer Beweise gefördert - Peter Scholze, Träger einer Fields-Medaille sagte in einem Interview, %(TODO Quelle: https://www.zeit.de/2024/09/computer-mathematik-beweise-ueberpruefung-vertrauen?freebie=bb0b9b7f)
+dass seine Arbeit weltweit von nur etwa zehn Menschen komplett verstanden wurde. In derartig anspruchsvollen Beweisen kann es natürlich vorkommen, dass Lücken übersehen werden, was fatale Folgen hat. Daher hat Peter Scholze die Lean Community herausgefordert, sein Liquid Tensor Experiment in Lean zu formalisieren. %(TODO Quelle https://xenaproject.wordpress.com/2020/12/05/liquid-tensor-experiment/)
+Die Lean Community hat sich dieser Aufgabe angenommen und anderthalb Jahre später das Liquid Tensor Experiment vollständig in Lean verifiziert. % (TODO Quelle https://leanprover-community.github.io/blog/posts/lte-final/)
+Im Gegensatz zu dem ursprünglichen Mathematischen Beweis konnten an der Formalisierung viele Menschen parallel arbeiten, was verdeutlicht wie Lean die Zusammenarbeit zwischen Mathematikern revolutioniert. Es ist nicht mehr notwendig jeden Mathematiker persönlich zu kennen um vertrauenswürdige Ergebnisse zu erreichen - Lean falsifiziert oder verifiziert jeden Beitrag sofort.
 
-\noindent Diese Beweisassistenten gibt es schon sehr lange, aber erst in jüngster Zeit, auch mit dem Aufkommen der KI, sind die Möglichkeiten geradezu explodiert und renommierteste Lehrstühle und Professoren sind involviert. \glqq  Formale Beweisassistenten ermöglichen eine Zusammenarbeit in wirklich großem Ausmaß\grqq. Dieses Zitat stammt von dem Mathematiker und Fields-Medallienträger Terence Tao aus seinem Vortrag \glqq Machine assisted proofs\grqq~vom 3. Januar 2024. Es hat sich eine Lean-Community gebildet, die hier intensivst forscht und große Schritte nach vorne macht. Auch wenn wir noch sehr jung sind, wollen wir ein Teil dieser Lean-Community werden. Uns haben die Gedanken fasziniert und wir haben uns zum Ziel gesetzt einen Teil in der Mathlib Bibliothek der maschinell überprüften Beweise beizutragen und so an einer ganz kleinen Stelle als Autoren verewigt zu werden.\par
+ %\noindent Diese Beweisassistenten gibt es schon sehr lange, aber erst in jüngster Zeit, auch mit dem Aufkommen der KI, sind die Möglichkeiten geradezu explodiert und renommierteste Lehrstühle und Professoren sind involviert. \glqq  Formale Beweisassistenten ermöglichen eine Zusammenarbeit in wirklich großem Ausmaß\grqq. Dieses Zitat stammt von dem Mathematiker und Fields-Medallienträger Terence Tao aus seinem Vortrag \glqq Machine assisted proofs\grqq~vom 3. Januar 2024. Es hat sich eine Lean-Community gebildet, die hier intensivst forscht und große Schritte nach vorne macht. Auch wenn wir noch sehr jung sind, wollen wir ein Teil dieser Lean-Community werden. Uns haben die Gedanken fasziniert und wir haben uns zum Ziel gesetzt einen Teil in der Mathlib Bibliothek der maschinell überprüften Beweise beizutragen und so an einer ganz kleinen Stelle als Autoren verewigt zu werden.\par
 % RUF: Den Teil habe ich komplett umgeschrieben und natürlich etwas übertrieben, Zur Not wieder zurck drehen...  
+
+% TODO zitat in der nächsten zeile überprüfen
+\noindent Das Liquid Tensor Experiment ist nur ein Beispiel wie \glqq  Formale Beweisassistenten eine Zusammenarbeit in wirklich großem Ausmaß [ermöglichen]\grqq - Dieses Zitat stammt von dem Mathematiker und Fields-Medallienträger Terence Tao aus seinem Vortrag \glqq Machine assisted proofs\grqq~vom 3. Januar 2024. Auch er hat seine Arbeit in Lean formalisiert und ist damit Teil der stetig wachsenden Lean-Community, die hier intensivst forscht und große Schritte nach vorne macht. Auch wenn wir noch sehr jung sind, wollen wir auch ein Teil dieser Lean-Community werden. Uns haben die Gedanken fasziniert und wir haben uns zum Ziel gesetzt einen Teil in der Mathlib Bibliothek der maschinell überprüften Beweise beizutragen und so an einer ganz kleinen Stelle als Autoren verewigt zu werden.\par
+
 
 \subsection{Was ist ein Beweisassistent?}
 % Kommentar RUF: Das Zitat war in der Version hier ziemlich verloren und nicht eingebunden. Daher habe ich es nach oben gepackt 
@@ -212,13 +199,14 @@ Die aktuellste Version von Lean (Lean4) ermöglicht die Kontrolle von Beweisen i
 \end{minipage}
 
 \noindent Bereits in Lean formalisierte mathematische Theoreme werden in einer allgemein zugänglichen Bibliothek, genannt Mathlib Bibliothek, gespeichert. Die Aussagen dieser Sätze können dann ohne einen weiteren Beweis vorausgesetzt werden und bei dem Formalisieren von neuen Sätzen inkl. Beweis verwendet werden. Aufgrund des jungen Alters von Lean umfasst diese Bibliothek aber noch lange nicht den aktuellen Stand der mathematischen Forschung und es sind viele Lücken vorzufinden. \cite{Q8}\par
+% TODO ggf. gesamte Erklärung zu Mathlib hier
 
-\noindent Das wohl bekannteste Beispiel ist die Formalisierung des von dem deutschen Fields-Medallienträger Peter Scholze aufgestellten Liquid Tensor Experiments in Lean. Durch Lean konnten mehrere kleinere Ungenauigkeiten in seinem Beweis gefunden und korrigiert werden. Außerdem konnten an einzelnen Stellen Vereinfachungen gefunden werden und im Juli 2022 wurde die Verifizierung des Liquid Tensor Experiments abgeschlossen \cite{Q13}. Es ist erstaunlich, dass Lean diesen Beweis verifizieren konnte, da selbst Peter Scholze Zweifel hatte (\glqq I think nobody else has dared to look at the details of this, and so I still have some small lingering doubts\grqq; Peter Scholze, Dezember 2020) und bis dahin fast niemand das Liquid Tensor Experiment vollständig durchdringen konnte. 
+%\noindent Das wohl bekannteste Beispiel ist die Formalisierung des von dem deutschen Fields-Medallienträger Peter Scholze aufgestellten Liquid Tensor Experiments in Lean. Durch Lean konnten mehrere kleinere Ungenauigkeiten in seinem Beweis gefunden und korrigiert werden. Außerdem konnten an einzelnen Stellen Vereinfachungen gefunden werden und im Juli 2022 wurde die Verifizierung des Liquid Tensor Experiments abgeschlossen \cite{Q13}. Es ist erstaunlich, dass Lean diesen Beweis verifizieren konnte, da selbst Peter Scholze Zweifel hatte (\glqq I think nobody else has dared to look at the details of this, and so I still have some small lingering doubts\grqq; Peter Scholze, Dezember 2020) und bis dahin fast niemand das Liquid Tensor Experiment vollständig durchdringen konnte. 
 
 \noindent Das ist auch der Grund, weshalb sich Mathematikerinnen und Mathematiker weltweit vernetzen, um weitere Sätze in Lean zu formalisieren. Unser Team ist, wie gesagt, nun eines der jüngsten Mitglieder dieser Community, denn uns hat diese Fortschrittlichkeit und das vielfältige Netzwerk der Lean-Community fasziniert. \\
 
 \subsection{Das Paradoxon von Banach-Tarski}\label{1.3}
-Auf der Suche nach einem spannenden und alltagsnahen mathematischen Satz, der noch nicht in der sogenannten Mathlib Bibliothek ist, sind wir auf den Satz von Banach-Tarski gestoßen, auch bekannt als Banach-Tarski-Paradoxon.
+Auf der Suche nach einem spannenden und alltagsnahen mathematischen Satz, der noch nicht in der sogenannten Mathlib Bibliothek ist, sind wir auf den Satz von Banach-Tarski gestoßen, auch bekannt als Banach-Tarski-Paradoxon. % TODO nicht konsistent mit Präsentation
 \vspace*{-0.8cm}
 \begin{figure}[H]
     \centering
@@ -232,10 +220,12 @@ Auf der Suche nach einem spannenden und alltagsnahen mathematischen Satz, der no
 
 \noindent Auf den Punkt gebracht folgt also mit dem Satz von Banach-Tarski unter bestimmten Rahmenbedingungen: \glqq Aus eins mach zwei durch zerschneiden, drehen und wieder zusammen setzen\grqq.
 
+% TODO explizites Ziel 
+
 \section{Material und Methoden}
 
 \subsection{Entwicklungsumgebung}
-Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plugin \cite{Q3}. Dieses implementiert einen Language Server, der die Lean Programme in Echtzeit kompiliert und auf Fehler überprüft. Außerdem werden in einem Fenster neben dem Programm Informationen, z.B. zu dem aktuellen Theorem angezeigt.
+Als Entwicklungsumgebung für Lean wird normalerweise VS Code in Kombination mit dem Lean4 Plugin \cite{Q3} verwendet. Dieses implementiert einen Language Server, der die Lean Programme in Echtzeit kompiliert und auf Fehler überprüft. Außerdem werden in einem Fenster neben dem Programm Informationen, z.B. zu dem aktuellen Theorem angezeigt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{Abbildung sum_up_to.png}
@@ -244,186 +234,61 @@ Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plug
 \end{figure}
 \vspace{-0.2cm}
 \noindent In Abbildung \ref{Abb sum_up_to} sieht man exemplarisch, wie das Lean4 VS Code Plugin bestimmte Syntax Elemente farblich hervorhebt. Außerdem wird das Ergebnis des Befehls \lean/#eval sum_up_to 4/ direkt berechnet und in dem Fenster rechts angezeigt.
+% TODO evtl. diese Bilder weg und auf Livelean verlinken
 \vspace{-0.2cm}
 \hspace{-0.4cm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.65\linewidth]{kleiner_gauss.png}
-    \caption{Enter Caption}
-    \label{Abb Enter Caption}
+    \caption{Kleiner Gauss}
+    \label{kleiner gauss}
 \end{figure}
 \noindent Die Anzeige des Lean Plugins während eines Beweises ist beispielhaft in Abbildung \ref{Abb Enter Caption} zu erkennen. Es wird der Zwischenstand des Beweises an der Position des Cursors angezeigt. Das ist vor allem bei Beweisen, die mit Taktiken arbeiten, hilfreich.
 
+\subsection{Lean 4 Web}
+Um das schreiben von Lean Programmen einfacher und zugänglicher für Mathematiker zu machen, die keine Erfahrung mit Vscode oder Emacs haben, hat die Lean Community den Lean 4 Webeditor entwickelt (TODO Quelle: https://github.com/leanprover-community/lean4web). Auf der Internetseite \href{https://live.lean-lang.org/}{https://live.lean-lang.org/} können im Browser Lean Programme erstellt werden. Ein wichtiges Feature ist die Lean Infoansicht, die, wie in Vscode auf der rechten Seite des Bildschirms angezeigt wird. Die Informationen, die dort angezeigt werden, werden im Browser genauso wie in Vscode von einem Lean Language Server erzeugt. Dieser kommuniziert über das Language Server Protocol (LSP)(TODO Quelle https://microsoft.github.io/language-server-protocol/) mit dem Editor. Dabei werden die Änderungen, die der Nutzer im Programm vornimmt über das LSP an den Language Server geschickt. Dieser überprüft dann das Programm und schickt die Informationen über die Beweise an den Editor, der diese in einem Fenster auf der rechten Seite des Programms anzeigt. Die Lean4 Vscode Erweiterung startet einen Language Server lokal auf dem Computer, auf dem auch Vscode ausgeführt wird. Der Language Server für den Lean 4 Webeditor wird aber nicht im Browser, sondern auf einem Webserver ausgeführt. Das hat viele Vorteile, z.B. muss muss Lean nicht im Browser installiert werden. Außerdem hat man die Möglichkeit einen Webserver einzusetzen, der deutlich Leistungsfähiger ist, als der Computer, der benutzt wird um den Webeditor aufzurufen. Das ist vor allem bei großen Projekten hilfreich, da z.B. ein Laptop, auf dem Vsocde mit der Lean 4 Erweiterung läuft durchaus an seine Grenzen kommen kann. 
+
+\noindent Lean 4 Web ist allerdings nicht für große Projekte geeignet, es wird sogar im offiziellen Readme als \glqq lean playground\grqq \space bezeichnet. Das Hauptproblem, warum der LiveLean Editor nur zum  \glqq herumspielen\grqq \space geeignet ist, ist dass sich die Dateien nicht sinnvoll abspeichern und versionieren lassen, was es schwierig macht, mit anderen zusammenzuarbeiten. Die Dateien, die im Lean 4 Webeditor bearbeitet werden, sind nämlich nur in der URL gespeichert. Es gibt zwar die Möglichkeit, den Code als Datei herunterzuladen oder eine neue Datei hochzuladen, aber es gibt keine Möglichkeit mehrere Dateien zu öffnen und die Dateien mit einem Git Repository zu synchronisieren, was für größere Projekte essentiell wäre. 
+\begin{figure}[H]
+\centering
+    
+\begin{subfigure}{.4\textwidth}
+      \centering
+    \includesvg[height=0.75\linewidth]{livelean-org.drawio.svg}
+    \caption{Architektur des Lean 4 Webeditors}
+    \label{Architektur des Lean 4 Webeditors}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+      \centering
+    \includesvg[height=0.5\linewidth]{livelean.drawio.svg}
+    \caption{Architektur von unserer Version des Lean 4 Webeditors}
+    \label{Architektur des Lean 4 Webeditors}
+\end{subfigure}
+\end{figure}
+\noindent Um diese Probleme zu lösen haben wir eine eigene, erweiterte Version des Lean 4 Webeditors entwickelt. Auf dem Webserver liegt in unserer Version neben dem Lean Language Server eine lokale Kopie von unserem Github Repository. Der Editor im Browser kann damit auf alle Dateien in unserem Repository zugreifen. Die Änderungen an der bearbeiteten Datei, die an den Language Server geschickt werden, werden in unserer Version auch in der lokalen Kopie von unserem Repository gespeichert. Dieses wird dann automatisch mit unserem Github Reposiory synchronisiert. Damit ist es nicht mehr notwendig Vscode, Lean und Git zu installieren, um an unserem Projekt zu arbeiten. 
+
+
 \subsection{Mathlib Bibliothek}
-Eines der großen Ziele von Lean ist es, alle Beweise der Mathematik zu formalisieren und so zu überprüfen. Davon ist die Lean-Community zwar noch weit entfernt, aber es sind bereits viele grundlegende mathematische Theoreme und Lemmata aus vielen verschiedenen Bereichen in Lean implementiert. Diese Theoreme und Lemmata sind in der Mathlib \cite{Q10} katalogisiert und können so auch in darauf aufbauenden Beweisen verwendet werden. Die Mathlib wurde ursprünglich in einer älteren Lean3-Version verfasst, ist aber mittlerweile vollständing in Lean4 übersetzt. Außerdem ist sie frei zugänglich, d. h. jeder kann sie in eigenen Lean Projekten verwenden und auch Erweiterungsvorschläge machen.
-\subsection{Versionsverwaltung}
-Wir speichern die Versionen von unseren Lean Programmen in einem Git Repository, das auch auf Github zu finden ist. Git ist der Standart für Versionsverwaltung von größeren Informatikprojekten, die Mathlib verwendet ebenfalls git und ist auf Github hochgeladen.
+Eines der großen Ziele von Lean ist es, alle Beweise der Mathematik zu formalisieren und so zu überprüfen. Davon ist die Lean-Community zwar noch weit entfernt, aber es sind bereits viele grundlegende mathematische Theoreme und Lemmata aus vielen verschiedenen Bereichen in Lean implementiert. Diese Theoreme und Lemmata sind in der Mathlib \cite{Q10} katalogisiert und können so auch in darauf aufbauenden Beweisen verwendet werden. Die Mathlib wurde ursprünglich in einer älteren Lean3-Version verfasst, ist aber mittlerweile vollständing in Lean4 übersetzt. Außerdem ist sie frei zugänglich, d.h. jeder kann sie in eigenen Lean Projekten verwenden und auch Erweiterungsvorschläge machen. 
+
+
+\subsection{Blueprint}
+Um die Formalisierung von Banach-Tarski vorzubereiten und übersichtlicher zu machen verwendet wir eine von uns leicht modifizierte Version des frei zugänglichen leanblueprint Tools (TODO Quelle: https://github.com/PatrickMassot/leanblueprint/). Ein sogenannter Blueprint enthält eine Version des zu formaliserenden Beweises, die in kleinere Teile aufgeteilt und zu dem enstsprechenden Lean Code verknüpft ist. Außerdem wird ein Dependency Graph generiert, der die Verknüpfungen zwischen den vorher in Latex verfassten Definitionen und Lemmata, die für den Beweis benötigt werden, darstellt (TODO link zu unserer Internetseite). Zusätzlich dazu wird aus dem selben Latex Code eine print-Version (Paper???) generiert (TODO link zu paper). Da das leanblueprint Tool ein relativ kleines Projekt ist und von wenigen Entwicklern gepflegt wird, enthielt ein neuer Commit leider einige Fehler die in unserem Fall zu einem unlesbaren und falschen dependency Graph geführt haben. Deshalb haben wir eine Version des leanblueprint Tools erstellt, in der diese Fehler behoben sind (TODO Quelle https://github.com/Bergschaf/leanblueprint). Unser Ziel ist es, diese Bugfixes möglichst bald über eine Pull Request in das offizielle Repository einzubringen.
+
+%& TODO (Quellen oder Beispiel angeben: PFR und Liquid Tensor experiment (https://leanprover-community.github.io/liquid/index.html)) 
+
+% \subsection{Versionsverwaltung}
+% TODO evtl weglassen -> nach dem Motto "wir sind so gut, da ist das selbstverständlich"
+% Wir speichern die Versionen von unseren Lean Programmen in einem Git Repository, das auch auf Github zu finden ist. Git ist der Standart für Versionsverwaltung von größeren Informatikprojekten, die Mathlib verwendet ebenfalls git und ist auf Github hochgeladen.
 
 \section{Erste Ergebnisse und wie man mit Lean arbeitet}
-Bevor wir uns an das Leanen des Banach-Tarski-Paradoxons machten, fangen wir mit kleineren Beispielen an; zunächst mal, um die Arbeitsweisen von Lean zu verstehen. Diese von uns selbst \glqq geleanten\grqq~Beispiele wollen wir dem Leser in den folgenden Unterkapiteln vorstellen, damit man sich selber ein Bild machen kann.  
-
-\subsection{Die Definition der Komplexen Zahlen in Lean}
-Zum besseren Verständnis dieses Kapitels und aller weiteren Aktivitäten mit Lean, haben wir mit live-lean für den Leser mit Internetzugang eine Möglichkeit geschaffen, die einzelnen Schritte über folgenden Link nachzuvollziehen: \href{https://live.lean-lang.org/#code=import%20Mathlib.Data.Real.Basic%0Aimport%20Mathlib.Data.Real.Sign%0A%0Astructure%20CC_complex%20where%0A%20%20re%20%3A%20Real%0A%20%20im%20%3A%20Real%0A%0Ainstance%20%3A%20Zero%20CC_complex%20%3A%3D%0A%20%20%20%20%E2%9F%A8%E2%9F%A80%2C0%E2%9F%A9%E2%9F%A9%0A%0Ainstance%20%3A%20One%20CC_complex%20%3A%3D%0A%20%20%20%20%E2%9F%A8%E2%9F%A81%2C1%E2%9F%A9%E2%9F%A9%0A%0A%0Ainstance%20%3A%20Add%20CC_complex%20%3A%3D%0A%20%20%E2%9F%A8%20fun%20x%20y%20%20%E2%86%A6%20%20%E2%9F%A8%20x.re%20%2B%20y.re%2C%20x.im%20%2B%20y.im%20%E2%9F%A9%20%E2%9F%A9%0A%0Ainstance%20%3A%20Neg%20CC_complex%20%3A%3D%0A%20%20%E2%9F%A8%20fun%20x%20%E2%86%A6%20%E2%9F%A8%20-x.re%2C%20-x.im%E2%9F%A9%20%E2%9F%A9%0A%0Ainstance%20%3A%20Mul%20CC_complex%20%3A%3D%0A%20%20%E2%9F%A8%20fun%20x%20y%20%20%E2%86%A6%20%20%E2%9F%A8%20x.re%20*%20y.re%20-%20x.im%20*%20y.im%2C%20x.re%20*%20y.im%20%2B%20x.im%20*%20y.re%E2%9F%A9%E2%9F%A9%0A%0Anoncomputable%20instance%20%3A%20Inv%20CC_complex%20%3A%3D%0A%20%20%E2%9F%A8%20fun%20x%20%20%E2%86%A6%20%20%E2%9F%A8%20x.re%20%2F%20(x.re%5E2%2Bx.im%5E2)%2C%20-x.im%20%2F%20(x.re%5E2%2Bx.im%5E2)%E2%9F%A9%E2%9F%A9%0A}{live-lean.complex}.\par 
-\vspace{0.2cm}
-\noindent Wir beginnen mit dem Definieren eines grundlegenden Konstrukts: Dem Konzept der komplexen Zahlen. Definitionen aufstellen zu können ist nicht nur wichtig, um die mathematischen Objekte, die man verwenden möchte, herzustellen, sondern erleichtert später auch das Formalisieren von mathematischen Sätzen.
-
-\noindent Um nun eine komplexe Zahl zu konstruieren, geben wir zunächst folgendes in Lean ein:
-\vspace{-0.1cm}
-\begin{leancode}
-import Mathlib.Data.Real.Basic
-\end{leancode}
-\vspace{-0.1cm}
-\noindent Mit dieser ersten Zeile unseres Dokuments importieren wir die \lean/Real.Basic/ Datei aus der Mathlib, in der die Grundlagen des Systems der reellen Zahlen definiert sind.
-%\noindent Mit dieser ersten Zeile unseres Dokuments kennzeichnen wir das Software-Paket, %das wir für unser Vorhaben benutzen wollen.\\
-\noindent Selbstverständlich kann man auch mehrere Dateien importieren, uns reicht für die Definition der komplexen Zahlen aber dieses. 
-%Wie man an dem Namen erkennen kann, importieren wir dies aus der %Mathlib-&Bibliothek.\lean/Real.Basic/ bedeutet, dass wir nun die Grundlagen des Systems %der reellen Zahlen voraussetzen dürfen.\\
-
-\noindent Nachdem wir Lean die Datei vorgegeben haben, das wir referenzieren möchten, können wir mit der Definition anfangen. Hierfür müssen wir zuerst definieren, wie eine komplexe Zahl überhaupt auszusehen hat, was wir mit den folgenden drei Zeilen erreichen: 
-\vspace{-0.1cm}
-\begin{leancode}
-structure CC_complex where
-  re : Real
-  im : Real
-\end{leancode}
-\vspace{-0.1cm}
-%\noindent Vor jeder Aktion, die man durchführen möchte, muss man Lean zunächst vorgeben, mit was das Programm es hier zu tun hat. In diesem Fall handelt es sich um eine Struktur, logischerweise gekennzeichnet durch \lean/structure/. Abgesehen davon gibt es zum Beispiel noch \lean/theorem/, was einen mathematischen Satz kennzeichnet oder \lean/variable/, womit eine Variable eingeführt werden kann, deren Definition Lean in den nachfolgenden Aktionen übernimmt. Eine sehr wichtige Aktion ist zudem \lean/def/, womit jegliche andere Definitionen eingeläutet werden.\\
-\noindent In diesem Programmabschnitt wird mit dem \lean/structure/ Befehl eine neue Struktur mit dem Namen \lean/CC_complex/ definiert. Diese Struktur kann bestimmte Attribute enthalten und kann im nachfolgenden Programm weiter verwendet werden. Neben Strukturen kann man in Lean auch mathematische Sätze mit dem Keyword \lean/theorem/ oder Variablen mit dem Keyword \lean/variable/ erstellt werden. Jegliche andere Definitionen können mit \lean/def/ vorgenommen werden.
-
-%\noindent Anschließend an die Angabe der Aktion, wird der Titel ebendieser angehängt. Die Betitelung ermöglicht es uns, die Struktur der komplexen Zahlen im Nachfolgenden zu verwenden.\\
-
-\noindent In den folgenden Zeilen wird der Realteil, gekennzeichnet mit \lean/re/, und der Imaginärteil mit \lean/im/ definiert. Dabei bedeutet es nicht etwa, dass der Realteil und der Imaginärteil Element der reellen Zahlen sind.
-\vspace{-0.1cm}
-\begin{leancode}
-  re : Real
-  im : Real  
-\end{leancode}
-\vspace{-0.1cm}
-\noindent  Diese Notation wird uns in jeder Aktion begleiten und heißt, dass \lean/re/ und \lean/im/ \emph{vom Typ} der reellen Zahlen sind. Hier begegnet uns zum ersten Mal in der Anwendung, dass Lean auf der Typentheorie aufgebaut ist.
-
-\noindent Nach diesen wenigen Zeilen Code weiß Lean nun schon, wie eine komplexe Zahl auszusehen hat. Aktuell können wir aber nicht viel mit ihnen machen, weshalb wir im Folgenden exemplarisch die Addition und Multiplikation von komplexen Zahlen mit jeweiligem neutralem und inversem Element definieren.\par
-
-\noindent Wir starten mit der Null der komplexen Zahlen, wofür wir folgende Definition verwenden:
-\vspace{-0.1cm}
-\begin{leancode}
-instance : Zero CC_complex :=
-    ⟨⟨0,0⟩⟩
-\end{leancode}
-\vspace{-0.1cm}
-Hier begegnen wir der Aktion \lean/instance/, welche unsere Struktur mit einer danach definierten Eigenschaft ausstattet. \par
-
-\noindent \lean/⟨⟨0,0⟩⟩/ veranschaulicht, dass wir es bei einer komplexen Zahl mit einer zweidimensionalen Zahl zu tun haben, wobei $0$ die Null der reellen Zahlen kennzeichnet, da wir die Datei der reellen Zahlen aus der Mathlib importiert haben.
-
-\noindent Anschließend dazu definieren wir uns nun die Addition von komplexen Zahlen:
-\vspace{-0.1cm}
-\begin{leancode}
-instance : Add CC_complex :=
-  ⟨ fun x y  =>  ⟨ x.re + y.re, x.im + y.im ⟩ ⟩
-\end{leancode}
-\vspace{-0.1cm}
-Diese definieren wir über eine Funktion, die zwei komplexe Zahlen, hier repräsentiert durch \lean/x/ und \lean/y/, auf das gewünschte Ergebnis abbildet. Nach unserer obigen Struktur bezeichnet \lean/x.re/ und \lean/y.re/ den Realteil von \lean/x/ bzw. \lean/y/. Analog haben wird hier den Imaginärteil von \lean/x/ und \lean/y/ dargestellt. Aufgrund der vorausgesetzten Eigenschaften der reellen Zahlen können wir die Addition auf dem Ring der reellen Zahlen übernehmen, weshalb wir \lean/x.re/ und \lean/y.re/ bzw. \lean/x.im/ und \lean/y.im/ problemlos miteinander addieren können.
-
-\noindent Bzgl. der Addition fehlt uns nur noch ein inverses Element für alle komplexen Zahlen. Die Definition eines solchen Elements erhalten wir durch die folgenden zwei Zeilen:
-\vspace{-0.1cm}
-\begin{leancode}
-instance : Neg CC_complex :=
-  ⟨ fun x => ⟨ -x.re, -x.im⟩ ⟩
-\end{leancode}
-\vspace{-0.1cm}
-Analog wie bei der Definition der Addition erreichen wir das Erstellen eines additiven Inversen durch eine Funktion, wobei wir wieder die Eigenschaften des Rings der reellen Zahlen ausnutzen, indem wir die Existenz des inversen Elements bzgl. der Addition von \lean/x.re/ und \lean/x.im/ voraussetzen.
-
-\noindent Die Eins der komplexen Zahlen erhalten wir wie folgt:
-\vspace{-0.1cm}
-\begin{leancode}
-instance : One CC_complex :=
-    ⟨⟨1,1⟩⟩
-\end{leancode}
-\vspace{-0.1cm}
-\noindent Hierbei gehen wir analog vor, wie bei der Definition der Null der komplexen Zahlen, mit der Ausnahme, dass wir statt $0$ $1$ verwenden, was wieder die Eins der reellen Zahlen kennzeichnet.
-
-\noindent Ebenso wie bei der Addition komplexer Zahlen definieren wir uns die Multiplikation eben dieser über eine Funktion:
-\vspace{-0.1cm}
-\begin{leancode}
-instance : Mul CC_complex :=
-  ⟨ fun x y  =>   ⟨ x.re * y.re - x.im * y.im, x.re * y.im + x.im * y.re⟩⟩
-\end{leancode}
-\vspace{-0.1cm}
-
-%\noindent Bei dieser Definition ist zu beachten, dass komplexe Zahlen abgesehen von der Vektordarstellung, die Lean verwendet, auch als Summe dargestellt werden können. Diese sieht für eine komplexe Zahl $x$ bekanntlich so aus: $x.re + x.im\cdot i$, wobei 
-%$i$ die imaginäre Einheit bezeichnet. Definieren wir uns nun eine Funktion $fun:\mathbb{C}x\mathbb{C} \rightarrow \mathbb{C}$ mit
-%\begin{align*}
-%fun(x,y)=(x.re + x.im\cdot i)\cdot(y.re + y.im\cdot i)=x.re\cdot y.re + x.re\cdot y.im\cdot i + x.im\cdot y.re\cdot i - x.im\cdot y.im
-%\end{align*}
-%Definiert man sich nun $z:=fun(x,y)$, dann folgt $z.re=x.re\cdot y.re - x.im\cdot y.im$ und $z.im=x.re\cdot y.im + x.im\cdot y.re$, woraus nun die obige Codesequnz folgt.\\
-
-
-\noindent Nun fehlt uns noch das multiplikative Inverse, was wir durch die zwei folgenden Zeilen definieren:
-\vspace{-0.1cm}
-\begin{leancode}
-noncomputable instance : Inv CC_complex :=
-  ⟨ fun x => ⟨ x.re/(x.re^2 + x.im^2), -x.im/(x.re^2 + x.im^2)⟩⟩
-\end{leancode}
-\vspace{-0.1cm}
-%Um auf das Inverse $x'$ einer komplexen Zahl $x$ zu kommen, ist folgende Gleichung zu lösen:
-%\begin{align*}
-% (x.re + x.im\cdot i)\cdot(x'.re + x'.im\cdot i)=1~&\Leftrightarrow~x.re\cdot x'.re - x.im\cdot x'.im + (x.re\cdot x'.im + x.im\cdot x'.re)i=1\\
-% &\Leftrightarrow~x.re\cdot x'.re - x.im\cdot x'.im=1~\textbf{und}~x.re\cdot x'.im + x.im\cdot x'.re=0   
-%\end{align*}
-%\noindent Dieses Gleichungssystem lässt sich zur besseren Übersicht in eine Matrix übersetzen. Da wir eine allgemeine Definition des multiplikativen Inversen einer komplexen Zahl haben möchten, das insbesondere nur von $x$ abhängt, definieren wir uns die erste Spalte der Matrix als die Vorfaktoren von $x'.re$ und die zweite Spalte der Matrix als diejenigen von $x'.im$:
-%\begin{align*}
-%\begin{pmatrix}
-%x.re&-x.im&|&1 \\
-%x.im&x.re&|&0 \\
-%\end{pmatrix}
-%&\Leftrightarrow
-%\begin{pmatrix}
-%x.re&-x.im&|&1 \\
-%0&x.re^2+x.im^2&|&-x.im \\
-%\end{pmatrix}\\
-%&\Leftrightarrow
-%\begin{pmatrix}
-%x.re&0&|&\frac{x.re^2}{x.re^2+x.im^2} \\
-%0&x.re^2+x.im^2&|&-x.im \\
-%\end{pmatrix}\\
-%&\Leftrightarrow 
-%\begin{pmatrix}
-%1&0&|&\frac{x.re}{x.re^2+x.im^2} \\
-%0&1&|&\frac{-x.im}{x.re^2+x.im^2} \\
-%\end{pmatrix}
-%\end{align*}
-%\noindent Da der linke Teil der Matrix nun in reduzierter Zeilenstufenform vorliegt, können wir den Realteil und den Imaginärteil des multiplikativen Inversen sofort ablesen, woraus die obige Codesequenz folgt.\\
-
-%\noindent Damit sieht unsere vollständige Definition der komplexen Zahlen wie folgt aus:
-%\begin{leancode}
-%structure complex where
- % re : Real
- % im : Real
-
-%instance : Zero complex :=
-    %⟨⟨0,0⟩⟩
-
-%instance : Add complex :=
-  %⟨ fun x y  =>  ⟨ x.re + y.re, x.im + y.im ⟩ ⟩
-
-%instance : Neg complex :=
- % ⟨ fun x => ⟨ -x.re, -x.im⟩ ⟩
-
-%instance : One complex :=
-    %⟨⟨1,1⟩⟩
-
-%instance : Mul complex :=
-%⟨ fun x y  =>  ⟨ x.re * y.re - x.im * y.im, x.re * y.im + x.im * y.re⟩⟩
-
-%instance : Neg.Mul complex :=
-  %⟨ fun x  =>  ⟨ x.re / (x.re^2+x.im^2), -x.im / (x.re^2+x.im^2)⟩⟩
-
-%\end{leancode}
-\noindent Hiermit haben wir die Addition und Multiplikation auf unseren eigens definierten komplexen Zahlen definiert. 
+Bevor wir uns an die Formalisierung des Banach-Tarski-Paradoxons machen, fangen wir mit kleineren Beispielen an; zunächst mal, um die Arbeitsweisen von Lean zu verstehen. Dieses von uns selbst \glqq geleanten\grqq~Beispiel wollen wir dem Leser im folgenden Unterkapitel vorstellen, damit man sich selber ein Bild machen kann.  
 
 \subsection{Der \glqq kleine Gauß\grqq; Verifikation des Beweises mit Lean}
 \noindent Auch hier besteht die Möglichkeit, zum besseren Verständnis des Beweises durch folgenden Link auf das
 original Lean-Dokument zuzugreifen: \href{https://live.lean-lang.org/#code=import%20Mathlib.Data.Nat.Basic%0D%0Aimport%20Mathlib.Data.Real.Basic%0D%0A%0D%0Adef%20CC_sum_up_to%20(n%20%3A%20Nat)%3A%20%E2%84%95%20%3A%3D%0D%0A%20%20match%20n%20with%0D%0A%20%20%20%20%7C%200%20%3D%3E%200%0D%0A%20%20%20%20%7C%20(Nat.succ%20n)%20%3D%3E%20CC_sum_up_to%20n%20%2B%20Nat.succ%20n%0D%0A%0D%0A%23eval%20CC_sum_up_to%204%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_kleiner_gauss%20(n%3A%20Nat)%20%3A%0D%0A%20%20CC_sum_up_to%20n%20*%202%20%3D%20n%20*%20(n%20%2B%201)%20%3A%3D%20by%0D%0A%0D%0A%20%20induction%20n%20with%0D%0A%20%20%20%20%7C%20zero%20%3D%3E%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20rw%20%5BCC_sum_up_to%5D%0D%0A%20%20%20%20%7C%20succ%20d%20hd%20%3D%3E%0D%0A%20%20%20%20rw%20%5BCC_sum_up_to%5D%0D%0A%20%20%20%20rw%20%5BNat.succ_eq_add_one%5D%0D%0A%20%20%20%20rw%20%5BNat.add_mul%5D%0D%0A%20%20%20%20rw%20%5BNat.mul_add%5D%0D%0A%20%20%20%20rw%20%5BNat.mul_one%5D%0D%0A%0D%0A%20%20%20%20rw%20%5BNat.add_mul%20d%201%20(d%20%2B%201)%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20rw%20%5Badd_assoc%5D%0D%0A%20%20%20%20rw%20%5B%E2%86%90%20Nat.mul_two%20(d%20%2B%201)%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20exact%20hd}{live-lean.kleiner.gauß}\par
 \vspace{0.2cm} 
-\noindent Da der wesentliche Part dieses Programms aber das Kontrollieren von Beweisen ist, dreht sich nun dieses Kapitel um das Codieren des Beweises einer der bekanntesten Formeln: Der Gaußschen Summenformel oder besser bekannt, als der \glqq kleine Gauß\grqq. Diese ermöglicht die Berechnung der Summe der ersten $n$ natürlichen Zahlen.
+\noindent Da der wesentliche Teil dieses Programms aber das Kontrollieren von Beweisen ist, dreht sich nun dieses Kapitel um das Codieren des Beweises einer der bekanntesten Formeln: Der Gaußschen Summenformel oder besser bekannt, als der \glqq kleine Gauß\grqq. Diese ermöglicht die Berechnung der Summe der ersten $n$ natürlichen Zahlen.
 
 \noindent Bevor es nun an unseren ersten Satz geht, benötigen wir aber vorab noch eine Definition, welche uns folgende Summe für $n\in \mathbb{N}_0$ definiert: $\sum_{k=0}^{n}k$. Diese Summe haben wir wie folgt definiert:
 \begin{leancode}
@@ -461,7 +326,7 @@ Auf die Benennung des Theorems folgt sogleich die Voraussetzung \lean/(n: Nat)/,
 
 \noindent Sprechen wir schon von dem Beweis, so ist zu erwähnen, dass beim Beweisen in Lean verschiedene Taktiken verwendet werden. Die wohl von uns am meisten verwendete Taktik ist die \glqq rewrite\grqq~(kurz: \lean/rw/) Taktik. Diese Taktik wird verwendet falls wir ein Beweis h eines Ausdrucks $X=Y$ gegeben haben. Dann erreichen wir durch \lean/rw[h]/, dass alle $X$ im noch zu zeigenden Ziel durch $Y$ ausgetauscht werden. Die \glqq rewrite\grqq~Taktik kann daher insbesondere bei bereits in Lean bewiesenen Axiomen bzgl. Äquivalenzumformung verwendet werden. Dann erreichen wir mit \lean/rw/ und dem Namen des Axioms, dass das zu zeigende Ziel entsprechend des Axioms umgeschrieben wird. Zum Beispiel können wir einen Ausdruck der Form $(a+b)\cdot c$ in unserem Ziel mit \lean/rw[add_mul]/ zu $a\cdot c+b\cdot c$ umschreiben.
 
-\noindent Eine weitere sehr essentielle Taktik ist die \glqq simplify\grqq~(kurz: \lean/simp/) Taktik. Diese vereinfacht das noch zu zeigende Ziel unter Verwendung von \lean/rw/ so weit wie nur möglich. Wir können grundsätzlich nicht alle Umformungen, die wir mit \lean/rw/ durchführen, einfach durch \lean/simp/ ersetzen. \lean/simp/ kann nur sehr grundlegende Umformungen durchführen und ob man mit \lean/simp/ eine sinnvolle Umformung erhält ist situationsabhängig. Ein Versuch ist es aber meistens Wert.\par
+\noindent Eine weitere sehr hilfreiche Taktik ist die \lean/simp/ Taktik (kurz für: \glqq simplify\grqq~). Diese vereinfacht das noch zu zeigende Ziel unter Verwendung von \lean/rw/ so weit wie nur möglich. Wir können grundsätzlich nicht alle Umformungen, die wir mit \lean/rw/ durchführen, einfach durch \lean/simp/ ersetzen. \lean/simp/ kann nur sehr grundlegende Umformungen durchführen und ob man mit \lean/simp/ eine sinnvolle Umformung erhält ist situationsabhängig. Ein Versuch ist es aber meistens Wert.\par
 \noindent Sollte man mit \lean/simp/ keinen Erfolg haben, so muss mit einer anderen Taktik weiter gearbeitet werden.
 
 \noindent Abgesehen von \lean/rw/ und \lean/simp/ gibt es noch \lean/exact/. Diese Taktik verwenden wir genau dann, wenn wir allgemein eine Aussage, nennen wir sie $P$, nach dem Vereinfachen unserer Behauptung noch zu zeigen haben, wobei ein Beweis $h$ dieser Aussage $P$ in Lean schon gegeben ist. \lean/exact h/ sagt Lean dann, dass es den Beweis $h$ verwenden soll, womit dann der Beweis abgeschlossen wird.\\
@@ -513,6 +378,8 @@ theorem CC_kleiner_gauss (n: Nat) : CC_sum_up_to n * 2 = n * (n + 1) := by
 \noindent Nach der chronologischen Verwendung dieser Axiome und nach mehrfachem Vereinfachen mithilfe von \lean/simp/, haben wir noch \lean/CC_sum_up_to d * 2 = d * (d + 1)/ zu zeigen übrig. Dies entspricht aber genau der Aussage von \lean/hd/. Anwenden der Taktik \lean/apply/ in Kombination mit \lean/hd/ liefert dann das gewünschte Ergebnis.\par
 \noindent Falls das Bedürfnis besteht, den mathematischen Beweis einzusehen, kann man dies über folgenden Link machen: \href{https://mathedia.com/beweis-der-gaussschen-summenformel/}{kleiner-gauß}
 
+
+\iffalse % Das nächste Kapitel ist auskommentiert
 \subsection{Ein erstes Lemma}
 \noindent Auch hier besteht die Möglichkeit, zum besseren Verständnis des Beweises durch folgenden Link auf das Original Lean-Dokument zuzugreifen:
 \href{https://live.lean-lang.org/#code=import%20Mathlib.Topology.MetricSpace.Basic%0D%0A%0D%0Avariable%20%7BX%20%3A%20Type*%7D%20%5BMetricSpace%20X%5D%20(M%20%3A%20Set%20X)%0D%0A%0D%0A--%20Definition%20der%20Offenheit%0D%0Adef%20CC_is_open_set%20(M%20%3A%20Set%20X)%20%3A%20Prop%20%3A%3D%0D%0A%20%20%E2%88%80%20x%20%E2%88%88%20M%2C%20%E2%88%83%20%CE%B5%20%3E%200%2C%20Metric.ball%20x%20%CE%B5%20%E2%8A%86%20M%0D%0A%0D%0A--%20Definition%20der%20Abgeschlossenheit%0D%0Adef%20CC_is_closed_set%20(M%20%3A%20Set%20X)%20%3A%20Prop%20%3A%3D%0D%0A%20%20CC_is_open_set%20M%E1%B6%9C%0D%0A%0D%0A%0D%0Atheorem%20CC_compl_compl_eq_set%20(M%20%3A%20Set%20x)%20%3A%20M%20%3D%20M%E1%B6%9C%E1%B6%9C%20%3A%3D%20by%0D%0A%20%20exact%20eq_compl_comm.mpr%20rfl%0D%0A%0D%0A%0D%0A--%20Beweis%2C%20dass%20M%20offen%20ist%2C%20wenn%20und%20nur%20wenn%20M%E1%B6%9C%20abgeschlossen%20ist%0D%0Atheorem%20CC_open_iff_complement_closed%20(M%20%3A%20Set%20X)%20%3A%0D%0A%20%20CC_is_open_set%20M%20%E2%86%94%20CC_is_closed_set%20M%E1%B6%9C%20%3A%3D%20by%0D%0A%20%20rw%20%5Biff_def%5D%0D%0A%0D%0A%20%20have%20h%3A%20CC_is_open_set%20M%20-%3E%20CC_is_closed_set%20M%E1%B6%9C%0D%0A%20%20intro%20h1%20x%0D%0A%20%20rw%20%5Bcompl_compl%5D%0D%0A%20%20intro%20hx%0D%0A%20%20exact%20h1%20x%20hx%0D%0A%0D%0A%20%20have%20k%3A%20CC_is_closed_set%20M%E1%B6%9C%20-%3E%20CC_is_open_set%20M%0D%0A%20%20intro%20k1%20x%0D%0A%20%20rw%20%5BCC_compl_compl_eq_set%20M%5D%0D%0A%20%20intro%20kx%0D%0A%20%20exact%20k1%20x%20kx%0D%0A%0D%0A%20%20exact%20%7B%20left%20%3A%3D%20h%2C%20right%20%3A%3D%20k%20%7D}{live-lean.äquivalenz}\par
@@ -642,8 +509,7 @@ theorem CC_open_iff_complement_closed :
   apply kx
   exact { left := h, right := k }
 \end{leancode}
-
-
+\fi % Ende des auskommentierten Teils
 
 \section{Das Banach-Tarski-Paradoxon in Lean}
 Nachdem wir uns und den Leser durch kleinere Einheiten mit den Prinzipien von Lean vertraut gemacht haben, wollen wir nun einen komplexeren Satz als Erste überhaupt leanen und dies in einem späteren Schritt in die Mathlib Bibliothek aufnehmen lassen.
@@ -708,6 +574,8 @@ Nachdem wir uns und den Leser durch kleinere Einheiten mit den Prinzipien von Le
 
 
 \subsection{Umsetzung in Lean}
+Damit wir den Beweis des Banach-Tarski-Paradoxons in Lean formalisieren können, müssen wir zunächst einige Anpassungen am Beweis vornehmen. Das liegt vor allem daran, dass Lean Aussagen wie \glqq das ist trivial\grqq~oder \glqq das geht analog\grqq~nicht akzeptiert. Konkret heißt das für uns, dass wir selbstständig zusätzliche Lemmas und Definitionen aufstellen und ggf. auch beweisen müssen. In welchem Ausmaß diese Anpassung notwendig ist, wird besonders in den folgenden Kapiteln klar.
+\subsubsection{Satz über die Darstellung der gedrehten Punkte}
 \noindent Wie bei dem \glqq kleinen Gauß\grqq~und der Definition der komplexen Zahlen in Lean, gibt es auch für diesen Satz einen Live-Lean-Link, um die einzelnen Schritte besser nachvollziehen zu können: 
 \href{https://live.lean-lang.org/#code=import%20Mathlib.Tactic%0D%0Aimport%20Mathlib.GroupTheory.Subgroup.Basic%0D%0Aimport%20Mathlib.Data.Matrix.Notation%0D%0Aimport%20Mathlib.Data.Matrix.Basic%0D%0Aimport%20Mathlib.Data.Nat.Basic%0D%0Aimport%20Mathlib.Data.Real.Basic%0D%0Aimport%20Mathlib.Data.Real.Sqrt%0D%0A%0D%0Aimport%20Mathlib.LinearAlgebra.Matrix.NonsingularInverse%0D%0Aimport%20Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup%0D%0A%0D%0Aimport%20Mathlib.Data.Matrix.Reflection%0D%0A%0D%0Aset_option%20maxHeartbeats%200%0D%0A%0D%0A%0D%0Anoncomputable%20section%0D%0Adef%20CC_matrix_a%20%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2C%200%2C%200%3B%200%2C%201%2F3%2C%20-2%2F3*Real.sqrt%202%3B%200%2C%202%2F3*Real.sqrt%202%2C%201%2F3%5D%0D%0Adef%20CC_matrix_a'%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2C%200%2C%200%3B%200%2C%201%2F3%2C%202%2F3*Real.sqrt%202%3B%200%2C%20-2%2F3*Real.sqrt%202%2C%201%2F3%5D%0D%0Adef%20CC_matrix_b%20%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2F3%2C%20-2%2F3*Real.sqrt%202%2C%200%3B%20(2%2F3*Real.sqrt%202)%2C%201%2F3%2C%200%3B%200%2C%200%2C%201%5D%0D%0Adef%20CC_matrix_b'%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2F3%2C%202%2F3*Real.sqrt%202%2C%200%3B%20(-2%2F3*Real.sqrt%202)%2C%201%2F3%2C%200%3B%200%2C%200%2C%201%5D%0D%0Aend%20noncomputable%20section%0D%0A%0D%0A%0D%0Atheorem%20CC_matrix_a_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_a%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_a%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_a'_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_a'%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_a'%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_b_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_b%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_b%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_b'_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_b'%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_b'%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0A%0D%0A%0D%0Anoncomputable%20section%0D%0Adef%20CC_gl_a%20%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_a%20CC_matrix_a_det_neq_zero%0D%0Adef%20CC_gl_a'%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_a'%20CC_matrix_a'_det_neq_zero%0D%0Adef%20CC_gl_b%20%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_b%20CC_matrix_b_det_neq_zero%0D%0Adef%20CC_gl_b'%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_b'%20CC_matrix_b'_det_neq_zero%0D%0Aend%20noncomputable%20section%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_coe_gl_a_eq_matrix_a%20%3A%20%E2%86%91CC_gl_a%20%3D%20CC_matrix_a%20%3A%3D%20by%0D%0A%20%20rfl%0D%0A%0D%0Atheorem%20CC_coe_gl_b_eq_matrix_b%20%3A%20%E2%86%91CC_gl_b%20%3D%20CC_matrix_b%20%3A%3D%20by%0D%0A%20%20rfl%0D%0A%0D%0A%0D%0A%0D%0Adef%20CC_erzeuger%20%3A%20Set%20(GL%20(Fin%203)%20Real)%20%3A%3D%20%7BCC_gl_a%2C%20CC_gl_b%7D%0D%0A%0D%0Adef%20G%20%3A%3D%20Subgroup.closure%20CC_erzeuger%0D%0A%0D%0A%0D%0A%0D%0Aabbrev%20r_3%20%3A%3D%20Fin%203%20-%3E%20%E2%84%9D%0D%0A%0D%0Adef%20CC_rotate%20(p%20%3A%20GL%20(Fin%203)%20Real)%20(vec%20%3A%20r_3)%20%3A%20r_3%20%3A%3D%0D%0A%20%20(p%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real).vecMul%20vec%0D%0A%0D%0A%0D%0Adef%20CC_a_b_c_vec%20(a%20b%20c%20%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%20%3A%20r_3%20%3A%3D%0D%0A%20%20%20!%5B1%2F3%5En%20*%20a%20*%20Real.sqrt%202%2C1%2F3%5En%20*%20b%2C1%2F3%5En%20*%20c%20*%20Real.sqrt%202%5D%0D%0A%0D%0A%0D%0Adef%20CC_zero_one_zero%20%3A%20r_3%20%3A%3D%20!%5B0%2C1%2C0%5D%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_case_a%20(x)%20(h%3A%20x%20%3D%20CC_gl_a)%3A%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5Bh%5D%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20%20%20rw%20%5BCC_coe_gl_a_eq_matrix_a%5D%0D%0A%20%20%20%20rw%20%5BCC_matrix_a%5D%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%20-2%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20norm_num%0D%0A%0D%0Atheorem%20CC_case_b%20(x)%20(h%3A%20x%20%3D%20CC_gl_b)%3A%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5Bh%5D%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20rw%20%5BCC_coe_gl_b_eq_matrix_b%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20%20%20rw%20%5BCC_matrix_b%5D%0D%0A%20%20%20%20use%202%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20norm_num%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_s%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(h%20%3A%20x%20%E2%88%88%20CC_erzeuger)%20%3A%0D%0A%20%20%20%E2%88%83%20a%20b%20c%20n%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20cases%20h%20with%0D%0A%20%20%20%20%7C%20inl%20ha%20%3D%3E%0D%0A%20%20%20%20apply%20CC_case_a%0D%0A%20%20%20%20exact%20ha%0D%0A%20%20%20%20%7C%20inr%20hb%20%3D%3E%0D%0A%20%20%20%20%20%20apply%20CC_case_b%0D%0A%20%20%20%20%20%20exact%20hb%0D%0A%0D%0A%0D%0Atheorem%20CC_h_one%20%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%201%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%0D%0A%0D%0Anoncomputable%20def%20CC_general_word_form%20%20(a%20b%20c%20d%20e%20f%20g%20h%20i%3A%20%E2%84%A4)%20(n%3A%20Nat)%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%0D%0A%20%20!!%5B(a%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2Cb%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(c%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%3B%0D%0A%20%20%20%20d%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(e%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2C%20f%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%3B%0D%0A%20%20%20%20(g%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2C%20h%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(i%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%5D%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_general_word_form_exists%20(x%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20x%20%E2%88%88%20G)%20%3A%0D%0A%20%20%E2%88%83%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n%2C%20x%20%3D%20CC_general_word_form%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n%20%3A%3D%20by%0D%0A%20%20%20%20sorry%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_vec_mul_abc_eq_abc%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(h1%3A%20x%20%E2%88%88%20G)%0D%0A%20%20(h%3A%20%E2%88%83%20j%20k%20l%20%3A%20%E2%84%A4%2C%20%E2%88%83%20i%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20j%20k%20l%20i)%20(a%20b%20c%20%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%20%3A%0D%0A%20%20%E2%88%83%20e%20f%20g%20%3A%20%E2%84%A4%20%2C%20%E2%88%83%20m%20%3A%20Nat%2C%20Matrix.vecMul%20(CC_a_b_c_vec%20a%20b%20c%20n)%20x%20%3D%20CC_a_b_c_vec%20e%20f%20g%20m%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20rcases%20CC_general_word_form_exists%20x%20h1%20with%20%E2%9F%A8a1%2C%20b1%2C%20c1%2C%20d1%2C%20e1%2C%20f1%2C%20g1%2C%20h1%2C%20i1%2Cn1%2C%20h2%E2%9F%A9%0D%0A%20%20rw%20%5Bh2%5D%0D%0A%20%20rw%20%5BCC_general_word_form%5D%0D%0A%20%20simp%0D%0A%20%20use%20a%20*%20a1%20%2B%20b%20*%20d1%20%2B%20c%20*%20g1%0D%0A%20%20use%20a%20*%20b1%20*%202%20%2B%20c%20*%20h1%20*%202%20%2B%20b%20*%20e1%0D%0A%20%20use%20%20a%20*%20c1%20%2B%20b%20*%20f1%20%2B%20c%20*%20i1%0D%0A%20%20use%20n%20%2B%20n1%0D%0A%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20ext%20hx%0D%0A%20%20fin_cases%20hx%0D%0A%0D%0A%20%20simp%0D%0A%20%20ring%0D%0A%0D%0A%20%20simp%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring%0D%0A%20%20norm_num%0D%0A%20%20ring%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_mul%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(hx%3A%20x%20%E2%88%88%20G)%20(y%3A%20GL%20(Fin%203)%20Real)%20(hy%3A%20y%20%E2%88%88%20G)%20(h1%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n)%0D%0A(h2%20%3A%E2%88%83%20d%20e%20f%20%3A%20%E2%84%A4%2C%20%E2%88%83%20m%20%3A%20%E2%84%95%2C%20CC_rotate%20y%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20d%20e%20f%20m)%3A%0D%0A%E2%88%83%20g%20h%20i%20%3A%20%E2%84%A4%2C%20%E2%88%83%20o%20%3A%20%E2%84%95%2C%20CC_rotate%20(x*y)%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20g%20h%20i%20o%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5B%40Matrix.GeneralLinearGroup.coe_mul%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h1%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h1%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h2%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h2%0D%0A%0D%0A%20%20rcases%20h1%20with%20%E2%9F%A8a%2C%20b%2C%20c%2C%20n%2C%20h1'%E2%9F%A9%0D%0A%20%20rcases%20h2%20with%20%E2%9F%A8e%2C%20f%2C%20g%2C%20m%2C%20h2'%E2%9F%A9%0D%0A%20%20rw%20%5B%E2%86%90%20%40Matrix.vecMul_vecMul%5D%0D%0A%20%20rw%20%5Bh1'%5D%0D%0A%20%20apply%20CC_vec_mul_abc_eq_abc%0D%0A%0D%0A%20%20apply%20hy%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20rw%20%5Bh2'%5D%0D%0A%20%20use%20e%0D%0A%20%20use%20f%0D%0A%20%20use%20g%0D%0A%20%20use%20m%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_general_word_form_abc%20(a%20b%20c%20d%20e%20f%20g%20h%20i%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%3A%0D%0A%20%20%E2%88%83%20l%20m%20o%20p%2C%20Matrix.vecMul%20CC_zero_one_zero%20(CC_general_word_form%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n)%20%3D%0D%0A%20%20%20%20CC_a_b_c_vec%20l%20m%20o%20p%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5BCC_general_word_form%5D%0D%0A%20%20%20%20use%20d%0D%0A%20%20%20%20use%20e%0D%0A%20%20%20%20use%20f%0D%0A%20%20%20%20use%20n%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20%20%20ext%20h1%0D%0A%20%20%20%20fin_cases%20h1%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%0D%0Atheorem%20CC_x_inv_in_g%20(x%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20x%20%E2%88%88%20G)%3A%20x%E2%81%BB%C2%B9%20%E2%88%88%20G%20%3A%3D%20by%0D%0A%20%20exact%20Subgroup.inv_mem%20G%20h%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_inv%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(hx%3A%20x%20%E2%88%88%20G)%20%20(h1%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n)%3A%0D%0A%20%20%E2%88%83%20a%20b%20c%20n%2C%20CC_rotate%20(x%E2%81%BB%C2%B9)%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h1%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h1%0D%0A%0D%0A%20%20rcases%20h1%20with%20%E2%9F%A8a%2C%20b%2C%20c%2C%20n%2C%20h1'%E2%9F%A9%0D%0A%20%20simp%0D%0A%0D%0A%20%20rcases%20CC_general_word_form_exists%20(x)%E2%81%BB%C2%B9%20(CC_x_inv_in_g%20x%20hx)%20with%20%E2%9F%A8a1%2C%20b1%2C%20c1%2C%20d1%2C%20e1%2C%20f1%2C%20g1%2Chh1%2C%20%20i1%2C%20n1%2C%20h2%E2%9F%A9%0D%0A%0D%0A%20%20rw%20%5B%E2%86%90%20%40Matrix.coe_units_inv%5D%0D%0A%0D%0A%20%20rw%20%5Bh2%5D%0D%0A%0D%0A%20%20apply%20CC_general_word_form_abc%0D%0A%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20satz_3_1%20(p%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20p%20%E2%88%88%20G)%3A%0D%0A%20%20%20%20%20%20%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20p%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%3A%3D%0D%0A%20%20Subgroup.closure_induction'%20CC_h_s%20CC_h_one%20CC_h_mul%20CC_h_inv%20h%0D%0A%0D%0A}{live-lean.satz.3.1}\par
 \noindent In diesem Kapitel wollen wir Lemma \ref{lemma1} in Lean beweisen. Hierfür müssen wir vorab die Drehmatrizen $A$ und $B$ sowie deren Inverse in Lean definieren: 
@@ -1033,7 +901,71 @@ theorem CC_satz_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
   Subgroup.closure_induction' CC_h_s CC_h_one CC_h_mul CC_h_inv h
 \end{leancode}
 
+\noindent Außer diesem Satz ist es uns außerdem gelungen, die Äquidekomponierbarkeit von zwei beliebigen Mengen $X$ und $Y$ in Lean zu definieren. D. h., dass wir $X$ in eine endliche Anzahl an disjunkten Teilmengen zerlegen können, diese dann jeweils durch Rotationen so verändern können, sodass die Vereinigung der gedrehten Teilmengen die Menge $Y$ ergibt. Bevor uns dies aber gelungen ist, mussten wir vorab aber noch einige Dinge der Übersicht halber definieren. Als erstes definieren wir uns den Schnitt von zwei Mengen $A$ und $B$:
+\begin{leancode}
+def intersection (α : Type) (a b : Set α) : Set α := a ∩ b
+\end{leancode}
+\noindent Anschließend benutzen wir diese, um den Schnitt von mehreren Mengen zu definieren. Die Mengen, von denen der Schnitt gebildet werden soll, ordnen wir in Lean zuerst in einer Liste $x$ an. Dann falten wir die Liste $x$ von links her mit der oben definierten Funktion \lean/intersection/ zusammen.
+\begin{leancode}
+def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
+  x.foldl (intersection α) X
+\end{leancode}
+\noindent Dasselbe führen wir für die Vereinigung von zwei Mengen durch:
+\begin{leancode}
+def union (α : Type) (a b:Set α) :Set α := a ∪ b
 
+def list_union (α : Type) (x : List (Set α)): Set α :=
+  x.foldl (union α) ∅
+\end{leancode}
+%\noindent Zudem definieren wir uns, was wir unter einer rotierten Menge verstehen.
+\noindent Zudem definieren wir uns, was wir unter der Rotation einer Menge verstehen.
+
+\begin{leancode}
+def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
+  {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
+\end{leancode}
+\noindent Ausgehend davon können wir nun die Liste $x'$ an Mengen definieren, die wir erhalten, wenn wir die einzelnen Einträge der Liste $X$ jeweils um eine bestimmte Drehung rotieren. Da wir uns später nur auf die Drehungen aus der freien Gruppe $G$ konzentrieren, beschränken wir uns in der folgenden Definition auf diese. Die Liste $x'$ definieren wir dabei induktiv über die Länge der Liste $x$.
+\begin{leancode}
+def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) 
+(h : x.length = p.length): List (Set r_3) :=
+  match n with
+  | 0 => []
+  | (Nat.succ m) =>
+      have h_new : (remove_first x).length = (remove_first p).length := by
+        rw [remove_first]
+        rw [remove_first]
+        simp
+        rw [h]
+
+      have h_n_new : m = (remove_first x).length := by
+        rw [remove_first]
+        simp
+        exact eq_tsub_of_add_eq h_n
+
+      have h1 : 0 < x.length :=  by
+        exact (Nat.mem_range_succ (List.length x)).mp (Exists.intro m h_n)
+
+      have h2: 0 < p.length := by
+        rw [← h]
+        exact h1
+
+      rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
+                    :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
+\end{leancode}
+%\noindent Damit diese Definition stimmt, nutzen wir unsere eigens definierte Funktion, die den ersten Eintrag einer Liste entfernt und den dabei entstehenden Rest heraus gibt.
+\noindent Um diese Definition übersichtlicher und einfacher lesbar zu machen, haben wir die \lean/remove_first/ Funktion definiert, das erste Element aus einer Liste entfernt und den Rest zurückgibt.
+\begin{leancode}
+def remove_first {α : Type} (x : List α ):List α :=
+  x.tail
+\end{leancode}
+\noindent Nun haben wir alles, was wir für die Definition der Äquidekomponierbarkeit zweier Mengen benötigen.
+\begin{leancode}
+def equidecomposable (X Y : Set r_3) :=
+  ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
+  list_union r_3 Parts_X = X →
+  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) →
+  list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
+\end{leancode}
 \section{Ausblick}
 Mit Satz \ref{lemma1} ist der Beweis des Banach-Tarski-Paradoxons selbstverständlich noch nicht abgeschlossen. Aber wir sind auf einem guten Weg und werden es schaffen. Unser Ziel ist es, im Rahmen dieses Projekts, die hierfür noch notwendigen Sätze und Lemmas zu leanen und so schlussendlich das Banach-Tarksi-Paradoxon in Gänze zu verifizieren. Den fertigen Beweis werden wir dann zur Mathlib beisteuern und so ein kleines Mosaiksteinchen in der Lean-Community sein. 
 
@@ -1042,7 +974,7 @@ Mit Satz \ref{lemma1} ist der Beweis des Banach-Tarski-Paradoxons selbstverstän
 \noindent Daneben wollen wir noch aktiver in der Lean-Community an sich werden und Mitstreitertreffen besuchen. Über das KIT aber auch die Universität Tübingen sind erste Kontakte hergestellt.    
 
 \newpage
-\section{Danksagung}
+\section{Unterstützungsleistungen}
 Ein herzliches Dankeschön an Dr. Jakob von Raumer vom KIT in Karlsruhe, der unsere Fragen zu der Funktionsweise von Lean und der Darstellung grundlegender mathematischer Objekte in Lean bereitwillig beantwortet hat. Er hat uns geholfen, den Überblick in der sehr unübersichtlichen Dokumentation von Lean 4 zu bewahren. \\
 
 \noindent Ein besonderer Dank an unsere Betreuer Noa Bihlmaier, Student an der Universität Tübingen und Helmut Ruf, Lehrer in Tuttlingen. Durch Sie haben wir überhaupt erst von dieser spannenden Welt der Beweissassistenten erfahren. Während der ganzen Zeit haben sie durch regelmäßige Feedback-Runden unser Projekt strukturiert, unterstützt und uns immer wieder motiviert haben, am Ball zu bleiben. \\
