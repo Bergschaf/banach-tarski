@@ -210,6 +210,8 @@ Auf der Suche nach einem spannenden und alltagsnahen mathematischen Satz, der no
 
 \noindent Auf den Punkt gebracht folgt also mit dem Satz von Banach-Tarski unter bestimmten Rahmenbedingungen: \glqq Aus eins mach zwei durch zerschneiden, drehen und wieder zusammen setzen\grqq.
 
+% TODO explizites Ziel 
+
 \section{Material und Methoden}
 
 \subsection{Entwicklungsumgebung}
@@ -222,6 +224,7 @@ Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plug
 \end{figure}
 \vspace{-0.2cm}
 \noindent In Abbildung \ref{Abb sum_up_to} sieht man exemplarisch, wie das Lean4 VS Code Plugin bestimmte Syntax Elemente farblich hervorhebt. Außerdem wird das Ergebnis des Befehls \lean/#eval sum_up_to 4/ direkt berechnet und in dem Fenster rechts angezeigt.
+% TODO evtl. diese Bilder weg und auf Livelean verlinken
 \vspace{-0.2cm}
 \hspace{-0.4cm}
 \begin{figure}[H]
@@ -232,22 +235,24 @@ Als Entwicklungsumgebung verwenden wir VS Code in Kombination mit dem Lean4 Plug
 \end{figure}
 \noindent Die Anzeige des Lean Plugins während eines Beweises ist beispielhaft in Abbildung \ref{Abb Enter Caption} zu erkennen. Es wird der Zwischenstand des Beweises an der Position des Cursors angezeigt. Das ist vor allem bei Beweisen, die mit Taktiken arbeiten, hilfreich.
 
+\subsection{Lean 4 Web}
+Um das schreiben von Lean Programmen einfacher und zugänglicher für Mathematiker, die keine Erfahrung mit Vscode oder Emacs haben, hat die Lean Community den Lean 4 Webeditor entwicklet (TODO Quelle: https://github.com/leanprover-community/lean4web). Auf der Internetseite \href{https://live.lean-lang.org/}{https://live.lean-lang.org/} können im Browser Lean Programme erstellt werden. Ein wichtiges Feature ist die Lean Infoansicht, die wie in Vscode auf der rechten Seite des Bildschirms angezeigt wird. Die Informationen, die dort angezeigt werden, werden im Browser genauso wie in Vscode von einem Lean Language Server erzeugt. Dieser kommuniziert über das Language Server Protocol (TODO Quelle https://microsoft.github.io/language-server-protocol/) mit dem Editor. Dabei werden die Änderungen, die der Nutzer im Programm vornimmt über das LSP an den Language Server geschickt. Dieser überprüft dann das Programm und schickt die Informationen über die Beweise an den Editor, der diese dann anzeigt. Die Lean4 Vscode Erweiterung startet einen Language Server lokal auf dem Computer, auf dem auch Vscode ausgeführt wird.  
+
 \subsection{Mathlib Bibliothek}
-Eines der großen Ziele von Lean ist es, alle Beweise der Mathematik zu formalisieren und so zu überprüfen. Davon ist die Lean-Community zwar noch weit entfernt, aber es sind bereits viele grundlegende mathematische Theoreme und Lemmata aus vielen verschiedenen Bereichen in Lean implementiert. Diese Theoreme und Lemmata sind in der Mathlib \cite{Q10} katalogisiert und können so auch in darauf aufbauenden Beweisen verwendet werden. Die Mathlib wurde ursprünglich in einer älteren Lean3-Version verfasst, ist aber mittlerweile vollständing in Lean4 übersetzt. Außerdem ist sie frei zugänglich, d. h. jeder kann sie in eigenen Lean Projekten verwenden und auch Erweiterungsvorschläge machen.
+Eines der großen Ziele von Lean ist es, alle Beweise der Mathematik zu formalisieren und so zu überprüfen. Davon ist die Lean-Community zwar noch weit entfernt, aber es sind bereits viele grundlegende mathematische Theoreme und Lemmata aus vielen verschiedenen Bereichen in Lean implementiert. Diese Theoreme und Lemmata sind in der Mathlib \cite{Q10} katalogisiert und können so auch in darauf aufbauenden Beweisen verwendet werden. Die Mathlib wurde ursprünglich in einer älteren Lean3-Version verfasst, ist aber mittlerweile vollständing in Lean4 übersetzt. Außerdem ist sie frei zugänglich, d.h. jeder kann sie in eigenen Lean Projekten verwenden und auch Erweiterungsvorschläge machen. 
+
 
 \subsection{Blueprint}
+Um die Formalisierung von Banach-Tarski vorzubereiten und übersichtlicher zu machen verwendet wir eine von uns leicht modifizierte Version des frei zugänglichen leanblueprint Tools (TODO Quelle: https://github.com/PatrickMassot/leanblueprint/). Ein sogenannter Blueprint enthält eine Version des zu formaliserenden Beweises, die in kleinere Teile aufgeteilt und zu dem enstsprechenden Lean Code verknüpft ist. Außerdem wird ein Dependency Graph generiert, der die Verknüpfungen zwischen den vorher in Latex verfassten Definitionen und Lemmata, die für den Beweis benötigt werden, darstellt (TODO link zu unserer Internetseite). Zusätzlich dazu wird aus dem selben Latex Code eine print-Version (Paper???) generiert (TODO link zu paper). Da das leanblueprint Tool ein relativ kleines Projekt ist und von wenigen Entwicklern gepflegt wird, enthielt ein neuer Commit leider einige Fehler die in unserem Fall zu einem unlesbaren und falschen dependency Graph geführt haben. Deshalb haben wir eine Version des leanblueprint Tools erstellt, in der diese Fehler behoben sind (TODO Quelle https://github.com/Bergschaf/leanblueprint). Unser Ziel ist es, diese Bugfixes möglichst bald über eine Pull Request in das offizielle Repository einzubringen.
 
+%& TODO (Quellen oder Beispiel angeben: PFR und Liquid Tensor experiment (https://leanprover-community.github.io/liquid/index.html)) 
 
-
-%&(Quellen oder Beispiel angeben: PFR und Liquid Tensor experiment (https://leanprover-community.github.io/liquid/index.html)) 
-
-TODO Ziel: PR zu offziellem Blueprint repo
-
-\subsection{Versionsverwaltung}
-Wir speichern die Versionen von unseren Lean Programmen in einem Git Repository, das auch auf Github zu finden ist. Git ist der Standart für Versionsverwaltung von größeren Informatikprojekten, die Mathlib verwendet ebenfalls git und ist auf Github hochgeladen.
+% \subsection{Versionsverwaltung}
+% TODO evtl weglassen -> nach dem Motto "wir sind so gut, da ist das selbstverständlich"
+% Wir speichern die Versionen von unseren Lean Programmen in einem Git Repository, das auch auf Github zu finden ist. Git ist der Standart für Versionsverwaltung von größeren Informatikprojekten, die Mathlib verwendet ebenfalls git und ist auf Github hochgeladen.
 
 \section{Erste Ergebnisse und wie man mit Lean arbeitet}
-Bevor wir uns an das Leanen des Banach-Tarski-Paradoxons machten, fangen wir mit kleineren Beispielen an; zunächst mal, um die Arbeitsweisen von Lean zu verstehen. Diese von uns selbst \glqq geleanten\grqq~Beispiele wollen wir dem Leser in den folgenden Unterkapiteln vorstellen, damit man sich selber ein Bild machen kann.  
+Bevor wir uns an die Formalisierung des Banach-Tarski-Paradoxons machen, fangen wir mit kleineren Beispielen an; zunächst mal, um die Arbeitsweisen von Lean zu verstehen. Dieses von uns selbst \glqq geleanten\grqq~Beispiel wollen wir dem Leser im folgenden Unterkapitel vorstellen, damit man sich selber ein Bild machen kann.  
 
 \subsection{Der \glqq kleine Gauß\grqq; Verifikation des Beweises mit Lean}
 \noindent Auch hier besteht die Möglichkeit, zum besseren Verständnis des Beweises durch folgenden Link auf das
@@ -539,6 +544,8 @@ Nachdem wir uns und den Leser durch kleinere Einheiten mit den Prinzipien von Le
 
 
 \subsection{Umsetzung in Lean}
+Damit wir den Beweis des Banach-Tarski-Paradoxons in Lean formalisieren können, müssen wir zunächst einige Anpassungen am Beweis vornehmen. Das liegt vor allem daran, dass Lean Aussagen wie \glqq das ist trivial\grqq~oder \glqq das geht analog\grqq~nicht akzeptiert. Konkret heißt das für uns, dass wir selbstständig zusätzliche Lemmas und Definitionen aufstellen und ggf. auch beweisen müssen. In welchem Ausmaß diese Anpassung notwendig ist, wird besonders in den folgenden Kapiteln klar.
+\subsubsection{Satz über die Darstellung der gedrehten Punkte}
 \noindent Wie bei dem \glqq kleinen Gauß\grqq~und der Definition der komplexen Zahlen in Lean, gibt es auch für diesen Satz einen Live-Lean-Link, um die einzelnen Schritte besser nachvollziehen zu können: 
 \href{https://live.lean-lang.org/#code=import%20Mathlib.Tactic%0D%0Aimport%20Mathlib.GroupTheory.Subgroup.Basic%0D%0Aimport%20Mathlib.Data.Matrix.Notation%0D%0Aimport%20Mathlib.Data.Matrix.Basic%0D%0Aimport%20Mathlib.Data.Nat.Basic%0D%0Aimport%20Mathlib.Data.Real.Basic%0D%0Aimport%20Mathlib.Data.Real.Sqrt%0D%0A%0D%0Aimport%20Mathlib.LinearAlgebra.Matrix.NonsingularInverse%0D%0Aimport%20Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup%0D%0A%0D%0Aimport%20Mathlib.Data.Matrix.Reflection%0D%0A%0D%0Aset_option%20maxHeartbeats%200%0D%0A%0D%0A%0D%0Anoncomputable%20section%0D%0Adef%20CC_matrix_a%20%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2C%200%2C%200%3B%200%2C%201%2F3%2C%20-2%2F3*Real.sqrt%202%3B%200%2C%202%2F3*Real.sqrt%202%2C%201%2F3%5D%0D%0Adef%20CC_matrix_a'%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2C%200%2C%200%3B%200%2C%201%2F3%2C%202%2F3*Real.sqrt%202%3B%200%2C%20-2%2F3*Real.sqrt%202%2C%201%2F3%5D%0D%0Adef%20CC_matrix_b%20%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2F3%2C%20-2%2F3*Real.sqrt%202%2C%200%3B%20(2%2F3*Real.sqrt%202)%2C%201%2F3%2C%200%3B%200%2C%200%2C%201%5D%0D%0Adef%20CC_matrix_b'%20%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%20!!%5B1%2F3%2C%202%2F3*Real.sqrt%202%2C%200%3B%20(-2%2F3*Real.sqrt%202)%2C%201%2F3%2C%200%3B%200%2C%200%2C%201%5D%0D%0Aend%20noncomputable%20section%0D%0A%0D%0A%0D%0Atheorem%20CC_matrix_a_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_a%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_a%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_a'_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_a'%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_a'%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_b_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_b%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_b%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0Atheorem%20CC_matrix_b'_det_neq_zero%20%3A%20Matrix.det%20CC_matrix_b'%20%E2%89%A0%200%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_matrix_b'%5D%0D%0A%20%20rw%20%5BMatrix.det_fin_three%5D%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20rw%20%5BReal.sq_sqrt%5D%0D%0A%20%20norm_num%0D%0A%20%20norm_num%0D%0A%0D%0A%0D%0A%0D%0Anoncomputable%20section%0D%0Adef%20CC_gl_a%20%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_a%20CC_matrix_a_det_neq_zero%0D%0Adef%20CC_gl_a'%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_a'%20CC_matrix_a'_det_neq_zero%0D%0Adef%20CC_gl_b%20%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_b%20CC_matrix_b_det_neq_zero%0D%0Adef%20CC_gl_b'%20%20%3A%20GL%20(Fin%203)%20Real%20%3A%3D%20Matrix.GeneralLinearGroup.mkOfDetNeZero%20CC_matrix_b'%20CC_matrix_b'_det_neq_zero%0D%0Aend%20noncomputable%20section%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_coe_gl_a_eq_matrix_a%20%3A%20%E2%86%91CC_gl_a%20%3D%20CC_matrix_a%20%3A%3D%20by%0D%0A%20%20rfl%0D%0A%0D%0Atheorem%20CC_coe_gl_b_eq_matrix_b%20%3A%20%E2%86%91CC_gl_b%20%3D%20CC_matrix_b%20%3A%3D%20by%0D%0A%20%20rfl%0D%0A%0D%0A%0D%0A%0D%0Adef%20CC_erzeuger%20%3A%20Set%20(GL%20(Fin%203)%20Real)%20%3A%3D%20%7BCC_gl_a%2C%20CC_gl_b%7D%0D%0A%0D%0Adef%20G%20%3A%3D%20Subgroup.closure%20CC_erzeuger%0D%0A%0D%0A%0D%0A%0D%0Aabbrev%20r_3%20%3A%3D%20Fin%203%20-%3E%20%E2%84%9D%0D%0A%0D%0Adef%20CC_rotate%20(p%20%3A%20GL%20(Fin%203)%20Real)%20(vec%20%3A%20r_3)%20%3A%20r_3%20%3A%3D%0D%0A%20%20(p%20%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real).vecMul%20vec%0D%0A%0D%0A%0D%0Adef%20CC_a_b_c_vec%20(a%20b%20c%20%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%20%3A%20r_3%20%3A%3D%0D%0A%20%20%20!%5B1%2F3%5En%20*%20a%20*%20Real.sqrt%202%2C1%2F3%5En%20*%20b%2C1%2F3%5En%20*%20c%20*%20Real.sqrt%202%5D%0D%0A%0D%0A%0D%0Adef%20CC_zero_one_zero%20%3A%20r_3%20%3A%3D%20!%5B0%2C1%2C0%5D%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_case_a%20(x)%20(h%3A%20x%20%3D%20CC_gl_a)%3A%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5Bh%5D%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20%20%20rw%20%5BCC_coe_gl_a_eq_matrix_a%5D%0D%0A%20%20%20%20rw%20%5BCC_matrix_a%5D%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%20-2%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20norm_num%0D%0A%0D%0Atheorem%20CC_case_b%20(x)%20(h%3A%20x%20%3D%20CC_gl_b)%3A%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5Bh%5D%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20rw%20%5BCC_coe_gl_b_eq_matrix_b%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20%20%20rw%20%5BCC_matrix_b%5D%0D%0A%20%20%20%20use%202%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20norm_num%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_s%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(h%20%3A%20x%20%E2%88%88%20CC_erzeuger)%20%3A%0D%0A%20%20%20%E2%88%83%20a%20b%20c%20n%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20cases%20h%20with%0D%0A%20%20%20%20%7C%20inl%20ha%20%3D%3E%0D%0A%20%20%20%20apply%20CC_case_a%0D%0A%20%20%20%20exact%20ha%0D%0A%20%20%20%20%7C%20inr%20hb%20%3D%3E%0D%0A%20%20%20%20%20%20apply%20CC_case_b%0D%0A%20%20%20%20%20%20exact%20hb%0D%0A%0D%0A%0D%0Atheorem%20CC_h_one%20%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%201%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%201%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20use%200%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%0D%0A%0D%0Anoncomputable%20def%20CC_general_word_form%20%20(a%20b%20c%20d%20e%20f%20g%20h%20i%3A%20%E2%84%A4)%20(n%3A%20Nat)%3A%20Matrix%20(Fin%203)%20(Fin%203)%20Real%20%3A%3D%0D%0A%20%20!!%5B(a%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2Cb%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(c%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%3B%0D%0A%20%20%20%20d%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(e%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2C%20f%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%3B%0D%0A%20%20%20%20(g%3A%20Real)%20*%20(1%2F3%20%5E%20n)%2C%20h%20*%20Real.sqrt%202%20*%20(1%2F3%20%5E%20n)%2C%20(i%20%3A%20Real)%20*%20(1%2F3%20%5E%20n)%5D%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_general_word_form_exists%20(x%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20x%20%E2%88%88%20G)%20%3A%0D%0A%20%20%E2%88%83%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n%2C%20x%20%3D%20CC_general_word_form%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n%20%3A%3D%20by%0D%0A%20%20%20%20sorry%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_vec_mul_abc_eq_abc%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(h1%3A%20x%20%E2%88%88%20G)%0D%0A%20%20(h%3A%20%E2%88%83%20j%20k%20l%20%3A%20%E2%84%A4%2C%20%E2%88%83%20i%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20j%20k%20l%20i)%20(a%20b%20c%20%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%20%3A%0D%0A%20%20%E2%88%83%20e%20f%20g%20%3A%20%E2%84%A4%20%2C%20%E2%88%83%20m%20%3A%20Nat%2C%20Matrix.vecMul%20(CC_a_b_c_vec%20a%20b%20c%20n)%20x%20%3D%20CC_a_b_c_vec%20e%20f%20g%20m%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20rcases%20CC_general_word_form_exists%20x%20h1%20with%20%E2%9F%A8a1%2C%20b1%2C%20c1%2C%20d1%2C%20e1%2C%20f1%2C%20g1%2C%20h1%2C%20i1%2Cn1%2C%20h2%E2%9F%A9%0D%0A%20%20rw%20%5Bh2%5D%0D%0A%20%20rw%20%5BCC_general_word_form%5D%0D%0A%20%20simp%0D%0A%20%20use%20a%20*%20a1%20%2B%20b%20*%20d1%20%2B%20c%20*%20g1%0D%0A%20%20use%20a%20*%20b1%20*%202%20%2B%20c%20*%20h1%20*%202%20%2B%20b%20*%20e1%0D%0A%20%20use%20%20a%20*%20c1%20%2B%20b%20*%20f1%20%2B%20c%20*%20i1%0D%0A%20%20use%20n%20%2B%20n1%0D%0A%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20ext%20hx%0D%0A%20%20fin_cases%20hx%0D%0A%0D%0A%20%20simp%0D%0A%20%20ring%0D%0A%0D%0A%20%20simp%0D%0A%20%20ring_nf%0D%0A%20%20simp%0D%0A%20%20norm_num%0D%0A%20%20ring%0D%0A%20%20norm_num%0D%0A%20%20ring%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_mul%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(hx%3A%20x%20%E2%88%88%20G)%20(y%3A%20GL%20(Fin%203)%20Real)%20(hy%3A%20y%20%E2%88%88%20G)%20(h1%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n)%0D%0A(h2%20%3A%E2%88%83%20d%20e%20f%20%3A%20%E2%84%A4%2C%20%E2%88%83%20m%20%3A%20%E2%84%95%2C%20CC_rotate%20y%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20d%20e%20f%20m)%3A%0D%0A%E2%88%83%20g%20h%20i%20%3A%20%E2%84%A4%2C%20%E2%88%83%20o%20%3A%20%E2%84%95%2C%20CC_rotate%20(x*y)%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20g%20h%20i%20o%20%3A%3D%20by%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5B%40Matrix.GeneralLinearGroup.coe_mul%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h1%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h1%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h2%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h2%0D%0A%0D%0A%20%20rcases%20h1%20with%20%E2%9F%A8a%2C%20b%2C%20c%2C%20n%2C%20h1'%E2%9F%A9%0D%0A%20%20rcases%20h2%20with%20%E2%9F%A8e%2C%20f%2C%20g%2C%20m%2C%20h2'%E2%9F%A9%0D%0A%20%20rw%20%5B%E2%86%90%20%40Matrix.vecMul_vecMul%5D%0D%0A%20%20rw%20%5Bh1'%5D%0D%0A%20%20apply%20CC_vec_mul_abc_eq_abc%0D%0A%0D%0A%20%20apply%20hy%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%20%20rw%20%5Bh2'%5D%0D%0A%20%20use%20e%0D%0A%20%20use%20f%0D%0A%20%20use%20g%0D%0A%20%20use%20m%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_general_word_form_abc%20(a%20b%20c%20d%20e%20f%20g%20h%20i%3A%20%E2%84%A4)%20(n%20%3A%20Nat)%3A%0D%0A%20%20%E2%88%83%20l%20m%20o%20p%2C%20Matrix.vecMul%20CC_zero_one_zero%20(CC_general_word_form%20a%20b%20c%20d%20e%20f%20g%20h%20i%20n)%20%3D%0D%0A%20%20%20%20CC_a_b_c_vec%20l%20m%20o%20p%20%3A%3D%20by%0D%0A%20%20%20%20rw%20%5BCC_general_word_form%5D%0D%0A%20%20%20%20use%20d%0D%0A%20%20%20%20use%20e%0D%0A%20%20%20%20use%20f%0D%0A%20%20%20%20use%20n%0D%0A%20%20%20%20rw%20%5BCC_a_b_c_vec%5D%0D%0A%20%20%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20%20%20ext%20h1%0D%0A%20%20%20%20fin_cases%20h1%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%20%20%20%20simp%0D%0A%20%20%20%20ring%0D%0A%0D%0A%0D%0Atheorem%20CC_x_inv_in_g%20(x%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20x%20%E2%88%88%20G)%3A%20x%E2%81%BB%C2%B9%20%E2%88%88%20G%20%3A%3D%20by%0D%0A%20%20exact%20Subgroup.inv_mem%20G%20h%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20CC_h_inv%20(x%20%3A%20GL%20(Fin%203)%20Real)%20(hx%3A%20x%20%E2%88%88%20G)%20%20(h1%3A%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20x%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n)%3A%0D%0A%20%20%E2%88%83%20a%20b%20c%20n%2C%20CC_rotate%20(x%E2%81%BB%C2%B9)%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%20%3A%3D%20by%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%0D%0A%0D%0A%20%20rw%20%5BCC_rotate%5D%20at%20h1%0D%0A%20%20rw%20%5BCC_zero_one_zero%5D%20at%20h1%0D%0A%0D%0A%20%20rcases%20h1%20with%20%E2%9F%A8a%2C%20b%2C%20c%2C%20n%2C%20h1'%E2%9F%A9%0D%0A%20%20simp%0D%0A%0D%0A%20%20rcases%20CC_general_word_form_exists%20(x)%E2%81%BB%C2%B9%20(CC_x_inv_in_g%20x%20hx)%20with%20%E2%9F%A8a1%2C%20b1%2C%20c1%2C%20d1%2C%20e1%2C%20f1%2C%20g1%2Chh1%2C%20%20i1%2C%20n1%2C%20h2%E2%9F%A9%0D%0A%0D%0A%20%20rw%20%5B%E2%86%90%20%40Matrix.coe_units_inv%5D%0D%0A%0D%0A%20%20rw%20%5Bh2%5D%0D%0A%0D%0A%20%20apply%20CC_general_word_form_abc%0D%0A%0D%0A%0D%0A%0D%0A%0D%0Atheorem%20satz_3_1%20(p%3A%20GL%20(Fin%203)%20Real)%20(h%3A%20p%20%E2%88%88%20G)%3A%0D%0A%20%20%20%20%20%20%20%E2%88%83%20a%20b%20c%20%3A%20%E2%84%A4%2C%20%E2%88%83%20n%20%3A%20%E2%84%95%2C%20CC_rotate%20p%20CC_zero_one_zero%20%3D%20CC_a_b_c_vec%20a%20b%20c%20n%3A%3D%0D%0A%20%20Subgroup.closure_induction'%20CC_h_s%20CC_h_one%20CC_h_mul%20CC_h_inv%20h%0D%0A%0D%0A}{live-lean.satz.3.1}\par
 \noindent In diesem Kapitel wollen wir Lemma \ref{lemma1} in Lean beweisen. Hierfür müssen wir vorab die Drehmatrizen $A$ und $B$ sowie deren Inverse in Lean definieren: 
@@ -864,7 +871,68 @@ theorem CC_satz_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
   Subgroup.closure_induction' CC_h_s CC_h_one CC_h_mul CC_h_inv h
 \end{leancode}
 
+\noindent Außer diesem Satz ist es uns außerdem gelungen, die Äquidekomponierbarkeit von zwei beliebigen Mengen $X$ und $Y$ in Lean zu definieren. D. h., dass wir $X$ in eine endliche Anzahl an disjunkten Teilmengen zerlegen können, diese dann jeweils durch Rotationen so verändern können, sodass die Vereinigung der gedrehten Teilmengen die Menge $Y$ ergibt. Bevor uns dies aber gelungen ist, mussten wir vorab aber noch einige Dinge der Übersicht halber definieren. Als erstes definieren wir uns den Schnitt von zwei Mengen $A$ und $B$:
+\begin{leancode}
+def intersection (α : Type) (a b:Set α) :Set α := a ∩ b
+\end{leancode}
+\noindent Anschließend benutzen wir diese, um den Schnitt von mehreren Mengen zu definieren. Die Mengen, von denen der Schnitt gebildet werden soll, ordnen wir in Lean zuerst in einer Liste $x$ an. Dann falten wir die Liste $x$ von links her mit der oben definierten Funktion \lean/intersection/ zusammen.
+\begin{leancode}
+def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
+  x.foldl (intersection α) X
+\end{leancode}
+\noindent Dasselbe führen wir für die Vereinigung von zwei Mengen durch:
+\begin{leancode}
+def union (α : Type) (a b:Set α) :Set α := a ∪ b
 
+def list_union (α : Type) (x : List (Set α)): Set α :=
+  x.foldl (union α) ∅
+\end{leancode}
+\noindent Zudem definieren wir uns, was wir unter einer rotierten Menge verstehen.
+\begin{leancode}
+def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
+  {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
+\end{leancode}
+\noindent Ausgehend davon können wir nun die Liste $x'$ an Mengen definieren, die wir erhalten, wenn wir die einzelnen Einträge der Liste $X$ jeweils um eine bestimmte Drehung rotieren. Da wir uns später nur auf die Drehungen aus der freien Gruppe $G$ konzentrieren, beschränken wir uns in der folgenden Definition auf diese. Die Liste $x'$ definieren wir dabei induktiv über die Länge der Liste $x$.
+\begin{leancode}
+def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) 
+(h : x.length = p.length): List (Set r_3) :=
+  match n with
+  | 0 => []
+  | (Nat.succ m) =>
+      have h_new : (remove_first x).length = (remove_first p).length := by
+        rw [remove_first]
+        rw [remove_first]
+        simp
+        rw [h]
+
+      have h_n_new : m = (remove_first x).length := by
+        rw [remove_first]
+        simp
+        exact eq_tsub_of_add_eq h_n
+
+      have h1 : 0 < x.length :=  by
+        exact (Nat.mem_range_succ (List.length x)).mp (Exists.intro m h_n)
+
+      have h2: 0 < p.length := by
+        rw [← h]
+        exact h1
+
+      rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
+                    :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
+\end{leancode}
+\noindent Damit diese Definition stimmt, nutzen wir unsere eigens definierte Funktion, die den ersten Eintrag einer Liste entfernt und den dabei entstehenden Rest heraus gibt.
+\begin{leancode}
+def remove_first {α : Type} (x : List α ):List α :=
+  x.tail
+\end{leancode}
+\noindent Nun haben wir alles, was wir für die Definition der Äquidekomponierbarkeit zweier Mengen benötigen.
+\begin{leancode}
+def equidecomposable (X Y : Set r_3) :=
+  ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
+  list_union r_3 Parts_X = X →
+  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) →
+  list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
+\end{leancode}
 \section{Ausblick}
 Mit Satz \ref{lemma1} ist der Beweis des Banach-Tarski-Paradoxons selbstverständlich noch nicht abgeschlossen. Aber wir sind auf einem guten Weg und werden es schaffen. Unser Ziel ist es, im Rahmen dieses Projekts, die hierfür noch notwendigen Sätze und Lemmas zu leanen und so schlussendlich das Banach-Tarksi-Paradoxon in Gänze zu verifizieren. Den fertigen Beweis werden wir dann zur Mathlib beisteuern und so ein kleines Mosaiksteinchen in der Lean-Community sein. 
 
@@ -873,7 +941,7 @@ Mit Satz \ref{lemma1} ist der Beweis des Banach-Tarski-Paradoxons selbstverstän
 \noindent Daneben wollen wir noch aktiver in der Lean-Community an sich werden und Mitstreitertreffen besuchen. Über das KIT aber auch die Universität Tübingen sind erste Kontakte hergestellt.    
 
 \newpage
-\section{Danksagung}
+\section{Unterstützungsleistungen}
 Ein herzliches Dankeschön an Dr. Jakob von Raumer vom KIT in Karlsruhe, der unsere Fragen zu der Funktionsweise von Lean und der Darstellung grundlegender mathematischer Objekte in Lean bereitwillig beantwortet hat. Er hat uns geholfen, den Überblick in der sehr unübersichtlichen Dokumentation von Lean 4 zu bewahren. \\
 
 \noindent Ein besonderer Dank an unsere Betreuer Noa Bihlmaier, Student an der Universität Tübingen und Helmut Ruf, Lehrer in Tuttlingen. Durch Sie haben wir überhaupt erst von dieser spannenden Welt der Beweissassistenten erfahren. Während der ganzen Zeit haben sie durch regelmäßige Feedback-Runden unser Projekt strukturiert, unterstützt und uns immer wieder motiviert haben, am Ball zu bleiben. \\
