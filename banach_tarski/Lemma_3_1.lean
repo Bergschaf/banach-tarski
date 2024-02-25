@@ -15,56 +15,6 @@ import Mathlib.Data.Matrix.Reflection
 import banach_tarski.Definitions
 
 
-def coe_gl_one_eq_one : ↑gl_one = 1 := by
-  exact Units.val_eq_one.mp rfl
-
-def coe_gl_a_eq_matrix_a : ↑gl_a = matrix_a := by
-  rfl
-
-def coe_gl_b_eq_matrix_b : ↑gl_b = matrix_b := by
-  rfl
-
-
-noncomputable def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
-   ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
-
-theorem x_inv_in_g (x: GL (Fin 3) Real) (h: x ∈ G): x⁻¹ ∈ G := by
-  exact Subgroup.inv_mem G h
-
-noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
-  !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
-    d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
-    (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
-
-
-theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
-  ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
-    sorry
-
-
-theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
-  ∃ l m o p, Matrix.vecMul zero_one_zero (general_word_form a b c d e f g h i n) =
-    a_b_c_vec l m o p := by
-    rw [general_word_form]
-    use d
-    use e
-    use f
-    use n
-    rw [a_b_c_vec]
-    rw [zero_one_zero]
-
-    ext h1
-    fin_cases h1
-    simp
-    ring
-
-    simp
-    ring
-
-    simp
-    ring
-
-
 theorem adjugate_fin_three (a b c d e f g h i: Real) :
   Matrix.adjugate (Matrix.of ![![a, b, c], ![d, e, f], ![g, h, i]])=
   Matrix.of ![![e * i - f * h, -(b * i) + c * h, b * f - c * e],
@@ -251,6 +201,147 @@ theorem adjugate_fin_three (a b c d e f g h i: Real) :
   repeat
     rw [@Fin.eq_mk_iff_val_eq]
     simp
+
+
+
+def coe_gl_one_eq_one : ↑gl_one = 1 := by
+  exact Units.val_eq_one.mp rfl
+
+def coe_gl_a_eq_matrix_a : ↑gl_a = matrix_a := by
+  rfl
+
+def coe_gl_b_eq_matrix_b : ↑gl_b = matrix_b := by
+  rfl
+
+
+noncomputable def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
+   ![1/3^n * a * Real.sqrt 2,1/3^n * b,1/3^n * c * Real.sqrt 2]
+
+theorem x_inv_in_g (x: GL (Fin 3) Real) (h: x ∈ G): x⁻¹ ∈ G := by
+  exact Subgroup.inv_mem G h
+
+noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
+  !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
+    d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
+    (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
+
+
+def general_word_form_prop (x: GL (Fin 3) Real ) :=
+  ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n
+
+theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x := by sorry
+
+theorem general_word_form_h_1 : general_word_form_prop 1 := by
+  rw [general_word_form_prop]
+  sorry
+
+theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_prop x ->
+    general_word_form_prop y -> general_word_form_prop (x * y) := by
+    intro x y h1 h2
+    rw [general_word_form_prop] at h1
+    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, j, h1'⟩
+
+    rw [general_word_form_prop] at h2
+    rcases h2 with ⟨aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, h2'⟩
+
+    rw [general_word_form_prop]
+
+    rw [@Matrix.GeneralLinearGroup.coe_mul] -- bestes theorem
+
+    rw [h1']
+    rw [h2']
+
+    use 111
+    use 2222
+    use 3333
+    use 4444
+    use 5555
+    use 6555
+    use 7777
+    use 8888
+    use 9999
+    use jj
+
+    repeat rw [general_word_form]
+
+    ext h3 h4
+    fin_cases h3
+    fin_cases h4
+    simp
+
+
+
+
+theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_prop x ->
+    general_word_form_prop (x⁻¹) := by
+    intro x h1
+
+    rw [general_word_form_prop] at h1
+    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, j, h1'⟩
+
+    rw [general_word_form_prop]
+
+    rw [@Matrix.coe_units_inv]
+
+    rw [h1']
+
+    use 111
+    use 2222
+    use 3333
+    use 4444
+    use 5555
+    use 6555
+    use 7777
+    use 8888
+    use 9999
+    use j
+
+    repeat rw [general_word_form]
+
+    rw [Matrix.inv]
+    simp
+    rw [adjugate_fin_three]
+    simp
+    rw [Matrix.det_fin_three]
+    ext h3 h4
+    fin_cases h3
+    fin_cases h4
+    simp
+
+
+
+
+
+
+
+theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
+  general_word_form_prop x :=
+    Subgroup.closure_induction h1 general_word_form_h_k general_word_form_h_1 general_word_form_h_mul general_word_form_h_inv
+
+
+theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
+  ∃ l m o p, Matrix.vecMul zero_one_zero (general_word_form a b c d e f g h i n) =
+    a_b_c_vec l m o p := by
+    rw [general_word_form]
+    use d
+    use e
+    use f
+    use n
+    rw [a_b_c_vec]
+    rw [zero_one_zero]
+
+    ext h1
+    fin_cases h1
+    simp
+    ring
+
+    simp
+    ring
+
+    simp
+    ring
+
+
 
 
 theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_vec a b c n := by
