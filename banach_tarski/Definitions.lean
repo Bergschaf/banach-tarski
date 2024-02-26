@@ -2,11 +2,13 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
 import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Matrix.Basic
 
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 
 import Mathlib.Topology.MetricSpace.PseudoMetric
 
+import Mathlib.GroupTheory.FreeGroup.Basic
 
 set_option maxHeartbeats 0
 
@@ -143,3 +145,26 @@ def L' := L \ {origin}
 def fixpunkt (y: r_3) (p: GL (Fin 3) Real) := rotate p y = y
 
 def D := {w : L' | ∀ p : G, fixpunkt w p}
+
+
+-- Free group
+
+inductive erzeuger_t
+  | gl_a : erzeuger_t
+  | gl_b : erzeuger_t
+  deriving DecidableEq
+
+def G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
+
+def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
+  match i with
+  | (erzeuger_t.gl_a, true) => gl_a
+  | (erzeuger_t.gl_a, false) => gl_a'
+  | (erzeuger_t.gl_b, true) => gl_b
+  | (erzeuger_t.gl_b, false) => gl_b'
+
+
+def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
+  match w with
+  | [] => gl_one
+  | (head::rest) => item_to_matrix head * list_to_matrix rest
