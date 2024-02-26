@@ -76,6 +76,7 @@ def A := {x : r_2 | ∃ n : ℤ, sin_cos n = x}
 lemma cos_sin_neq (n m : ℤ) (h: n ≠ m) : sin_cos n ≠ sin_cos m := by
   repeat rw [sin_cos]
   simp
+  ring_nf
   sorry
 
 def B := S \ A
