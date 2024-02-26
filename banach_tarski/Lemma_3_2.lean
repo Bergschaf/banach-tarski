@@ -3,16 +3,18 @@ import banach_tarski.Lemma_3_1
 
 
 theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat):
-  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> n = 0 := by
+  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> false := by
     rw [zero_one_zero]
 
-    intro h1
+    rw [a_b_c_vec]
 
-    rw [a_b_c_vec] at h1
-    simp at h1
+    rw [rotate]
 
-    rw [rotate] at h1    
-    admit
-    
-    
-  
+
+    rcases general_word_form_exists x h with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, n1, h2⟩
+
+    rw [h2]
+
+    rw [general_word_form]
+    simp
+    -- TODO Funktioniert nicht, weil die Länge beliebig ist, in diesem fall muss
