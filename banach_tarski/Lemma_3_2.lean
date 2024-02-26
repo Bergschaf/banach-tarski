@@ -1,22 +1,24 @@
 import banach_tarski.Lemma_3_1
 #check rotate
 
-variable (n1 : Nat)
 
-theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat) (h4 : n1 > 0):
-  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> false := by
-    rw [zero_one_zero]
-
+theorem freeGroup (x: GL (Fin 3) Real) (h: x ∈ G) (n: Nat):
+  rotate x zero_one_zero = a_b_c_vec 0 (3^n) 0 n -> n > 0 -> false := by
     rw [a_b_c_vec]
 
-    rw [rotate]
 
-    --cases general_word_form_exists x h
-
-    rcases general_word_form_exists x h with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1, n1, h2⟩
-
-    rw [h2]
-
-    rw [general_word_form]
+    rcases lemma_3_1 x h with ⟨a, b, c, nnn, h1⟩
+    have h2 : nnn = n := by
+      sorry
+    rw [h1]
     simp
+    rw [a_b_c_vec]
+    rw [h2]
+    simp
+    ring_nf
+    sorry
+
+
+
     -- TODO Funktioniert nicht, weil die Länge beliebig ist, in diesem fall muss
+    -- TOOD länge eines wortes anhand der abc_form defnieren
