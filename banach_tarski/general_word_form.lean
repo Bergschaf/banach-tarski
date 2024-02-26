@@ -196,7 +196,6 @@ theorem adjugate_fin_three (a b c d e f g h i: Real) :
 --    (g*((1/3) ^ n)) (h * sqrt(2) * (1/3) ^ n) (i*((1/3) ^ n))];
 --D = inv(A)
 
-variable (n m: Nat)
 
 noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
   !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
@@ -205,10 +204,10 @@ noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (
 
 
 
-def general_word_form_prop (x: GL (Fin 3) Real) (n : Nat) :=
-  ∃ a b c d e f g h i, x = general_word_form a b c d e f g h i n
+def general_word_form_prop (x: GL (Fin 3) Real)  :=
+  ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n
 
-theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x n:= by
+theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x := by
   intro x h
   rw [general_word_form_prop]
   cases h with
@@ -223,6 +222,7 @@ theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x n:=
 
     use 0
     use 2
+    use 1
     use 1
 
     rw [general_word_form]
@@ -239,19 +239,19 @@ theorem general_word_form_h_k : ∀ x ∈ erzeuger, general_word_form_prop x n:=
 
 
 
-theorem general_word_form_h_1 : general_word_form_prop 1 n := by
+theorem general_word_form_h_1 : general_word_form_prop 1 := by
   rw [general_word_form_prop]
 
   sorry
 
-theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_prop x n ->
-    general_word_form_prop y n -> general_word_form_prop (x * y) (n + n):= by
+theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_prop x ->
+    general_word_form_prop y -> general_word_form_prop (x * y) := by
     intro x y h1 h2
     rw [general_word_form_prop] at h1
-    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, h1'⟩
+    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, j, h1'⟩
 
     rw [general_word_form_prop] at h2
-    rcases h2 with ⟨aa, bb, cc, dd, ee, ff, gg, hh, ii, h2'⟩
+    rcases h2 with ⟨aa, bb, cc, dd, ee, ff, gg, hh, ii, jj, h2'⟩
 
     rw [general_word_form_prop]
 
@@ -269,6 +269,7 @@ theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_p
     use 7777
     use 8888
     use 9999
+    use jj + j
 
     repeat rw [general_word_form]
 
@@ -303,12 +304,12 @@ theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_p
 
 
 
-theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_prop x n->
-    general_word_form_prop (x⁻¹) n:= by
+theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_prop x ->
+    general_word_form_prop (x⁻¹) := by
     intro x h1
 
     rw [general_word_form_prop] at h1
-    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, h1'⟩
+    rcases h1 with ⟨a, b, c, d, e, f, g, h, i, j, h1'⟩
 
     rw [general_word_form_prop]
 
@@ -325,6 +326,7 @@ theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_pro
     use 7777
     use 8888
     use 9999
+    use j * 2
 
     repeat rw [general_word_form]
 
@@ -348,6 +350,8 @@ theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_pro
 
 
 
-theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) (n : Nat):
-  general_word_form_prop x n :=
-    Subgroup.closure_induction h1 (general_word_form_h_k n) (general_word_form_h_1 n) (general_word_form_h_mul n) (general_word_form_h_inv n)
+
+
+theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
+  general_word_form_prop x :=
+    Subgroup.closure_induction h1 general_word_form_h_k general_word_form_h_1 general_word_form_h_mul general_word_form_h_inv
