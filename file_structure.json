@@ -1,7 +1,9 @@
 {
     "banach_tarski": {
         "Equidecomposable.lean": null,
+        "general_word_form.lean": null,
         "Lemma_3_2.lean": null,
+        "G_countable.lean": null,
         "Orbit.lean": null,
         "Lemma_3_1.lean": null,
         "Definitions.lean": null
