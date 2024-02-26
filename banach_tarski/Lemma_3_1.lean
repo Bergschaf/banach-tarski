@@ -14,6 +14,7 @@ import Mathlib.Data.Matrix.Reflection
 
 import banach_tarski.Definitions
 
+import banach_tarski.general_word_form
 
 def coe_gl_one_eq_one : ↑gl_one = 1 := by
   exact Units.val_eq_one.mp rfl
@@ -30,17 +31,6 @@ noncomputable def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
 
 theorem x_inv_in_g (x: GL (Fin 3) Real) (h: x ∈ G): x⁻¹ ∈ G := by
   exact Subgroup.inv_mem G h
-
-noncomputable def general_word_form  (a b c d e f g h i: ℤ) (n: Nat): Matrix (Fin 3) (Fin 3) Real :=
-  !![(a : Real) * (1/3 ^ n),b * Real.sqrt 2 * (1/3 ^ n), (c : Real) * (1/3 ^ n);
-    d * Real.sqrt 2 * (1/3 ^ n), (e : Real) * (1/3 ^ n), f * Real.sqrt 2 * (1/3 ^ n);
-    (g: Real) * (1/3 ^ n), h * Real.sqrt 2 * (1/3 ^ n), (i : Real) * (1/3 ^ n)]
-
-
-theorem general_word_form_exists (x: GL (Fin 3) Real) (h1: x ∈ G) :
-  ∃ a b c d e f g h i n, x = general_word_form a b c d e f g h i n := by
-    sorry
-
 
 theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
   ∃ l m o p, Matrix.vecMul zero_one_zero (general_word_form a b c d e f g h i n) =
@@ -65,192 +55,6 @@ theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
     ring
 
 
-theorem adjugate_fin_three (a b c d e f g h i: Real) :
-  Matrix.adjugate (Matrix.of ![![a, b, c], ![d, e, f], ![g, h, i]])=
-  Matrix.of ![![e * i - f * h, -(b * i) + c * h, b * f - c * e],
-            ![-(d * i) + f * g, a * i - c * g, -(a * f) + c * d],
-            ![d * h - e * g, -(a * h) + b * g, a * e - b * d]] := by
-
-  ext h1 h2
-  fin_cases h1
-  simp
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  repeat
-    repeat simp
-    repeat rw [if_neg]
-    rw [Pi.single_apply]
-    repeat rw [if_neg]
-    simp
-
-    repeat
-      rw [← ne_eq]
-      rw [@ne_iff_lt_or_gt]
-      right
-      exact Fin.coe_sub_iff_lt.mp rfl
-  ---
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  simp
-  rw [Pi.single_apply]
-  rw [if_neg]
-  simp
-
-  rw [← ne_eq]
-  rw [@ne_iff_lt_or_gt]
-  right
-  exact Fin.coe_sub_iff_lt.mp rfl
-
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-
-  ---
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  simp
-  rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [Pi.single_apply]
-  rw [if_neg]
-  simp
-  --
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  repeat
-    rw [← ne_eq]
-    rw [@ne_iff_lt_or_gt]
-    right
-    exact Fin.coe_sub_iff_lt.mp rfl
-
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  rw [← ne_eq]
-  rw [@ne_iff_lt_or_gt]
-  right
-  exact Fin.coe_sub_iff_lt.mp rfl
-  ---
-  simp
-  repeat rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_pos]
-  rw [if_neg]
-  simp
-  --
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  repeat
-    rw [← ne_eq]
-    rw [@ne_iff_lt_or_gt]
-    right
-    exact Fin.coe_sub_iff_lt.mp rfl
-
-  ---
-  simp
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  simp
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-  ---
-  simp
-
-  repeat rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-
-  ---
-  repeat simp
-  repeat
-    rw [if_pos]
-    rw [if_neg]
-    rw [if_neg]
-
-  repeat rw [Pi.single_apply]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  --
-  simp
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
 
 
 theorem case_one :∃ a b c : ℤ, ∃ n : ℕ, rotate 1 zero_one_zero = a_b_c_vec a b c n := by
@@ -399,5 +203,5 @@ theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
 
 
 theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
-       ∃ a b c : ℤ, ∃ n : ℕ,rotate p zero_one_zero = a_b_c_vec a b c n:=
+       ∃ a b c : ℤ, ∃ n : ℕ, rotate p zero_one_zero = a_b_c_vec a b c n:=
   Subgroup.closure_induction' h_s h_one h_mul h_inv h

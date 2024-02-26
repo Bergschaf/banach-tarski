@@ -63,3 +63,20 @@ def equidecomposable (X Y : Set r_3) :=
   ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
   list_union r_3 Parts_X = X →
   ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
+
+
+--- Äqui Kreis
+
+def S := {x : r_2 | (x 0) ^ 2 + (x 1) ^ 2 = 1} \ {![1,0]}
+
+noncomputable def sin_cos (n : ℤ) : r_2 := ![Real.cos n, Real.sin n]
+
+def A := {x : r_2 | ∃ n : ℤ, sin_cos n = x}
+
+lemma cos_sin_neq (n m : ℤ) (h: n ≠ m) : sin_cos n ≠ sin_cos m := by
+  repeat rw [sin_cos]
+  simp
+  ring_nf
+  sorry
+
+def B := S \ A
