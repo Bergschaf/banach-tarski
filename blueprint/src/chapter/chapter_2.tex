@@ -30,12 +30,21 @@ $G$ bezeichnet die von $A$ und $B$ erzeugte Untergruppe.
 \leanok \lean{G}
 \end{definition}
 
+\begin{lemma}\label{lem:adjugate_fin_three}
+Die adjungierte 3x3 Matrix kann in einer bestimmten Form dargestellt werden...
+\lean{adjugate_fin_three} \leanok
+\end{lemma}
+\begin{proof}
+\leanok 
+\end{proof}
+
+
 \begin{lemma}\label{lem:darst_von_rot_matrix}
 Die Elemente von $G$ können wir durch eine bestimmte Schreibweise darstellen.
 \lean{general_word_form_exists} \leanok
 Matrizen einfügen
 \end{lemma}
-\begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot}
+\begin{proof}\uses{def:konk_rot_erzeugt,def:konk_rot,lem:adjugate_fin_three}
 sorry
 \end{proof}
 
@@ -45,7 +54,7 @@ Wenn $\rho : \mathbb{R}³\Rightarrow\mathbb{R}³$ ein Ausdruck in $G$ der Länge
 $n$ in reduzierter Form ist, dann ist $\rho(0,1,0)$ von der folgenden Form, wobei
 $a, b$ und $c$ ganze Zahlen sind: $\rho(0,1,0)=\frac{1}{3^n}(a\sqrt{2},b,c\sqrt{2})$.
 \end{lemma}
-\begin{proof} \uses {lem:darst_von_rot_matrix}
+\begin{proof} \uses{lem:darst_von_rot_matrix,lem:adjugate_fin_three}
 \leanok Diese Behauptung folgt aus den Erzeugermatrizen
 und durch konkretes Multiplizieren eines reduzierten Wortes an (0,1,0).
 \end{proof}
