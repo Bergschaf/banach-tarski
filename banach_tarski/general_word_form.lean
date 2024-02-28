@@ -1,192 +1,34 @@
 import banach_tarski.Definitions
 import Mathlib.Data.Real.Sqrt
 
-theorem adjugate_fin_three (a b c d e f g h i: Real) :
-  Matrix.adjugate (Matrix.of ![![a, b, c], ![d, e, f], ![g, h, i]])=
-  Matrix.of ![![e * i - f * h, -(b * i) + c * h, b * f - c * e],
-            ![-(d * i) + f * g, a * i - c * g, -(a * f) + c * d],
-            ![d * h - e * g, -(a * h) + b * g, a * e - b * d]] := by
+universe u v w
 
-  ext h1 h2
-  fin_cases h1
-  simp
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  repeat
-    repeat simp
-    repeat rw [if_neg]
-    rw [Pi.single_apply]
-    repeat rw [if_neg]
-    simp
+variable {m : Type u} {n : Type v} {α : Type w}
 
-    repeat
-      rw [← ne_eq]
-      rw [@ne_iff_lt_or_gt]
-      right
-      exact Fin.coe_sub_iff_lt.mp rfl
-  ---
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  simp
-  rw [Pi.single_apply]
-  rw [if_neg]
-  simp
+theorem adjugate_fin_three (A : Matrix (Fin 3) (Fin 3) Real) :
+    Matrix.adjugate A =
+    !![A 1 1 * A 2 2 - A 1 2 * A 2 1,
+      -(A 0 1 * A 2 2) + A 0 2 * A 2 1,
+      A 0 1 * A 1 2 - A 0 2 * A 1 1;
+      -(A 1 0 * A 2 2) + A 1 2 * A 2 0,
+      A 0 0 * A 2 2 - A 0 2 * A 2 0,
+      -(A 0 0 * A 1 2) + A 0 2 * A 1 0;
+      A 1 0 * A 2 1 - A 1 1 * A 2 0,
+      -(A 0 0 * A 2 1) + A 0 1 * A 2 0,
+      A 0 0 * A 1 1 - A 0 1 * A 1 0] := by
 
-  rw [← ne_eq]
-  rw [@ne_iff_lt_or_gt]
-  right
-  exact Fin.coe_sub_iff_lt.mp rfl
+    ext i j
+    rw [Matrix.adjugate_fin_succ_eq_det_submatrix, Matrix.det_fin_two]
+    fin_cases i <;> fin_cases j <;> simp [Matrix.updateRow, Fin.succAbove, Fin.lt_def] <;> ring
 
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
 
-  ---
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  simp
-  rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [Pi.single_apply]
-  rw [if_neg]
-  simp
-  --
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  repeat
-    rw [← ne_eq]
-    rw [@ne_iff_lt_or_gt]
-    right
-    exact Fin.coe_sub_iff_lt.mp rfl
-
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  rw [← ne_eq]
-  rw [@ne_iff_lt_or_gt]
-  right
-  exact Fin.coe_sub_iff_lt.mp rfl
-  ---
-  simp
-  repeat rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_pos]
-  rw [if_neg]
-  simp
-  --
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  rw [@Fin.eq_mk_iff_val_eq]
-  simp
-
-  repeat
-    rw [← ne_eq]
-    rw [@ne_iff_lt_or_gt]
-    right
-    exact Fin.coe_sub_iff_lt.mp rfl
-
-  ---
-  simp
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-
-  rw [Matrix.adjugate_apply]
-  rw [Matrix.det_fin_three]
-  repeat rw [Matrix.updateRow_apply]
-  simp
-  fin_cases h2
-  simp
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_neg]
-  rw [if_pos]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-  ---
-  simp
-
-  repeat rw [if_neg]
-  repeat rw [Pi.single_apply]
-  rw [if_neg]
-  rw [if_pos]
-  rw [if_neg]
-  simp
-  --
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
-
-  ---
-  repeat simp
-  repeat
-    rw [if_pos]
-    rw [if_neg]
-    rw [if_neg]
-
-  repeat rw [Pi.single_apply]
-  rw [if_pos]
-  rw [if_neg]
-  rw [if_neg]
-  --
-  simp
-  repeat
-    rw [@Fin.eq_mk_iff_val_eq]
-    simp
+@[simp]
+theorem adjugate_fin_three_of (a b c d e f g h i: Real) :
+    Matrix.adjugate !![a, b, c; d, e, f; g, h, i] =
+    !![e * i - f * h, -(b * i) + c * h, b * f - c * e;
+     -(d * i) + f * g, a * i - c * g, -(a * f) + c * d;
+      d * h - e * g, -(a * h) + b * g, a * e - b * d] :=
+    adjugate_fin_three _
 
 
 -- Matlab
@@ -301,9 +143,6 @@ theorem general_word_form_h_mul : ∀ x y : GL (Fin 3) Real, general_word_form_p
 
 
 
-
-
-
 theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_prop x ->
     general_word_form_prop (x⁻¹) := by
     intro x h1
@@ -332,8 +171,8 @@ theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_pro
 
     rw [Matrix.inv]
     simp
-    rw [adjugate_fin_three]
-    simp
+    --rw [adjugate_fin_three_of]
+    --simp
     rw [Matrix.det_fin_three]
     simp
     ext h3 h4
@@ -344,6 +183,7 @@ theorem general_word_form_h_inv : ∀ x : GL (Fin 3) Real, general_word_form_pro
     repeat rw [Real.sq_sqrt]
     rw [← sub_mul]
     repeat rw [← sub_mul]
+
     repeat sorry
 
 
