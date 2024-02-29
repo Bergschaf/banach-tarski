@@ -231,6 +231,7 @@ lemma zero_one_zero_abc_form : zero_one_zero = a_b_c_vec 0 1 0 0 := by
 
 
 -- TODO p is the wrong way (or rotate is...) check consistency with paper
+-- Maybe rotate_mul function other way then -> easy proof
 theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p = n):
   ∃ a b c : ℤ, rotate (list_to_matrix p) zero_one_zero = a_b_c_vec a b c n := by
     induction p generalizing n with
@@ -274,7 +275,7 @@ theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p =
                 rw [← h]
                 rw [Nat.succ_eq_add_one]
                 rw [add_comm]
-
+                -- TODO look at todo at the top of this function
 
 
                 --apply (rotate_preserve_abc_vec 0 1 (-2) 1 tail ih)
