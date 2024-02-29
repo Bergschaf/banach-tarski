@@ -92,6 +92,29 @@ theorem h_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate G_one zero_one_zero = a_b_c
 
 variable (x : G_List)
 
+lemma rotate_mul (p1 p2 : GL (Fin 3) Real) (i : r_3) : rotate (p1 * p2) i = rotate p1 (rotate p2 i) := by
+  simp [rotate]
+
+lemma rotate_preserve_gl_a {n : Nat} (i : r_3) (h : ∃ a b c : ℤ, ∃ n, i = a_b_c_vec a b c n) :
+  ∃ a1 b1 c1 : ℤ , rotate gl_a i = a_b_c_vec a1 b1 c1 (n+1) := by
+  simp [rotate]
+  rw [coe_gl_a_eq_matrix_a]
+
+
+
+  /--
+  rcases h with ⟨a, b, c, n, h_r⟩
+  rw [h_r]
+  simp [matrix_a, a_b_c_vec]
+  use a
+  use b
+  use c
+  ext hi
+  fin_cases hi
+  simp-/
+
+
+
 
 theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p = n):
   ∃ a b c : ℤ, rotate (list_to_matrix p) zero_one_zero = a_b_c_vec a b c n := by
@@ -110,7 +133,19 @@ theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p =
 
     | cons head tail ih =>
       cases head with
-      | _ => sorry
+      | mk fst snd =>
+        cases fst
+        cases snd
+        simp [item_to_matrix,list_to_matrix, rotate_mul]
+
+
+
+
+
+
+
+        sorry
+
 
 
 
