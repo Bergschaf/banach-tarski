@@ -130,6 +130,8 @@ def G := Subgroup.closure erzeuger
 
 
 
+
+
 abbrev r_3 := Fin 3 -> ℝ
 abbrev r_2 := Fin 2 -> ℝ
 def zero_one_zero : r_3 := ![0,1,0]
@@ -154,8 +156,7 @@ inductive erzeuger_t
   | gl_b : erzeuger_t
   deriving DecidableEq
 
-def G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
-
+abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
   | (erzeuger_t.gl_a, true) => gl_a
