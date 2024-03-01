@@ -168,7 +168,7 @@ def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
 def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   match w with
   | [] => gl_one
-  | (head::rest) => item_to_matrix head * list_to_matrix rest
+  | (head::rest) =>  list_to_matrix rest * item_to_matrix head
 
 def item_to_int (i : erzeuger_t × Bool) : Nat :=
   match i with
