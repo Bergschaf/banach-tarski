@@ -2,11 +2,13 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
 import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Matrix.Basic
 
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
 
 import Mathlib.Topology.MetricSpace.PseudoMetric
 
+import Mathlib.GroupTheory.FreeGroup.Basic
 
 set_option maxHeartbeats 0
 
@@ -128,6 +130,8 @@ def G := Subgroup.closure erzeuger
 
 
 
+
+
 abbrev r_3 := Fin 3 -> ℝ
 abbrev r_2 := Fin 2 -> ℝ
 def zero_one_zero : r_3 := ![0,1,0]
@@ -143,3 +147,60 @@ def L' := L \ {origin}
 def fixpunkt (y: r_3) (p: GL (Fin 3) Real) := rotate p y = y
 
 def D := {w : L' | ∀ p : G, fixpunkt w p}
+
+
+-- Free group
+
+inductive erzeuger_t
+  | gl_a : erzeuger_t
+  | gl_b : erzeuger_t
+  deriving DecidableEq
+
+abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
+def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
+  match i with
+  | (erzeuger_t.gl_a, true) => gl_a
+  | (erzeuger_t.gl_a, false) => gl_a'
+  | (erzeuger_t.gl_b, true) => gl_b
+  | (erzeuger_t.gl_b, false) => gl_b'
+
+
+def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
+  match w with
+  | [] => gl_one
+  | (head::rest) =>  list_to_matrix rest * item_to_matrix head
+
+def item_to_int (i : erzeuger_t × Bool) : Nat :=
+  match i with
+  | (erzeuger_t.gl_a, true) => 1
+  | (erzeuger_t.gl_a, false) => 2
+  | (erzeuger_t.gl_b, true) => 3
+  | (erzeuger_t.gl_b, false) => 4
+
+
+def map_G_to_Nat (w :  List (erzeuger_t × Bool)) : Nat :=
+  match w with
+  | [] => 0
+  | (head::rest) => item_to_int head + 10 * map_G_to_Nat rest
+
+
+lemma map_G_empty_eq_empty : map_G_to_Nat [] = 0 := by
+  exact rfl
+
+lemma empty_eq_map_empty (a1 : List (erzeuger_t × Bool)) : map_G_to_Nat a1 = 0 -> a1 = [] := by
+  intro h1
+  rw [@List.eq_nil_iff_forall_not_mem]
+  simp
+  intro a
+  sorry
+  --cases a
+
+
+lemma g_countable : Function.Injective map_G_to_Nat := by
+  rw [Function.Injective]
+  intro a1 a2
+  induction a1
+  rw [map_G_empty_eq_empty]
+  sorry
+  intro h1
+  sorry

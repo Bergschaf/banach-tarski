@@ -14,7 +14,7 @@ import Mathlib.Data.Matrix.Reflection
 
 import banach_tarski.Definitions
 
-import banach_tarski.general_word_form
+--import banach_tarski.general_word_form
 
 def coe_gl_one_eq_one : ↑gl_one = 1 := by
   exact Units.val_eq_one.mp rfl
@@ -22,7 +22,13 @@ def coe_gl_one_eq_one : ↑gl_one = 1 := by
 def coe_gl_a_eq_matrix_a : ↑gl_a = matrix_a := by
   rfl
 
+def coe_gl_a_inv_eq_matrix_a_inv : ↑gl_a' = matrix_a' := by
+  rfl
+
 def coe_gl_b_eq_matrix_b : ↑gl_b = matrix_b := by
+  rfl
+
+def coe_gl_b_inv_eq_matrix_b_inv : ↑gl_b' = matrix_b' := by
   rfl
 
 
@@ -31,29 +37,6 @@ noncomputable def a_b_c_vec (a b c : ℤ) (n : Nat) : r_3 :=
 
 theorem x_inv_in_g (x: GL (Fin 3) Real) (h: x ∈ G): x⁻¹ ∈ G := by
   exact Subgroup.inv_mem G h
-
-theorem general_word_form_abc (a b c d e f g h i: ℤ) (n : Nat):
-  ∃ l m o p, Matrix.vecMul zero_one_zero (general_word_form a b c d e f g h i n) =
-    a_b_c_vec l m o p := by
-    rw [general_word_form]
-    use d
-    use e
-    use f
-    use n
-    rw [a_b_c_vec]
-    rw [zero_one_zero]
-
-    ext h1
-    fin_cases h1
-    simp
-    ring
-
-    simp
-    ring
-
-    simp
-    ring
-
 
 
 
@@ -112,96 +95,162 @@ def G_one : G := 1
 theorem h_one : ∃ a b c : ℤ, ∃ n : ℕ, rotate G_one zero_one_zero = a_b_c_vec a b c n := by
   apply case_one
 
-theorem vec_mul_abc_eq_abc (x : GL (Fin 3) Real) (h1: x ∈ G)
-  (h: ∃ j k l : ℤ, ∃ i : ℕ, rotate x zero_one_zero = a_b_c_vec j k l i) (a b c : ℤ) (n : Nat) :
-  ∃ e f g : ℤ , ∃ m : Nat, Matrix.vecMul (a_b_c_vec a b c n) x = a_b_c_vec e f g m := by
-  rw [a_b_c_vec]
-  rcases general_word_form_exists x h1 with ⟨a1, b1, c1, d1, e1, f1, g1, h1, i1,n1, h2⟩
-  rw [h2]
-  rw [general_word_form]
-  simp
-  use a * a1 + b * d1 + c * g1
-  use a * b1 * 2 + c * h1 * 2 + b * e1
-  use  a * c1 + b * f1 + c * i1
-  use n + n1
-  rw [a_b_c_vec]
-  ext hx
-  fin_cases hx
 
-  simp
-  ring
+variable (x : G_List)
 
-  simp
-  ring!
-  simp
-  norm_num
-  ring
-  norm_num
-  ring
+lemma rotate_mul (p1 p2 : GL (Fin 3) Real) (i : r_3) : rotate (p1 * p2) i = rotate p2 (rotate p1 i) := by
+  simp [rotate]
 
 
-theorem h_mul (x : GL (Fin 3) Real) (hx: x ∈ G) (y: GL (Fin 3) Real) (hy: y ∈ G) (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n)
-(h2 :∃ d e f : ℤ, ∃ m : ℕ, rotate y zero_one_zero = a_b_c_vec d e f m):
-∃ g h i : ℤ, ∃ o : ℕ, rotate (x*y) zero_one_zero = a_b_c_vec g h i o := by
-  rw [rotate]
-  rw [@Matrix.GeneralLinearGroup.coe_mul]
-  rw [zero_one_zero]
+lemma rotate_preserve_gl_a (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
+  rotate gl_a i = a_b_c_vec (3 * a1) (b1 + 4 * c1) (-2 * b1 + c1) (n1+1) := by
+  simp [rotate]
+  rw [coe_gl_a_eq_matrix_a]
+  rw [h]
+  simp [matrix_a, a_b_c_vec]
 
-  rw [rotate] at h1
-  rw [zero_one_zero] at h1
+    -- TODO die werte hinter abc_vec anders als im Paper evtl FEHLER im paper
+    -- TODO schon wieder anders
+  ext hi
+  fin_cases hi
+  . simp
+    left
+    ring
+  . simp
+    ring
+    rw [Real.sq_sqrt]
+    simp
+    ring
+    norm_num
+  . simp
+    ring_nf
 
-  rw [rotate] at h2
-  rw [zero_one_zero] at h2
+lemma rotate_preserve_gl_a' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
+  rotate gl_a' i = a_b_c_vec (3 * a1) (b1 - 4 * c1) (2 * b1 + c1) (n1+1) := by
+  simp [rotate]
+  rw [coe_gl_a_inv_eq_matrix_a_inv]
+  rw [h]
+  simp [matrix_a', a_b_c_vec]
 
-  rcases h1 with ⟨a, b, c, n, h1'⟩
-  rcases h2 with ⟨e, f, g, m, h2'⟩
-  rw [← @Matrix.vecMul_vecMul]
-  rw [h1']
-  apply vec_mul_abc_eq_abc
+    -- TODO die werte hinter abc_vec anders als im Paper evtl FEHLER im paper
+    -- TODO schon wieder anders
+  ext hi
+  fin_cases hi
+  . simp
+    left
+    ring
+  . simp
+    ring
+    rw [Real.sq_sqrt]
+    simp
+    ring
+    norm_num
+  . simp
+    ring_nf
 
-  apply hy
+lemma rotate_preserve_gl_b (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
+  rotate gl_b i = a_b_c_vec (a1 + 2 * b1) (-4 * a1 + b1) (3 * c1) (n1+1) := by
+  simp [rotate]
+  rw [coe_gl_b_eq_matrix_b]
+  rw [h]
+  simp [matrix_b, a_b_c_vec]
 
-  rw [rotate]
-  rw [zero_one_zero]
-  rw [h2']
-  use e
-  use f
-  use g
-  use m
+    -- TODO die werte hinter abc_vec anders als im Paper evtl FEHLER im paper
+    -- TODO schon wieder anders
+  ext hi
+  fin_cases hi
+  . simp
+    ring
+  . simp
+    ring
+    rw [Real.sq_sqrt]
+    simp
+    ring
+    norm_num
+  . simp
+    left
+    ring_nf
+
+lemma rotate_preserve_gl_b' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
+  rotate gl_b' i = a_b_c_vec (a1 - 2 * b1) (4 * a1 + b1) (3 * c1) (n1+1) := by
+  simp [rotate]
+  rw [coe_gl_b_inv_eq_matrix_b_inv]
+  rw [h]
+  simp [matrix_b', a_b_c_vec]
+
+    -- TODO die werte hinter abc_vec anders als im Paper evtl FEHLER im paper
+    -- TODO schon wieder anders
+  ext hi
+  fin_cases hi
+  . simp
+    ring
+  . simp
+    ring
+    rw [Real.sq_sqrt]
+    simp
+    ring
+    norm_num
+  . simp
+    left
+    ring_nf
 
 
-def h_inv (x : GL (Fin 3) Real) (hx: x ∈ G)  (h1:∃ a b c : ℤ, ∃ n : ℕ, rotate x zero_one_zero = a_b_c_vec a b c n):
-  ∃ a b c n, rotate (x⁻¹) zero_one_zero = a_b_c_vec a b c n := by
 
-  rw [rotate]
-  rw [zero_one_zero]
+-- TODO p is the wrong way (or rotate is...) check consistency with paper
+-- Maybe rotate_mul function other way then -> easy proof
+theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p = n):
+  ∃ a b c : ℤ, rotate (list_to_matrix p) zero_one_zero = a_b_c_vec a b c n := by
+    induction p generalizing n with
+    | nil =>
+      use 0
+      use 1
+      use 0
+      rw [list_to_matrix]
+      rw [rotate]
+      rw [coe_gl_one_eq_one]
+      simp [zero_one_zero, a_b_c_vec]
+      rw [← h]
+      simp
 
-  rw [rotate] at h1
-  rw [zero_one_zero] at h1
+    | cons head tail ih  =>
+      cases n with
+      | zero => cases h -- contradiction
+      | succ d =>
+          simp at h
+          specialize @ih d h
+          cases head with
+          | mk fst snd =>
+            rcases ih with ⟨a3, b3, c3, h3⟩
+            cases fst
+            . cases snd
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_a' d a3 b3 c3]
+                use 3 * a3
+                use b3 - 4 * c3
+                use 2 * b3 + c3
+                simp [rotate, a_b_c_vec]
 
-  rcases h1 with ⟨a, b, c, n, h1'⟩
-  simp
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_a d a3 b3 c3]
+                use 3 * a3
+                use b3 + 4 * c3
+                use -2 * b3 + c3
+                simp [rotate, a_b_c_vec]
 
-  rcases general_word_form_exists (x)⁻¹ (x_inv_in_g x hx) with ⟨a1, b1, c1, d1, e1, f1, g1,hh1,  i1, n1, h2⟩
-
-  rw [← @Matrix.coe_units_inv]
-
-  rw [h2]
-
-  apply general_word_form_abc
-
-
-theorem h_s (x : GL (Fin 3) Real) (h : x ∈ erzeuger) :
-   ∃ a b c n, rotate x zero_one_zero = a_b_c_vec a b c n := by
-    cases h with
-    | inl ha =>
-    apply case_a
-    exact ha
-    | inr hb =>
-      apply case_b
-      exact hb
-
-
-theorem lemma_3_1 (p: GL (Fin 3) Real) (h: p ∈ G):
-       ∃ a b c : ℤ, ∃ n : ℕ, rotate p zero_one_zero = a_b_c_vec a b c n:=
-  Subgroup.closure_induction' h_s h_one h_mul h_inv h
+            . cases snd
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_b' d a3 b3 c3]
+                use a3 - 2 * b3
+                use 4 * a3 + b3
+                use 3 * c3
+                simp [rotate, a_b_c_vec]
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_b d a3 b3 c3]
+                use a3 + 2 * b3
+                use -4 * a3 + b3
+                use 3 * c3
+                simp [rotate, a_b_c_vec]
