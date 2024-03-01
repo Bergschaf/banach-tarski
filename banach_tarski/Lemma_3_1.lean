@@ -101,6 +101,7 @@ variable (x : G_List)
 lemma rotate_mul (p1 p2 : GL (Fin 3) Real) (i : r_3) : rotate (p1 * p2) i = rotate p2 (rotate p1 i) := by
   simp [rotate]
 
+
 lemma rotate_preserve_gl_a (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
   rotate gl_a i = a_b_c_vec (3 * a1) (b1 + 4 * c1) (-2 * b1 + c1) (n1+1) := by
   simp [rotate]
@@ -193,41 +194,6 @@ lemma rotate_preserve_gl_b' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_
     left
     ring_nf
 
-/--
-lemma rotate_preserve_abc_vec (a b c : ℤ ) (n : ℕ) (p : List (erzeuger_t × Bool)) (h1 :∃ a2 b2 c2 : ℤ, rotate (list_to_matrix p) zero_one_zero = a_b_c_vec a2 b2 c2 p.length):
-    ∃ a1 b1 c1 : ℤ, rotate (list_to_matrix p) (a_b_c_vec a b c n) = a_b_c_vec a1 b1 c1 (n + p.length) := by
-    induction p generalizing n with
-    | nil =>
-      simp [rotate, a_b_c_vec,list_to_matrix, coe_gl_one_eq_one]
-      use a
-      use b
-      use c
-
-    | cons head tail ih  =>
-      simp at ih
-      rcases h1 with ⟨a2, b2, c2, h2⟩
-      cases head with
-      | mk fst snd =>
-        cases fst
-        cases snd
-        simp
-        simp [list_to_matrix, item_to_matrix, rotate_mul]
-
-
-
-
-
-      have h2_tail : rotate (list_to_matrix tail) zero_one_zero =
-          a_b_c_vec a2 b2 c2 (List.length tail) := by
-          sorry
-
-      --apply (ih a2 b2 c2 h2_tail)
-      sorry-/
-
-
-
-lemma zero_one_zero_abc_form : zero_one_zero = a_b_c_vec 0 1 0 0 := by
-  simp [zero_one_zero, a_b_c_vec]
 
 
 -- TODO p is the wrong way (or rotate is...) check consistency with paper
@@ -254,28 +220,37 @@ theorem lemma_3_1 {n : Nat} (p : List (erzeuger_t × Bool))  (h: List.length p =
           specialize @ih d h
           cases head with
           | mk fst snd =>
+            rcases ih with ⟨a3, b3, c3, h3⟩
             cases fst
             . cases snd
               . simp [item_to_matrix,list_to_matrix, rotate_mul]
-                sorry
+                rw [h3]
+                rw [rotate_preserve_gl_a' d a3 b3 c3]
+                use 3 * a3
+                use b3 - 4 * c3
+                use 2 * b3 + c3
+                simp [rotate, a_b_c_vec]
+
               . simp [item_to_matrix,list_to_matrix, rotate_mul]
-                --rcases ih with ⟨a1, b1, c1, h1⟩
-                have ih_2 : ∃ a b c, rotate (list_to_matrix tail) zero_one_zero = a_b_c_vec a b c d := by
-                  apply ih
+                rw [h3]
+                rw [rotate_preserve_gl_a d a3 b3 c3]
+                use 3 * a3
+                use b3 + 4 * c3
+                use -2 * b3 + c3
+                simp [rotate, a_b_c_vec]
 
-                rw [← h] at ih
-                rcases ih_2 with ⟨a3, b3, c3, h3⟩
-                --rw [← h]
-
-
-
-                rw [rotate_preserve_gl_a 0 0 1 0 zero_one_zero zero_one_zero_abc_form]
-                simp
-
-                rw [← h]
-                rw [Nat.succ_eq_add_one]
-                rw [add_comm]
-                -- TODO look at todo at the top of this function
-
-
-                --apply (rotate_preserve_abc_vec 0 1 (-2) 1 tail ih)
+            . cases snd
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_b' d a3 b3 c3]
+                use a3 - 2 * b3
+                use 4 * a3 + b3
+                use 3 * c3
+                simp [rotate, a_b_c_vec]
+              . simp [item_to_matrix,list_to_matrix, rotate_mul]
+                rw [h3]
+                rw [rotate_preserve_gl_b d a3 b3 c3]
+                use a3 + 2 * b3
+                use -4 * a3 + b3
+                use 3 * c3
+                simp [rotate, a_b_c_vec]
