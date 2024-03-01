@@ -14,6 +14,7 @@ import Mathlib.Data.Matrix.Reflection
 
 import banach_tarski.Definitions
 
+#eval 123
 
 lemma coe_gl_one_eq_one : ↑gl_one = 1 := by
   exact Units.val_eq_one.mp rfl
