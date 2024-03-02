@@ -49,7 +49,7 @@ lemma rotate_preserve_gl_a (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c
   ext hi
   fin_cases hi
   . simp
-    left
+    --left
     ring
   . simp
     ring
@@ -72,7 +72,7 @@ lemma rotate_preserve_gl_a' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_
   ext hi
   fin_cases hi
   . simp
-    left
+    --left
     ring
   . simp
     ring
@@ -103,7 +103,7 @@ lemma rotate_preserve_gl_b (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c
     ring
     norm_num
   . simp
-    left
+    --left
     ring_nf
 
 lemma rotate_preserve_gl_b' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_c_vec a1 b1 c1 n1) :
@@ -126,7 +126,7 @@ lemma rotate_preserve_gl_b' (n1 : Nat) (a1 b1 c1 : ℤ)  (i : r_3) (h : i = a_b_
     ring
     norm_num
   . simp
-    left
+    --left
     ring_nf
 
 
