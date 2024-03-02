@@ -6,7 +6,7 @@ def sum_up_to (n : Nat): ℕ :=
     | 0 => 0
     | (Nat.succ n) => sum_up_to n + Nat.succ n
 
-#eval sum_up_to 4
+#eval sum_up_to 512
 
 
 theorem kleiner_gauss (n: Nat) :

@@ -52,11 +52,11 @@ theorem matrix_a_inverse :  matrix_a * matrix_a' = matrix_one := by
   simp
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   ring
   rw [@Matrix.one_fin_three]
   exact rfl
-  norm_num
+  --norm_num
 
 theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   rw [matrix_a]
@@ -65,9 +65,9 @@ theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
   rw [matrix_a']
@@ -76,9 +76,9 @@ theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
   rw [matrix_b]
@@ -87,9 +87,9 @@ theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
   rw [matrix_b']
@@ -98,9 +98,9 @@ theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [matrix_one]
@@ -129,9 +129,6 @@ def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b}
 def G := Subgroup.closure erzeuger
 
 
-
-
-
 abbrev r_3 := Fin 3 -> ℝ
 abbrev r_2 := Fin 2 -> ℝ
 def zero_one_zero : r_3 := ![0,1,0]
@@ -149,6 +146,7 @@ def fixpunkt (y: r_3) (p: GL (Fin 3) Real) := rotate p y = y
 def D := {w : L' | ∀ p : G, fixpunkt w p}
 
 
+def rotationsAchse (p : GL (Fin 3) Real) : true := sorry
 -- Free group
 
 inductive erzeuger_t
@@ -199,8 +197,23 @@ lemma empty_eq_map_empty (a1 : List (erzeuger_t × Bool)) : map_G_to_Nat a1 = 0 
 lemma g_countable : Function.Injective map_G_to_Nat := by
   rw [Function.Injective]
   intro a1 a2
-  induction a1
-  rw [map_G_empty_eq_empty]
-  sorry
-  intro h1
-  sorry
+  induction a1 generalizing a2 with
+  | nil =>
+    simp [map_G_to_Nat]
+    induction a2 with
+    | nil => simp
+    | cons head tail ih =>
+      simp
+      cases head with
+      | mk fst snd =>
+        cases fst
+        cases snd
+        simp [map_G_to_Nat, item_to_int]
+        ring_nf
+        sorry
+        sorry
+        sorry
+
+
+  | cons head tail ih =>
+    sorry
