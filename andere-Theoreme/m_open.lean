@@ -27,15 +27,15 @@ theorem open_iff_complement_closed (M : Set X) :
   rw [iff_def]
 
   have h: is_open_set M -> is_closed_set Mᶜ := by
-  intro h1 x
-  rw [compl_compl]
-  intro hx
-  exact h1 x hx
+    intro h1 x
+    rw [compl_compl]
+    intro hx
+    exact h1 x hx
 
-  have k: is_closed_set Mᶜ -> is_open_set M
-  intro k1 x
-  rw [compl_compl_eq_set M]
-  intro kx
-  exact k1 x kx
+  have k: is_closed_set Mᶜ -> is_open_set M := by
+    intro k1 x
+    rw [compl_compl_eq_set M]
+    intro kx
+    exact k1 x kx
 
   exact { left := h, right := k }
