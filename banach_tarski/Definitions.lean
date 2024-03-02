@@ -52,11 +52,11 @@ theorem matrix_a_inverse :  matrix_a * matrix_a' = matrix_one := by
   simp
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   ring
   rw [@Matrix.one_fin_three]
   exact rfl
-  norm_num
+  --norm_num
 
 theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   rw [matrix_a]
@@ -65,9 +65,9 @@ theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
   rw [matrix_a']
@@ -76,9 +76,9 @@ theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
   rw [matrix_b]
@@ -87,9 +87,9 @@ theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
   rw [matrix_b']
@@ -98,9 +98,9 @@ theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
   norm_num
   ring
   simp
-  rw [Real.sq_sqrt]
+  --rw [Real.sq_sqrt]
   norm_num
-  norm_num
+  --norm_num
 
 theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [matrix_one]
