@@ -1,5 +1,4 @@
 import banach_tarski.Lemma_3_1
-#check rotate
 
 
 theorem freeGroup {n : ℕ} (p : List (erzeuger_t × Bool)) (hn : p.length = n):
