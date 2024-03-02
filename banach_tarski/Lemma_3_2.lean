@@ -17,17 +17,8 @@ theorem freeGroup {n : ℕ} (p : List (erzeuger_t × Bool)) (hn : p.length = n):
         . simp [list_to_matrix, zero_one_zero, item_to_matrix, coe_gl_a_inv_eq_matrix_a_inv]
           rw [rotate_mul]
           sorry
-      simp at hn
-      have hn_ : List.length tail = n - 1 := by
-        exact eq_tsub_of_add_eq hn
-
-      specialize @ih (n -1) hn_
-
-
-
-
-
-
+        . sorry
+        sorry
 
 
 
