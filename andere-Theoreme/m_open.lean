@@ -10,8 +10,6 @@ def is_open_set (M : Set X) : Prop :=
 def is_closed_set (M : Set X) : Prop :=
   is_open_set Mᶜ
 
-#check is_open_set
-
 def is_accumulation_point (x : X) : Prop :=
   ∀ε > 0, ∃ y ∈ M, y ≠ x ∧ Dist.dist y x < ε
 
