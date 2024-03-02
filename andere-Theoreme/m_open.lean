@@ -26,7 +26,7 @@ theorem open_iff_complement_closed (M : Set X) :
   is_open_set M ↔ is_closed_set Mᶜ := by
   rw [iff_def]
 
-  have h: is_open_set M -> is_closed_set Mᶜ
+  have h: is_open_set M -> is_closed_set Mᶜ := by
   intro h1 x
   rw [compl_compl]
   intro hx
