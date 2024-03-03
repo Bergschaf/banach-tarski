@@ -41,12 +41,26 @@ lemma g_countable : Function.Injective map_G_to_Nat := by
       | mk fst snd =>
         cases fst
         cases snd
+        repeat
+          simp [map_G_to_Nat, item_to_int]
+          rw [← ne_eq]
+          rw [ne_iff_lt_or_gt]
+          simp
+        cases snd
         simp [map_G_to_Nat, item_to_int]
-        ring_nf
-        sorry
-        sorry
-        sorry
-
+        left
+        simp
 
   | cons head tail ih =>
-    sorry
+    --simp [map_G_to_Nat, item_to_int]
+    cases head with
+    | mk fst snd =>
+      cases fst
+      cases snd
+      intro h
+      --specialize ih
+      rw [ih rfl]
+
+      sorry
+      sorry
+      sorry
