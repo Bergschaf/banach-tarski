@@ -9,6 +9,12 @@ permissions:
   pages: write
   id-token: write
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
 jobs:
   style_lint:
     name: Lint style
