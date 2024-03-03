@@ -92,6 +92,7 @@ lemma origin_not_in_A : ![1,0,0] ∉ A := by
   
 
 theorem equi_kreis : equidecomposable S (S \ {![1,0,0]}) := by
+    simp [equidecomposable]
     sorry
 
 theorem equi_kugel : equidecomposable L L' := by
