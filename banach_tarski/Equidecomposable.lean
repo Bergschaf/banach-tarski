@@ -73,10 +73,23 @@ def equidecomposable (X Y : Set r_3) :=
 
 --- Äqui Kreis
 
-def S := {x : r_3 | (x 0) = 0 ∧ ((x 1) ^ 2 + (x 2) ^ 2 = 1)}
+def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
 
-theorem equi_kreis (x : r_3) (h_x: x ∈ S) :
-  equidecomposable S (S \ {x}) := by
+def A : Set r_3 := {w : r_3 | ∃ n : ℕ, w = ![Real.cos n, Real.sin n, 0]}
+
+lemma cos_nat_neq_1 : ¬ (∃ n : ℕ, Real.cos n = 1) := by
+  sorry
+
+lemma origin_not_in_A : ![1,0,0] ∉ A := by 
+  
+  intro h
+  simp [A] at h
+  sorry
+  
+  
+  
+
+theorem equi_kreis : equidecomposable S (S \ {![1,0,0]}) := by
     sorry
 
 theorem equi_kugel : equidecomposable L L' := by
