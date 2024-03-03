@@ -146,7 +146,11 @@ def fixpunkt (y: r_3) (p: GL (Fin 3) Real) := rotate p y = y
 def D := {w : L' | ∀ p : G, fixpunkt w p}
 
 
-def rotationsAchse (p : GL (Fin 3) Real) : true := sorry
+
+def rotationsAchse (p : GL (Fin 3) Real) : Set r_3 :=
+  {w : r_3 | fixpunkt w p}
+
+
 -- Free group
 
 inductive erzeuger_t
@@ -155,6 +159,10 @@ inductive erzeuger_t
   deriving DecidableEq
 
 abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
+
+
+
+
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
   | (erzeuger_t.gl_a, true) => gl_a
@@ -167,6 +175,14 @@ def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   match w with
   | [] => gl_one
   | (head::rest) =>  list_to_matrix rest * item_to_matrix head
+
+
+lemma G_in_G_list : ∀ p : G, ∃ l : G_list, p = list_to_matrix l := by
+  simp [G_list, list_to_matrix]
+
+
+lemma G_list_G : ∀ l : G_list, ∃ p : G, p = list_to_matrix l := by
+  sorry
 
 def item_to_int (i : erzeuger_t × Bool) : Nat :=
   match i with
