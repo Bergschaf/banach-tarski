@@ -62,6 +62,7 @@ Bezeichne mit $D$ die Menge aller Punkte in $L'$, welche Fixpunkte der Rotatione
 
 \begin{lemma}[Abzählbarkeit von G] \label{lemma:G_abzaehlbar}
 $G$ ist abzählbar.
+\lean{g_countable} \leanok
 \end{lemma}
 \begin{proof} \uses{def:konk_rot_erzeugt, thm:freie_grp_an_rot}
 Steht noch aus.
@@ -152,6 +153,7 @@ Daher kümmern wir uns nun um den Mittelpunkt.
 
 \begin{lemma}[Äquidekomponierbarkeit Kreis] \label{lemma:aequi_kreis}
 Ein Kreis ist äquidekomponierbar mit einem Kreis ohne einen bestimmten Punkt.
+\lean{equi_kreis} \leanok
 \end{lemma}
 \begin{proof} \uses{def:aequidekomponierbar}
 Wir kümmern uns um den Einheitskreis $S¹=\{(x,y):x²+y²=1\}$ ohne ${(1,0)}$. Wir verwenden den Einheitskreis, um die Notation einfacher zu halten; 
@@ -166,6 +168,7 @@ $S¹\backslash \{(1,0)\}=A\cup B$ äquidekomponierbar mit $A'\cup B=S¹$.
 
 \begin{theorem}[Äquidekomponierbarkeit Kugel] \label{theorem:aequi_kugel}
 Eine Kugel ohne ihren Mittelpunkt ist äquidekomponierbar mit der vollständigen Kugel.
+\lean{equi_kugel} \leanok
 \end{theorem}
 \begin{proof} \uses{lemma:aequi_kreis}
 Die Konstruktion eines Kreises im Inneren der Kugel, welcher den Mittelpunkt der Kugel beinhaltet, liefert zusammen mit Lemma \ref{lemma:äqui_kreis},
