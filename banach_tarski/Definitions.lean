@@ -177,12 +177,12 @@ def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   | (head::rest) =>  list_to_matrix rest * item_to_matrix head
 
 
-lemma G_in_G_list : ∀ p : G, ∃ l : G_list, p = list_to_matrix l := by
-  simp [G_list, list_to_matrix]
+--lemma G_in_G_list : ∀ p : G, ∃ l : G_list, p = list_to_matrix l := by
+--  simp [G_list, list_to_matrix]
 
 
-lemma G_list_G : ∀ l : G_list, ∃ p : G, p = list_to_matrix l := by
-  sorry
+--lemma G_list_G : ∀ l : G_list, ∃ p : G, p = list_to_matrix l := by
+--  sorry
 
 def item_to_int (i : erzeuger_t × Bool) : Nat :=
   match i with
