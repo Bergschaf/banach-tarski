@@ -65,32 +65,19 @@ def equidecomposable (X Y : Set r_3) :=
   ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
 
 
+
+
+
+
+
+
 --- Äqui Kreis
 
-def S := {x : r_2 | (x 0) ^ 2 + (x 1) ^ 2 = 1}
+def S := {x : r_3 | (x 0) = 0 ∧ ((x 1) ^ 2 + (x 2) ^ 2 = 1)}
 
-noncomputable def sin_cos (n : ℤ) : r_2 := ![Real.cos n, Real.sin n]
+theorem equi_kreis (x : r_3) (h_x: x ∈ S) :
+  equidecomposable S (S \ {x}) := by
+    sorry
 
-def A := {x : r_2 | ∃ n : ℤ, sin_cos n = x}
-
-lemma cos_sin_neq (n m : ℤ) (h: n ≠ m) : sin_cos n ≠ sin_cos m := by
-  repeat rw [sin_cos]
-  simp
-  ring_nf
-  sorry
-
-def B := (S \ {![1,0]}) \ A
-
-def rotate_2d_set (s : Set r_2) (angle : ℝ) (punkt : r_2) : Set r_2 :=
-  sorry
-
-def A' := rotate_2d_set A (-1) ![0,0]
-
-theorem A'_covers_missing_point : A' = A ∪ {![0,0]} := by
-  sorry
-
-lemma s_without_point_eq_a_u_b : S \ {![0,0]} = A ∪ B := by
-  sorry
-
-lemma s_eq_a'_u_b : S = A' ∪ B := by
+theorem equi_kugel : equidecomposable L L' := by
   sorry
