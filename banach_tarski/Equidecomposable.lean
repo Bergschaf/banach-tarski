@@ -84,8 +84,8 @@ def A : Set r_3 := {w : r_3 | ∃ n : ℕ,n > 0 -> w = ![sq_2 * n, sq_2 * n, 0]}
 def B : Set r_3 := (S \ {![1,0,0]}) \ A
 
 lemma cos_nat_neq_1 {n : ℕ} (hn : n > 0): ¬ (∃ n, sq_2 * n = 1) := by
-  intro h1
-  simp [Real.cos_eq_one_iff, Irrational.ne_nat] at h1
+  simp [sq_2]
+  
   
   ry
 
