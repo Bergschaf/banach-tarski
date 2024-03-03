@@ -3,6 +3,8 @@ import Mathlib.Data.List.Basic
 import banach_tarski.Definitions
 import banach_tarski.Lemma_3_1
 
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Data.Real.Irrational
 
 def intersection (α : Type) (a b:Set α) :Set α := a ∩ b
 
@@ -75,12 +77,17 @@ def equidecomposable (X Y : Set r_3) :=
 
 def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
 
-def A : Set r_3 := {w : r_3 | ∃ n : ℕ, w = ![Real.cos n, Real.sin n, 0]}
+noncomputable def sq_2 : Real := Real.sqrt 2
+
+def A : Set r_3 := {w : r_3 | ∃ n : ℕ,n > 0 -> w = ![sq_2 * n, sq_2 * n, 0]}
 
 def B : Set r_3 := (S \ {![1,0,0]}) \ A
 
-lemma cos_nat_neq_1 : ¬ (∃ n : ℕ, Real.cos n = 1) := by
-  sorry
+lemma cos_nat_neq_1 {n : ℕ} (hn : n > 0): ¬ (∃ n, sq_2 * n = 1) := by
+  intro h1
+  simp [Real.cos_eq_one_iff, Irrational.ne_nat] at h1
+  
+  ry
 
 lemma origin_not_in_A : ![1,0,0] ∉ A := by 
   
