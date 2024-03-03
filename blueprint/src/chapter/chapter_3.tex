@@ -7,7 +7,7 @@ Sei $L=\{(x,y,z):x²+y²+z²\leq1\}$ die Einheitskugel. Wir definieren $L'=L\bac
 \leanok
 \end{definition}
 
-\begin{definition}[Orbit] \label{def:orbit} \uses{lem:darst_von_rot_res,thm:freie_grp_an_rot}
+\begin{definition}[Orbit] \label{def:orbit} \uses{def:konk_rot_erzeugt}
 Zwei Punkte $a$ und $b$ gehören zum selben Orbit, genau dann, wenn ein $\rho$ in $G$ existiert, sodass $\rho(a)=b$ gilt.
 \leanok \lean{same_orbit}
 \end{definition}
@@ -63,16 +63,15 @@ Bezeichne mit $D$ die Menge aller Punkte in $L'$, welche Fixpunkte der Rotatione
 \begin{lemma}[Abzählbarkeit von G] \label{lemma:G_abzaehlbar}
 $G$ ist abzählbar.
 \end{lemma}
-\begin{proof} \uses{def:konk_rot_erzeugt}
+\begin{proof} \uses{def:konk_rot_erzeugt, thm:freie_grp_an_rot}
 Steht noch aus.
 \end{proof}
 
-\begin{lemma}[Genau eine Rotationsachse] \label{lemma:eine_rot_achse}
+\begin{definition}[Genau eine Rotationsachse] \label{lemma:eine_rot_achse}
 Jede Rotation in $G$ hat genau eine Rotationsachse.
-\end{lemma}
-\begin{proof} \uses{def:konk_rot_erzeugt,def:konk_rot}
-Steht noch aus.
-\end{proof}
+\lean{rotationsAchse} \leanok \uses{def:konk_rot_erzeugt,def:konk_rot}
+\end{definition}
+
 
 \begin{lemma}[Abzählbarkeit Fixpunkte] \label{lemma:abz_fixpunkte}
 Die Punkte in $D$ liegen auf abzählbar vielen Linien.

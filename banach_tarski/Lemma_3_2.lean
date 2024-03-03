@@ -1,8 +1,8 @@
 import banach_tarski.Lemma_3_1
 
-
+/--
 theorem freeGroup {n : ℕ} (p : List (erzeuger_t × Bool)) (hn : p.length = n):
-  rotate (list_to_matrix p) zero_one_zero = zero_one_zero -> n = 0 := by
+  rotate (list_to_matrix p) zero_one_zero = zero_one_zero -> list_to_matrix p = gl_one := by
     induction p generalizing n with
     | nil =>
       simp [rotate, zero_one_zero, list_to_matrix, coe_gl_one_eq_one]
@@ -23,4 +23,4 @@ theorem freeGroup {n : ℕ} (p : List (erzeuger_t × Bool)) (hn : p.length = n):
 
 
     -- TODO Funktioniert nicht, weil die Länge beliebig ist, in diesem fall muss
-    -- TOOD länge eines wortes anhand der abc_form defnieren
+    -- TOOD länge eines wortes anhand der abc_form defnieren-/
