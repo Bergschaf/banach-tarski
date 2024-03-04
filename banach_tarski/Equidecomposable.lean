@@ -12,7 +12,7 @@ def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
   x.foldl (intersection α) X
 
 
-def union (α : Type) (a b:Set α) :Set α := a ∪ b
+def union (α : Type) (a b : Set α) :Set α := a ∪ b
 
 def list_union (α : Type) (x : List (Set α)): Set α :=
   x.foldl (union α) ∅
@@ -74,30 +74,48 @@ def equidecomposable (X Y : Set r_3) :=
 
 
 --- Äqui Kreis
+noncomputable def sq_2 : Real := Real.sqrt 2
+
+
+theorem pi_sqrt_two : ¬ (∃ x : ℚ, Real.pi = x * sq_2) := by
+  simp
+  intro h1
+
+  intro h2
+  sorry
+
+
 
 def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
 
-noncomputable def sq_2 : Real := Real.sqrt 2
 
-def A : Set r_3 := {w : r_3 | ∃ n : ℕ,n > 0 -> w = ![sq_2 * n, sq_2 * n, 0]}
+def A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![Real.cos (n * sq_2),Real.sin (n * sq_2),0]} -- TODO
 
 def B : Set r_3 := (S \ {![1,0,0]}) \ A
 
-lemma cos_nat_neq_1 {n : ℕ} (hn : n > 0): ¬ (∃ n, sq_2 * n = 1) := by
+lemma sqrt_two_mul_pos_nat_neq_1: ¬ (∃ n : {x : ℕ | x > 0} , Real.cos (n * sq_2) = 1) := by
   simp [sq_2]
-  
-  
-  ry
-
-lemma origin_not_in_A : ![1,0,0] ∉ A := by 
-  
+  intro m
+  rw [← ne_eq]
   intro h
-  simp [A] at h
-  sorry
-  
-  
-  
 
+  apply Irrational.ne_one
+  sorry
+
+lemma origin_not_in_A : ![1,0,0] ∉ A := by
+  simp [A]
+  sorry
+
+
+
+
+/--
+Neue Beweisidee
+A = {Alle punkte auf dem Kreis im abstand von sqrt 2 ohne [1,0]}
+Wir rotieren A um den Urprung um (- sqrt 2) Einheiten -> A'
+der erste Punkt aus A wird auf [1,0] abgebildet
+alle punkte aus A sind in A'
+-/
 theorem equi_kreis : equidecomposable S (S \ {![1,0,0]}) := by
     simp [equidecomposable]
     sorry

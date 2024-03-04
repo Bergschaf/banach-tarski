@@ -160,9 +160,6 @@ inductive erzeuger_t
 
 abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
 
-
-
-
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
   | (erzeuger_t.gl_a, true) => gl_a
