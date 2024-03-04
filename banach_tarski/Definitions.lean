@@ -126,7 +126,7 @@ end noncomputable section
 
 def erzeuger : Set (GL (Fin 3) Real) := {gl_a, gl_b}
 
-def G := Subgroup.closure erzeuger
+--def G := Subgroup.closure erzeuger
 
 
 abbrev r_3 := Fin 3 -> ℝ
@@ -143,7 +143,7 @@ def L' := L \ {origin}
 
 def fixpunkt (y: r_3) (p: GL (Fin 3) Real) := rotate p y = y
 
-def D := {w : L' | ∀ p : G, fixpunkt w p}
+--def D := {w : L' | ∀ p : G, fixpunkt w p}
 
 
 
@@ -172,6 +172,11 @@ def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   match w with
   | [] => gl_one
   | (head::rest) =>  list_to_matrix rest * item_to_matrix head
+
+
+def G : Set (GL (Fin 3) Real) := {w : GL (Fin 3) Real | ∃ p : G_list, list_to_matrix p = w}
+
+
 
 
 --lemma G_in_G_list : ∀ p : G, ∃ l : G_list, p = list_to_matrix l := by

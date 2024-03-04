@@ -18,14 +18,6 @@ def map_G_to_Nat (w :  List (erzeuger_t × Bool)) : Nat :=
 lemma map_G_empty_eq_empty : map_G_to_Nat [] = 0 := by
   exact rfl
 
-lemma empty_eq_map_empty (a1 : List (erzeuger_t × Bool)) : map_G_to_Nat a1 = 0 -> a1 = [] := by
-  intro h1
-  rw [@List.eq_nil_iff_forall_not_mem]
-  simp
-  intro a
-  sorry
-  --cases a
-
 
 lemma g_countable : Function.Injective map_G_to_Nat := by
   rw [Function.Injective]
@@ -53,6 +45,61 @@ lemma g_countable : Function.Injective map_G_to_Nat := by
 
   | cons head tail ih =>
     --simp [map_G_to_Nat, item_to_int]
+    --simp [map_G_to_Nat, item_to_int]
+    induction a2 with
+    | nil =>
+      simp [map_G_to_Nat, item_to_int]
+      cases head with
+      | mk fst snd =>
+        cases fst <;> cases snd <;> simp
+
+    | cons head1 tail1 ih1 =>
+      induction tail with
+      | nil => sorry
+      | cons head tail ih => sorry
+
+
+
+
+
+
+def f := "Hello WOrld"
+
+
+    /-
+      cases head with
+      | mk fst snd =>
+        cases head1 with
+        | mk fst1 snd1 =>
+          cases fst
+          cases fst1
+          cases snd
+          cases snd1
+          simp [map_G_to_Nat, item_to_int]
+          simp [map_G_to_Nat, item_to_int] at h
+          simp [map_G_to_Nat, item_to_int] at ih1
+          rw [ih]
+          exact h
+          -------
+          --specialize @ih tail1
+          specialize @ih1 tail1
+
+
+          simp [map_G_to_Nat, item_to_int] at h
+          simp [map_G_to_Nat, item_to_int] at ih1
+          --rw [ih1]
+          rw [ih]
+          rw [ih1]
+
+
+
+
+
+
+
+
+
+    /-
     cases head with
     | mk fst snd =>
       cases fst
@@ -60,7 +107,5 @@ lemma g_countable : Function.Injective map_G_to_Nat := by
       intro h
       --specialize ih
       rw [ih rfl]
-
-      sorry
-      sorry
-      sorry
+      repeat sorry
+      --- TODO use something in the FreeGroup file that proves this-/
