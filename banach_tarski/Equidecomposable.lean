@@ -149,10 +149,49 @@ der erste Punkt aus A wird auf [1,0] abgebildet
 alle punkte aus A sind in A'
 -/
 noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
+lemma rot_sq_2_det_ne_zero : Matrix.det rot_sq_2 ≠ 0 := by
+  simp [rot_sq_2, Matrix.det_fin_three, sq_2]
+  rw [← Real.cos_add]
+  sorry
+noncomputable def gl_sq_2 : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero rot_sq_2 rot_sq_2_det_ne_zero
+lemma coe_gl_sq_2_eq_rot_sq_2 : ↑gl_sq_2 = rot_sq_2 := by
+  rfl
 
 theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
-  simp [equidecomposable]
+  rw [equidecomposable]
   use [A, B]
+  simp
+  apply And.intro
+  --
+  simp [list_intersection, intersection, S, A, B]
+  sorry -- TODO this is all true, but just takes long to compile
+  --unhygienic ext
+  --simp_all only [Set.mem_inter_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_exists, not_and,
+  --  Set.mem_empty_iff_false, iff_false, and_self, not_false_eq_true, true_and, not_forall, not_not, exists_prop,
+  --  and_imp, forall_exists_index, implies_true, forall_const]
+  ---
+  apply And.intro
+  simp [list_union, union, A, B, S]
+  sorry
+  ---
+  simp [list_union, union, A, B, S, rotate_list, rotate_set, remove_first, rotate]
+  use [gl_sq_2, gl_one]
+  simp
+  simp [coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
+  refine (Set.ext ?h.h).symm
+  intro x
+  simp
+  apply Iff.intro
+  --
+  intro a
+  simp_all only [Matrix.head_cons, Matrix.tail_cons]
+  unhygienic with_reducible aesop_destruct_products
+  apply Or.inr
+  apply Exists.intro
+  intro a a_1 a_2 a_3
+  apply Eq.refl
+  ---
+  sorry
 
 
 
