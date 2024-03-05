@@ -6,16 +6,23 @@ import banach_tarski.Lemma_3_1
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Real.Irrational
 
-def intersection (α : Type) (a b:Set α) :Set α := a ∩ b
+--def get_pair {α : Type} (l : List α) (h: 1 < l.length): (α × α) := (l.get {val:=0, isLt:=by exact Nat.zero_lt_of_lt h}, l.get {val:=1, isLt:=h})
 
-def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
-  x.foldl (intersection α) X
+--def unique_pairs {α : Type} (l : List α) : List (α × α) :=
+--  match l.length with
+--  | 0 => []
+--  | 1 => []
+--  | n => l.permutations.map get_pair
 
+def intersection (α : Type) (a : (Set α × Set α)) :Set α := a.1 ∩ a.2
 
 def union (α : Type) (a b : Set α) :Set α := a ∪ b
 
 def list_union (α : Type) (x : List (Set α)): Set α :=
   x.foldl (union α) ∅
+
+def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
+  list_union α ((x.product x).map (intersection α)) -- false
 
 
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
@@ -66,10 +73,22 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n
 --  list_union r_3 Parts_X = X →
 --  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
 
+-- TODO list intersection has to check pairwise
 def equidecomposable (X Y : Set r_3) : Prop :=
   ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X X = ∅ ∧
   list_union r_3 Parts_X = X ∧
    list_union r_3 (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) = Y
+
+/--blueprint-/
+lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
+  simp [equidecomposable, list_intersection]
+  use [X]
+  simp [list_union,]
+
+
+lemma equidecomposable_subset (X Y : Set r_3) :
+  ∃ X₁ X₂ Y₁ Y₂, X₁ ∪ X₂ = X -> Y₁ ∪ Y₂ = Y -> X₁ = Y₁ -> equidecomposable X₂ Y₂ ->
+    equidecomposable X Y := by sorry
 
 
 --- Äqui Kreis
@@ -194,9 +213,5 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   sorry
 
 
-
-
-
-
 theorem equi_kugel : equidecomposable L L' := by
-  sorry
+  rw [equidecomposable]
