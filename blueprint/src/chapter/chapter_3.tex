@@ -74,10 +74,10 @@ Jede Rotation in $G$ hat genau eine Rotationsachse.
 \end{definition}
 
 
-\begin{lemma}[Abzählbarkeit Fixpunkte] \label{lemma:abz_fixpunkte}
-Die Punkte in $D$ liegen auf abzählbar vielen Linien.
+\begin{lemma}[Abzählbarkeit Rotationsachsen] \label{lemma:abz_rot_achsen}
+Die Rotationsachsen liegen auf abzählbar vielen Linien.
 \end{lemma}
-\begin{proof} \uses{def:menge_fixpunkte,lemma:G_abzaehlbar,lemma:eine_rot_achse}
+\begin{proof} \uses{def:menge_fixpunkte,lemma:G_abzaehlbar,lemma:eine_rot_achse, lemma:abz_menge_rep_punkte}
 Steht noch aus.
 \end{proof}
 
@@ -91,40 +91,49 @@ Steht noch aus.
 Daher kann fast jeder Punkt in $L'$ durch eine bestimmte Rotation erreicht werden. Wir betrachten nun zunächst eine 
 Zerlegung von $L'\backslash D$ und kümmern uns später um die Fixpunkte.
 
-\begin{definition}[Vereinigung X] \label{def:vereinigung_x} \uses{def:menge_rep_punkte,def:konk_rot}
-$X=\bigcup\limits_{k=1}^{\infty}A^{-k}M$. $X$ ist also die Menge aller Elemente von $M$, welche ausschließlich aus Rotationen
-um $A^{-1}$ bestehen.
-\end{definition}
+%\begin{definition}[Vereinigung X] \label{def:vereinigung_x} \uses{def:menge_rep_punkte,def:konk_rot}
+%$X=\bigcup\limits_{k=1}^{\infty}A^{-k}M$. $X$ ist also die Menge aller Elemente von $M$, welche ausschließlich aus Rotationen
+%um $A^{-1}$ bestehen.
+%\end{definition}
 
-\begin{definition}[Zerlegung in Mengen] \label{def:zerlegung_L_D} \uses{def:menge_rep_punkte,def:vereinigung_x,def:konk_rot}
-$P_1=S(A)M\cup M\cup X$
-$P_2=S(A^{-1})M\backslash X$
-$P_3=S(B)M$
-$P_4=S(B^{-1})M$
-\end{definition}
+%\begin{definition}[Zerlegung in Mengen] \label{def:zerlegung_L_D} \uses{def:menge_rep_punkte,def:vereinigung_x,def:konk_rot}
+%P_1=S(A)M\cup M\cup X$
+%$P_2=S(A^{-1})M\backslash X$
+%$P_3=S(B)M$
+%$P_4=S(B^{-1})M$
+%\end{definition}
 
-\begin{lemma}[Vereinigung der Zerlegung] \label{lemma:vereinigung_zerlegung}
-$L'\backslash D=P_1\cup P_2\cup P_3\cup P_4$
+%\begin{lemma}[Vereinigung der Zerlegung] \label{lemma:vereinigung_zerlegung}
+%$L'\backslash D=P_1\cup P_2\cup P_3\cup P_4$
+%\end{lemma}
+%\begin{proof} \uses{def:zerlegung_L_D,def:menge_fixpunkte,def:kugel_ohne_mittelpunkt}
+%Steht noch aus.
+%\end{proof}
+
+%\begin{lemma}[Drehung zerlegte Mengen] \label{lemma:rot_zerlegte_mengen}
+%$AP_2=P_2\cup P_3\cup P_4$
+%$BP_4=P_1\cup P_2\cup P_4$
+%\end{lemma}
+%\begin{proof} \uses{def:zerlegung_L_D,def:konk_rot}
+%Steht noch aus.
+%\end{proof}
+
+%\begin{lemma}[Verdopplung L' \\D] \label{lemma:verdopplung_L_D}
+%$L'\backslash D=P_1\cup AP_2$
+%$L'\backslash D=P_3\cup BP_4$
+%\end{lemma}
+%\begin{proof} \uses{lemma:rot_zerlegte_mengen,lemma:vereinigung_zerlegung}
+%Steht noch aus.
+%\end{proof}
+
+\begin{lemma}[Abzählbarkeit der repräsentativen Punkte] \label{lemma:abz_menge_rep_punkte}
+Die Menge der Repräsentativen Punkte ist abzählbar.
+\uses{def:menge_rep_punkte}
 \end{lemma}
-\begin{proof} \uses{def:zerlegung_L_D,def:menge_fixpunkte,def:kugel_ohne_mittelpunkt}
-Steht noch aus.
+\begin{proof}
+    TODO
 \end{proof}
 
-\begin{lemma}[Drehung zerlegte Mengen] \label{lemma:rot_zerlegte_mengen}
-$AP_2=P_2\cup P_3\cup P_4$
-$BP_4=P_1\cup P_2\cup P_4$
-\end{lemma}
-\begin{proof} \uses{def:zerlegung_L_D,def:konk_rot}
-Steht noch aus.
-\end{proof}
-
-\begin{lemma}[Verdopplung L' \\D] \label{lemma:verdopplung_L_D}
-$L'\backslash D=P_1\cup AP_2$
-$L'\backslash D=P_3\cup BP_4$
-\end{lemma}
-\begin{proof} \uses{lemma:rot_zerlegte_mengen,lemma:vereinigung_zerlegung}
-Steht noch aus.
-\end{proof}
 
 Nun haben wir eine Zerlegung, welche uns erlaubt, die Kugel bis auf ihren Mittelpunkt und den Punkte auf den Rotationsachsen zu duplizieren.
 
@@ -139,7 +148,7 @@ Rotationen und Translationen zu $D$ wieder zusammengefügt werden können.
 \begin{lemma}[Äquidekomponierbarkeit von L'\\D und L'] \label{lem:aequidekomponierbarkeit}
 $L'\backslash D$ und $L'$ sind Äquidekomponierbar
 \end{lemma}
-\begin{proof}\uses{def:aequidekomponierbar,lemma:abz_fixpunkte}
+\begin{proof}\uses{def:aequidekomponierbar,lemma:abz_rot_achsen}
 Da die Punkte in $D$ auf abzählbar vielen Achsen liegen, kann man eine Linie $l$ durch den Ursprung finden, die $D$ nicht durchläuft.
 Außerdem gibt es einen Winkel $\theta$, sodass eine Drehung um $\theta$ um $l$ keinen Punkt in $D$ auf einen anderen Punkt in $D$ abbildet.
 Definiere $E=D\cup \rho(D)\cup \rho²(D)\cup \rho³(D)\cup...$. Es folgt sofort, dass
@@ -181,7 +190,7 @@ Nachdem wir die notwendigen Details zusammen haben, können wir nun das gesamte 
 \begin{theorem}[Banach-Tarski]\label{thm:BanachTarski}
 Eine Kugel ist äquidekomponierbar mit zwei Kopien ihrer selbst.
 \end{theorem}
-\begin{proof} \uses{lemma:verdopplung_L_D,lem:aequidekomponierbarkeit,theorem:aequi_kugel}
+\begin{proof} \uses{lem:aequidekomponierbarkeit,theorem:aequi_kugel}
 Im zweiten Unterkapitel haben wir gezeigt, dass die Kugel ohne ihren Mittelpunkt und den Punkten auf den Rotationsachsen äquidekomponierbar
 mit zwei Kopien ihrer selbst ist. Mit Lemma \ref{lem:äquidekomponierbarkeit} folgt, dass die Kugel ohne ihren Mittelpunkt äquidekomponierbar
 mit zwei Kopien von sich ist. Nach Theorem \ref{lemma:äqui_kugel} folgt nun, dass die vollständige Kugel mit zwei Kopien von sich äquidekomponierbar
