@@ -33,7 +33,7 @@ lemma remove_first_length_eq {a: Type} {n: Nat} (x : List α ) (h_n: n = x.lengt
 
 variable (n : Nat)
 
-def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
+def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
   -- n eq list.length
   match n with
   | 0 => []
@@ -61,10 +61,15 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List G) (h_n: n = x.length) 
                     :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
 
 
-def equidecomposable (X Y : Set r_3) :=
-  ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
-  list_union r_3 Parts_X = X →
-  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
+--def equidecomposable (X Y : Set r_3) :=
+--  ∃ Parts_X,list_intersection r_3 Parts_X X = ∅ →
+--  list_union r_3 Parts_X = X →
+--  ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
+
+def equidecomposable (X Y : Set r_3) : Prop :=
+  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X X = ∅ ∧
+  list_union r_3 Parts_X = X ∧
+   list_union r_3 (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) = Y
 
 
 --- Äqui Kreis
@@ -145,8 +150,12 @@ alle punkte aus A sind in A'
 -/
 noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
 
-theorem equi_kreis : equidecomposable S (S \ {![1,0,0]}) := by
-    sorry
+theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
+  simp [equidecomposable]
+  use [A, B]
+
+
+
 
 
 
