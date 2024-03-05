@@ -67,23 +67,18 @@ def equidecomposable (X Y : Set r_3) :=
   ∃ g_s, (h_eq : Parts_X.length = g_s.length) → (h_n: Parts_X.length = Parts_X.length) → list_union r_3 (rotate_list Parts_X.length Parts_X g_s h_n h_eq) = Y
 
 
-
-
-
-
-
-
 --- Äqui Kreis
 noncomputable def sq_2 : Real := Real.sqrt 2
 
 
-theorem pi_sqrt_two : ¬ (∃ x : ℚ, Real.pi = x * sq_2) := by
+theorem pi_sqrt_two (h : ∃ x : ℚ, Real.pi = x * sq_2) : false := by
   simp
-  intro h1
-
-  intro h2
+  absurd h
+  simp
+  aesop
+  absurd h_1
   sorry
-
+  simp [sq_2] at h
 
 
 def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
@@ -93,20 +88,52 @@ def A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![Real.cos (n * sq_
 
 def B : Set r_3 := (S \ {![1,0,0]}) \ A
 
-lemma sqrt_two_mul_pos_nat_neq_1: ¬ (∃ n : {x : ℕ | x > 0} , Real.cos (n * sq_2) = 1) := by
-  simp [sq_2]
-  intro m
-  rw [← ne_eq]
-  intro h
-
-  apply Irrational.ne_one
-  sorry
 
 lemma origin_not_in_A : ![1,0,0] ∉ A := by
   simp [A]
+  intro x h
+  refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+  simp
+  use 0
+  simp
+  intro h1
+  symm at h1
+  rw [Real.cos_eq_one_iff (x * sq_2)] at h1
+
+  rcases h1 with ⟨a, ha⟩
+  have a_nonzero : a ≠ 0 := by
+    aesop
+    simp [sq_2] at h_1
+
+  have haa : Real.pi = (x / (2 * a)) * sq_2 := by
+    rw [@div_eq_inv_mul]
+    field_simp
+    rw [mul_comm]
+    rw [← ha]
+    ring
+
+  have haaa : ∃ q : ℚ, Real.pi = q * sq_2 := by
+    use (x / (2 * a))
+    simp [haa]
+
+  rcases haaa with ⟨b, hb⟩
+  rw [← Bool.coe_false]
+  apply pi_sqrt_two
+  use b
+
+lemma all_A_different : ∀ n m : {x : ℕ | x > 0},n ≠ m ->  ![Real.cos (n * sq_2),Real.sin (n * sq_2),0] ≠ ![Real.cos (m * sq_2),Real.sin (m * sq_2),0] := by
+  simp
+  intro n hn m hm h_nm
+  refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+  use 0
+  simp
   sorry
 
 
+
+
+theorem A_countable : Countable A := by
+  sorry
 
 
 /--
@@ -116,9 +143,12 @@ Wir rotieren A um den Urprung um (- sqrt 2) Einheiten -> A'
 der erste Punkt aus A wird auf [1,0] abgebildet
 alle punkte aus A sind in A'
 -/
+noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
+
 theorem equi_kreis : equidecomposable S (S \ {![1,0,0]}) := by
-    simp [equidecomposable]
     sorry
+
+
 
 theorem equi_kugel : equidecomposable L L' := by
   sorry
