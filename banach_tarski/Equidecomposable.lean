@@ -6,7 +6,7 @@ import banach_tarski.Lemma_3_1
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Real.Irrational
 
---def get_pair {α : Type} (l : List α) (h: 1 < l.length): (α × α) := (l.get {val:=0, isLt:=by exact Nat.zero_lt_of_lt h}, l.get {val:=1, isLt:=h})
+def get_pair {α : Type} (l : List α) (h: 1 < l.length): (α × α) := (l.get {val:=0, isLt:=by exact Nat.zero_lt_of_lt h}, l.get {val:=1, isLt:=h})
 
 --def unique_pairs {α : Type} (l : List α) : List (α × α) :=
 --  match l.length with
@@ -14,16 +14,31 @@ import Mathlib.Data.Real.Irrational
 --  | 1 => []
 --  | n => l.permutations.map get_pair
 
-def intersection (α : Type) (a : (Set α × Set α)) :Set α := a.1 ∩ a.2
+def intersection (α : Type) (a : Set α × Set α): Set α := a.1 ∩ a.2
 
 def union (α : Type) (a b : Set α) :Set α := a ∪ b
 
 def list_union (α : Type) (x : List (Set α)): Set α :=
   x.foldl (union α) ∅
 
-def list_intersection (α : Type) (x : List (Set α)) (X : Set α): Set α :=
-  list_union α ((x.product x).map (intersection α)) -- false
+def len_gt_one {α : Type} (l : List (Set α)) : Prop := 1 < l.length
 
+def get_pairs {α : Type} (l : List (List (Set α))) (hl : ∀ n : Fin (l.length), 1 < (l.get n).length) : List (Set α × Set α) := do
+  let mut pairs : List (Set α × Set α) := []
+  for x in l do
+    pairs ← pairs ++ [get_pair x]
+  return pairs
+
+def all_pairs {α : Type} (l : List (Set α)) (h : 1 < l.length) : List (Set α × Set α) := do
+  let sl := (l.sublistsLen 2)
+  have h : ∀ n : Fin (sl.length), 1 < (sl.get n).length := by
+    sorry
+  get_pairs sl h
+  --return (sl.get {val:=0, isLt:=(by sorry)},sl.get {val:=1, isLt:=_})
+
+
+def list_intersection (α : Type) (x : List (Set α)) (hx : 1 < x.length): Set α :=
+  list_union α ((all_pairs x hx).map (intersection α))
 
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
