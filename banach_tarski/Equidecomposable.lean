@@ -87,7 +87,8 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
 
 
 lemma equidecomposable_subset (X Y : Set r_3) :
-  ∃ X₁ X₂ Y₁ Y₂, X₁ ∪ X₂ = X -> Y₁ ∪ Y₂ = Y -> X₁ = Y₁ -> equidecomposable X₂ Y₂ ->
+  ∃ X₁ X₂ Y₁ Y₂, X₁ ∪ X₂ = X -> X₁ ∩ X₂ = ∅  -> Y₁ ∩ Y₂ = ∅ ->
+     Y₁ ∪ Y₂ = Y -> X₁ = Y₁ -> equidecomposable X₂ Y₂ ->
     equidecomposable X Y := by sorry
 
 
