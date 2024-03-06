@@ -175,11 +175,21 @@ ist, liegt jeder Punkt, der ursprünglich in $A$ war auch in $A'$. Daraus folgt 
 $S¹\backslash \{(1,0)\}=A\cup B$ äquidekomponierbar mit $A'\cup B=S¹$.
 \end{proof}
 
+
+\begin{lemma}[Äquidekomponierbarkeit Subset] 
+\label{lemma:equi_subset}
+\leanok
+\lean{equidecomposable_subset}
+\end{lemma}
+\begin{proof}
+\uses{def:aequidekomponierbar}
+\end{proof}
+
 \begin{theorem}[Äquidekomponierbarkeit Kugel] \label{theorem:aequi_kugel}
 Eine Kugel ohne ihren Mittelpunkt ist äquidekomponierbar mit der vollständigen Kugel.
 \lean{equi_kugel} \leanok
 \end{theorem}
-\begin{proof} \uses{lemma:aequi_kreis}
+\begin{proof} \uses{lemma:aequi_kreis, lemma:equi_subset}
 Die Konstruktion eines Kreises im Inneren der Kugel, welcher den Mittelpunkt der Kugel beinhaltet, liefert zusammen mit Lemma \ref{lemma:äqui_kreis},
 dass die Kugel ohne ihren Mittelpunkt äquidekomponierbar mit der vollständigen Kugel ist.
 \end{proof}
