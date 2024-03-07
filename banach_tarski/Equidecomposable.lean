@@ -76,13 +76,35 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
   simp [equidecomposable, list_intersection]
   use [X]
   simp [list_union,]
+  sorry
 
 
-lemma equidecomposable_subset (X Y : Set r_3) :
-  ∃ X₁ X₂ Y₁ Y₂, X₁ ∪ X₂ = X -> X₁ ∩ X₂ = ∅  -> Y₁ ∩ Y₂ = ∅ ->
-     Y₁ ∪ Y₂ = Y -> X₁ = Y₁ -> equidecomposable X₂ Y₂ ->
-    equidecomposable X Y := by sorry
+lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
+  (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
+  (hy_intersection : Y₁ ∩ Y₂ = Y) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
+    equidecomposable X Y := by
+  simp [equidecomposable]
+  simp [equidecomposable] at h_equi
+  rcases h_equi with ⟨a, ha⟩
+  use [X₁] ++ a
+  cases ha with
+  | intro ha1 ha2 =>
+  cases ha2 with
+  | intro ha2 ha3 =>
+  rcases ha3 with ⟨rot, ha3⟩
+  rcases ha3 with ⟨ha4, ha3⟩
 
+  apply And.intro
+  simp [union, intersection, pairs]
+  sorry
+  --
+  apply And.intro
+  sorry
+  --
+  use gl_one::rot
+  simp
+  use ha4
+  sorry
 
 --- Äqui Kreis
 noncomputable def sq_2 : Real := Real.sqrt 2
@@ -144,6 +166,7 @@ lemma all_A_different : ∀ n m : {x : ℕ | x > 0},n ≠ m ->  ![Real.cos (n * 
   refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
   use 0
   simp
+
   sorry
 
 
@@ -207,4 +230,4 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
 
 
 theorem equi_kugel : equidecomposable L L' := by
-  rw [equidecomposable]
+  sorry
