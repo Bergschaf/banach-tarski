@@ -228,11 +228,17 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   ---
   sorry
 
-def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((p 0) - 1) ^ 2 + (p 1) ^ 2 = 1}
+def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
-lemma Kreis_subset_L : Kreis_in_Kugel ⊂ L := by
+lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   simp [Kreis_in_Kugel, L]
+  intro a ha1 ha2
+
+  sorry
+
+lemma origin_in_kreis : origin ∈ Kreis_in_Kugel := by
+  simp [origin, Kreis_in_Kugel]
 
 
 theorem equi_kugel : equidecomposable L L' := by
