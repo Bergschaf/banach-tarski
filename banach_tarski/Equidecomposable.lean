@@ -20,7 +20,7 @@ def pairs : List α → List (α × α)
   | [] => []
   | x :: xs => xs.map (fun y => (x, y)) ++ pairs xs
 
-def list_intersection (α : Type) (x : List (Set α)) (hx : 1 < x.length): Set α :=
+def list_intersection (α : Type) (x : List (Set α)): Set α :=
   list_union α ((pairs x).map (intersection α))
 
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
@@ -67,16 +67,16 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n
 
 
 def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X X = ∅ ∧
+  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
   list_union r_3 Parts_X = X ∧
    list_union r_3 (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) = Y
 
 /--blueprint-/
-lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
-  simp [equidecomposable, list_intersection]
-  use [X]
-  simp [list_union,]
-  sorry
+--lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
+--  simp [equidecomposable, list_intersection]
+--  use [X]
+--  simp [list_union,]
+--  sorry
 
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
@@ -227,6 +227,12 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   apply Eq.refl
   ---
   sorry
+
+def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((p 0) - 1) ^ 2 + (p 1) ^ 2 = 1}
+def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
+
+lemma Kreis_subset_L : Kreis_in_Kugel ⊂ L := by
+  simp [Kreis_in_Kugel, L]
 
 
 theorem equi_kugel : equidecomposable L L' := by
