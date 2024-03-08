@@ -6,6 +6,8 @@ import banach_tarski.Lemma_3_1
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Real.Irrational
 
+import Mathlib.Data.Finset.Basic
+
 
 def intersection (α : Type) (a : Set α × Set α): Set α := a.1 ∩ a.2
 
@@ -110,16 +112,31 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
 noncomputable def sq_2 : Real := Real.sqrt 2
 
 
-noncomputable def cos_taylor_series (x : ℝ) (n : ℕ ):=
+--noncomputable def cos_taylor_series (x : ℝ) (n : ℕ ):=
   -- google Taylorreihe https://de.wikipedia.org/wiki/Sinus_und_Kosinus#Motivation_durch_Taylorreihen
-  (-1) ^ n * (x ^ (2 * n) / Nat.factorial (2 * n)) + cos_taylor_series x (n)
+--  (-1) ^ n * (x ^ (2 * n) / Nat.factorial (2 * n)) + cos_taylor_series x (n)
 
+
+
+
+noncomputable def cos_taylor (n: ℕ) (x : ℝ) := Finset.sum (Finset.range n) (fun (m : ℕ ) => x^(2 * m) * (((-1)^m) / Nat.factorial (2 * m)))
+
+theorem isCauSeq_cos (z : ℂ) : IsCauSeq abs cos_taylor :=
+  (isCauSeq_abs_exp z).of_abv
+
+#check cos_taylor
 
 theorem pi_sqrt_two (h : ∃ x : ℚ, Real.pi = x * sq_2) : false := by
   rcases h with ⟨x, h⟩
   have h_cos : Real.cos Real.pi = -1 := by
     simp
   rw [h] at h_cos
+  have h_cos_2 {y : ℝ}: Real.cos x = CauSeq.lim {val:=cos_taylor,property:=sorry}  := by sorry
+     --(CauSeq.lim (Complex.exp' x)).re := by
+  fun (m : ℕ) => x^(2 * m)--refine (Real.ext_cauchy (?_)).symm
+  simp [Real.cos, Complex.cos, Complex.exp, Complex.exp']
+
+
 
   --have h_cos2 (x1:ℚ) : Real.cos x = 111
     -- google Taylorreihe https://de.wikipedia.org/wiki/Sinus_und_Kosinus#Motivation_durch_Taylorreihen
@@ -128,7 +145,7 @@ theorem pi_sqrt_two (h : ∃ x : ℚ, Real.pi = x * sq_2) : false := by
     --simp [Real.cos, Complex.cos, Complex.exp, Complex.I, CauSeq.lim,
     --Classical.choose, Classical.indefiniteDescription]
     -- was macht das Auswahlaxiom hier??
-
+fun (n : ℕ) => ∑ m in range n, => x^(2 * m) * (((-1)^
 def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
 
 def A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![Real.cos (n * sq_2),Real.sin (n * sq_2),0]} -- TODO
