@@ -121,9 +121,6 @@ noncomputable def sq_2 : Real := Real.sqrt 2
 
 noncomputable def cos_taylor (n: ℕ) (x : ℝ) := Finset.sum (Finset.range n) (fun (m : ℕ ) => x^(2 * m) * (((-1)^m) / Nat.factorial (2 * m)))
 
-theorem isCauSeq_cos (z : ℂ) : IsCauSeq abs cos_taylor :=
-  (isCauSeq_abs_exp z).of_abv
-
 #check cos_taylor
 
 theorem pi_sqrt_two (h : ∃ x : ℚ, Real.pi = x * sq_2) : false := by
@@ -131,21 +128,22 @@ theorem pi_sqrt_two (h : ∃ x : ℚ, Real.pi = x * sq_2) : false := by
   have h_cos : Real.cos Real.pi = -1 := by
     simp
   rw [h] at h_cos
-  have h_cos_2 {y : ℝ}: Real.cos x = CauSeq.lim {val:=cos_taylor,property:=sorry}  := by sorry
+
+  sorry
+  --have h_cos_2 {y : ℝ}: Real.cos x = CauSeq.lim {val:=cos_taylor,property:=sorry}  := by sorry
      --(CauSeq.lim (Complex.exp' x)).re := by
-  fun (m : ℕ) => x^(2 * m)--refine (Real.ext_cauchy (?_)).symm
-  simp [Real.cos, Complex.cos, Complex.exp, Complex.exp']
-
-
+  --fun (m : ℕ) => x^(2 * m)--refine (Real.ext_cauchy (?_)).symm
+  --simp [Real.cos, Complex.cos, Complex.exp, Complex.exp']
 
   --have h_cos2 (x1:ℚ) : Real.cos x = 111
     -- google Taylorreihe https://de.wikipedia.org/wiki/Sinus_und_Kosinus#Motivation_durch_Taylorreihen
 
-
-    --simp [Real.cos, Complex.cos, Complex.exp, Complex.I, CauSeq.lim,
-    --Classical.choose, Classical.indefiniteDescription]
+  --simp [Real.cos, Complex.cos, Complex.exp, Complex.I, CauSeq.lim,
+  --  Classical.choose, Classical.indefiniteDescription]
     -- was macht das Auswahlaxiom hier??
-fun (n : ℕ) => ∑ m in range n, => x^(2 * m) * (((-1)^
+  --fun (n : ℕ) => ∑ m in range n, => x^(2 * m) * (((-1)^
+
+
 def S := {x : r_3 | (x 2) = 0 ∧ ((x 0) ^ 2 + (x 1) ^ 2 = 1)}
 
 def A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![Real.cos (n * sq_2),Real.sin (n * sq_2),0]} -- TODO
@@ -195,8 +193,6 @@ lemma all_A_different : ∀ n m : {x : ℕ | x > 0},n ≠ m ->  ![Real.cos (n * 
   sorry
 
 
-
-
 theorem A_countable : Countable A := by
   sorry
 
@@ -224,14 +220,16 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   apply And.intro
   --
   simp [list_intersection, intersection, S, A, B]
-  sorry -- TODO this is all true, but just takes long to compile
-  --unhygienic ext
-  --simp_all only [Set.mem_inter_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_exists, not_and,
-  --  Set.mem_empty_iff_false, iff_false, and_self, not_false_eq_true, true_and, not_forall, not_not, exists_prop,
-  --  and_imp, forall_exists_index, implies_true, forall_const]
-  ---
+  --sorry -- TODO this is all true, but just takes long to compile
+  unhygienic ext
+  simp_all only [Set.mem_inter_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_exists, not_and,
+    Set.mem_empty_iff_false, iff_false, and_self, not_false_eq_true, true_and, not_forall, not_not, exists_prop,
+    and_imp, forall_exists_index, implies_true, forall_const]
+  --
   apply And.intro
-  simp [list_union, union, A, B, S]
+  simp [list_union, union] --, A, B, S]
+
+
   sorry
   ---
   simp [list_union, union, A, B, S, rotate_list, rotate_set, remove_first, rotate]
@@ -250,8 +248,14 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   apply Exists.intro
   intro a a_1 a_2 a_3
   apply Eq.refl
+
   ---
-  sorry
+  intro h
+  cases h with
+  | inl h =>
+    rcases h
+    sorry
+  | inr h => sorry
 
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
