@@ -204,11 +204,30 @@ Wir rotieren A um den Urprung um (- sqrt 2) Einheiten -> A'
 der erste Punkt aus A wird auf [1,0] abgebildet
 alle punkte aus A sind in A'
 -/
-noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
+lemma sin_sqrt_2_neq_0 : Real.sin sq_2 = 0 -> false := by
+  simp [Real.sin_eq_zero_iff]
+  intro x h
+  have hx : Real.pi = (↑x)⁻¹ * sq_2  := by
+    sorry
+  rw [← Bool.coe_false]
+  apply pi_sqrt_two
+  use (↑x)⁻¹
+  simp [hx]
+
+--- lean hat gezeigt dass die rotation falsch war
+--noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
+noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (sq_2),-Real.sin sq_2, 0; Real.sin (sq_2), Real.cos (sq_2), 0; 0,0,1]
 lemma rot_sq_2_det_ne_zero : Matrix.det rot_sq_2 ≠ 0 := by
   simp [rot_sq_2, Matrix.det_fin_three, sq_2]
-  rw [← Real.cos_add]
-  sorry
+  rw [@mul_self_add_mul_self_eq_zero]
+  intro h1
+  cases h1 with
+  | intro left right =>
+    rw [← Bool.coe_false]
+    apply sin_sqrt_2_neq_0
+    exact right
+
+
 noncomputable def gl_sq_2 : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero rot_sq_2 rot_sq_2_det_ne_zero
 lemma coe_gl_sq_2_eq_rot_sq_2 : ↑gl_sq_2 = rot_sq_2 := by
   rfl
@@ -262,9 +281,7 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   simp [sq_2, neg_add_eq_sub]
   simp [@add_sq, sub_sq, mul_pow, Real.cos_sq,Real.sin_sq_eq_half_sub]
   ring
-  --- oje falsch
   intro h
-  --simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
   simp
   sorry
 
