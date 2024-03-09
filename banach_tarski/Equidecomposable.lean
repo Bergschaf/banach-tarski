@@ -225,12 +225,33 @@ lemma A_and_B_eq_S : A ∪ B = S \ {![1,0,0]} := by
   use 0
   simp [h2, Real.cos_eq_one_iff]
   intro x h
+  rw [mul_comm] at h
+
   have ha : Real.pi = (x2 / (2 * x)) * sq_2 := by
     rw [@div_eq_inv_mul]
-    field_simp
-    rw [mul_comm]
-    sorry
-  sorry -- to lazy, proof ist definitely possible
+    rw [mul_assoc]
+    rw [← h]
+    ring
+    rw [mul_inv_cancel]
+    simp
+    --
+    rw [sq_2] at h
+    aesop_subst h2
+    simp_all only [ne_eq, Int.cast_eq_zero]
+    apply Aesop.BuiltinRules.not_intro
+    intro a
+    aesop_subst a
+    simp_all only [Int.cast_zero, mul_zero, zero_eq_mul, Nat.cast_eq_zero, Nat.ofNat_nonneg, Real.sqrt_eq_zero,
+      OfNat.ofNat_ne_zero, or_false, lt_self_iff_false]
+
+  have haa : ∃ q : ℚ, Real.pi = q * sq_2 := by
+    use (x2 / ( 2 * x))
+    simp [ha]
+
+  rcases haa with ⟨b, hb⟩
+  rw [← Bool.coe_false]
+  apply pi_sqrt_two
+  use b
 
 lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   simp [rotate_set, rotate]
