@@ -137,6 +137,7 @@ def zero_one_zero : r_3 := ![0,1,0]
 def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
   (p : Matrix (Fin 3) (Fin 3) Real).vecMul vec
 
+def translate (p : r_3) (vec : r_3) : r_3 := p + vec
 
 def L := {w : r_3 | Real.sqrt (Real.sqrt (w 0 ^ 2 + w 1 ^ 2)) + w 2 ^ 2 ≤ 1}
 def origin : r_3 := ![0,0,0]

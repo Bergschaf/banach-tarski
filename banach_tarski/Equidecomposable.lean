@@ -28,9 +28,11 @@ def list_intersection (α : Type) (x : List (Set α)): Set α :=
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
 
+def translate_set (x : Set r_3) (p : r_3) : Set r_3 :=
+  {w : r_3  | ∃ v, v ∈ x ∧ translate p v = w}
 
 -- Define a function to remove the first element of a list
-def remove_first {α : Type} (x : List α ):List α :=
+def remove_first {α : Type} (x : List α) : List α :=
   x.tail
 
 lemma remove_first_length_eq {a: Type} {n: Nat} (x : List α ) (h_n: n = x.length): (remove_first x).length = n - 1 := by
@@ -67,6 +69,32 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n
       rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
                     :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
 
+def translate_list (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
+  -- n eq list.length
+  match n with
+  | 0 => []
+  --| 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
+  | (Nat.succ m) =>
+      have h_new : (remove_first x).length = (remove_first p).length := by
+        rw [remove_first]
+        rw [remove_first]
+        simp
+        rw [h]
+
+      have h_n_new : m = (remove_first x).length := by
+        rw [remove_first]
+        simp
+        exact eq_tsub_of_add_eq h_n
+
+      have h1 : 0 < x.length :=  by
+        exact (Nat.mem_range_succ (List.length x)).mp (Exists.intro m h_n)
+
+      have h2: 0 < p.length := by
+        rw [← h]
+        exact h1
+
+      translate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
+                    :: translate_list m (remove_first x) (remove_first p) h_n_new h_new
 
 def equidecomposable (X Y : Set r_3) : Prop :=
   ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
