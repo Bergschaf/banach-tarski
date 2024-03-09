@@ -212,7 +212,7 @@ lemma sin_sqrt_2_neq_0 : Real.sin sq_2 = 0 -> false := by
   use (↑x)⁻¹
   simp [hx]
 
---- lean hat gezeigt dass die rotation falsch war
+--- lean hat gezeigt dass die rotation falsch war TODO
 --noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (-sq_2),-Real.sin sq_2, 0; Real.sin (-sq_2), Real.cos (-sq_2), 0; 0,0,1]
 noncomputable def rot_sq_2 : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (sq_2),-Real.sin sq_2, 0; Real.sin (sq_2), Real.cos (sq_2), 0; 0,0,1]
 lemma rot_sq_2_det_ne_zero : Matrix.det rot_sq_2 ≠ 0 := by
