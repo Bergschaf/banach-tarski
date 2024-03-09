@@ -260,13 +260,13 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
   aesop
   simp [sq_2, neg_add_eq_sub]
-  sorry
+  simp [@add_sq, sub_sq, mul_pow, Real.cos_sq,Real.sin_sq_eq_half_sub]
+  ring
+  --- oje falsch
   intro h
   --simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
   simp
-
-
-
+  sorry
 
 
 theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
