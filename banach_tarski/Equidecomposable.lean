@@ -26,7 +26,7 @@ def list_intersection (α : Type) (x : List (Set α)): Set α :=
   list_union α ((pairs x).map (intersection α))
 
 def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
-  {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
+  {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
 
 
 -- Define a function to remove the first element of a list
@@ -237,9 +237,12 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   ext X
   apply Iff.intro
   simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
-
-
-
+  aesop
+  simp [sq_2, neg_add_eq_sub]
+  sorry
+  intro h
+  --simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
+  simp
 
 
 
@@ -262,39 +265,13 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   exact rotate_A_B_eq_S
 
 
-  /-
-  simp [list_union, union, A, B, S, rotate_list, rotate_set, remove_first, rotate]
-  use [gl_sq_2, gl_one]
-  simp
-  simp [coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
-  refine (Set.ext ?h.h).symm
-  intro x
-  simp
-  apply Iff.intro
-  --
-  intro a
-  simp_all only [Matrix.head_cons, Matrix.tail_cons]
-  unhygienic with_reducible aesop_destruct_products
-  apply Or.inr
-  apply Exists.intro
-  intro a a_1 a_2 a_3
-  apply Eq.refl
-  ---
-
-  intro h
-  cases h with
-  | inl h =>
-    rcases h with ⟨x1, h⟩
-    apply equi_kreis_case_inl
-
-  | inr h => sorry-/
-
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
 lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   simp [Kreis_in_Kugel, L]
-  intro a ha1 ha2
+  intro x h1 h2
+  aesop
 
   sorry
 
