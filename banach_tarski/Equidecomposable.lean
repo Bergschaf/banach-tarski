@@ -183,19 +183,6 @@ lemma origin_not_in_A : ![1,0,0] ∉ A := by
   apply pi_sqrt_two
   use b
 
-lemma all_A_different : ∀ n m : {x : ℕ | x > 0},n ≠ m ->  ![Real.cos (n * sq_2),Real.sin (n * sq_2),0] ≠ ![Real.cos (m * sq_2),Real.sin (m * sq_2),0] := by
-  simp
-  intro n hn m hm h_nm
-  refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
-  use 0
-  simp
-
-  sorry
-
-
-theorem A_countable : Countable A := by
-  sorry
-
 
 /--
 Neue Beweisidee
@@ -208,7 +195,18 @@ lemma sin_sqrt_2_neq_0 : Real.sin sq_2 = 0 -> false := by
   simp [Real.sin_eq_zero_iff]
   intro x h
   have hx : Real.pi = (↑x)⁻¹ * sq_2  := by
-    sorry
+    rw [← h]
+    ring_nf
+    rw [mul_inv_cancel]
+    simp
+    --
+    rw [sq_2] at h
+    aesop
+    have h2: Real.sqrt 2 = 0 := by
+      simp [h]
+    convert h2
+    simp
+
   rw [← Bool.coe_false]
   apply pi_sqrt_two
   use (↑x)⁻¹
@@ -283,7 +281,9 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   ring
   intro h
   simp
+
   sorry
+
 
 
 theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
