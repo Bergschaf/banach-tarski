@@ -272,7 +272,7 @@ lemma A_and_B_eq_S : A ∪ B = S \ {![1,0,0]} := by
 
 lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   simp [rotate_set, rotate]
-  ext X
+  ext x
   apply Iff.intro
   simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
   aesop
@@ -281,8 +281,56 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
   ring
   intro h
   simp
-
-  sorry
+  by_cases h1:((∃ v ∈ A, Matrix.vecMul v ↑gl_sq_2 = x))
+  left
+  exact h1
+  --
+  right
+  simp [A, B, coe_gl_one_eq_one]
+  apply And.intro
+  apply And.intro
+  . exact h
+  . simp at h1
+    --simp [S,A] at *
+    aesop
+    convert h1
+    simp [coe_gl_sq_2_eq_rot_sq_2, rot_sq_2]
+    use ![Real.cos sq_2 ,Real.sin sq_2,0]
+    apply And.intro
+    . simp [A]
+      use 1
+      simp
+    . simp
+      repeat rw [← sq]
+      rw [Real.cos_sq, Real.sin_sq_eq_half_sub]
+      ext i
+      fin_cases i
+      simp
+      norm_num
+      ---
+      simp
+      ring
+      ---
+      simp
+  . intro x1 h2
+    aesop
+    simp [A] at h1
+    convert h1
+    simp
+    use ![Real.cos ((x1 + 1) * sq_2),Real.sin ((x1 + 1) * sq_2),0]
+    use x1 + 1
+    simp [coe_gl_sq_2_eq_rot_sq_2, rot_sq_2]
+    ext i
+    fin_cases i
+    simp
+    rw [← Real.cos_sub]
+    ring_nf
+    ---- uuuu
+    simp
+    rw [neg_add_eq_sub, ← Real.sin_sub]
+    ring
+    ---
+    simp
 
 
 
