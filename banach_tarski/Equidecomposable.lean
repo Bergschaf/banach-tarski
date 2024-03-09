@@ -265,6 +265,8 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   exact rotate_A_B_eq_S
 
 
+---- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
+--- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
