@@ -160,11 +160,19 @@ L'\backslash D$. Daher folgt, dass $L'$ mit $L'\backslash D$ äquidekomponierbar
 Da wir nun wissen, dass $L'\backslash D$ mit $L'$ äquidekomponierbar ist, sind die Fixpunkte der Rotationen in $G$ kein Problem mehr.
 Daher kümmern wir uns nun um den Mittelpunkt.
 
+\begin{lemma}[Pi und Wurzel 2 haben kein gemeinsames vielfaches] \label{lemma:ncm_pi_sqrt_2} % no common multiple
+\lean{pi_sqrt_two}
+\leanok
+\end{lemma}
+\begin{proof}
+\end{proof}
+
 \begin{lemma}[Äquidekomponierbarkeit Kreis] \label{lemma:aequi_kreis}
 Ein Kreis ist äquidekomponierbar mit einem Kreis ohne einen bestimmten Punkt.
 \lean{equi_kreis} \leanok
 \end{lemma}
-\begin{proof} \uses{def:aequidekomponierbar}
+\begin{proof} \uses{def:aequidekomponierbar,lemma:ncm_pi_sqrt_2}
+\leanok
 Wir kümmern uns um den Einheitskreis $S¹=\{(x,y):x²+y²=1\}$ ohne ${(1,0)}$. Wir verwenden den Einheitskreis, um die Notation einfacher zu halten; 
 das folgende Argument kann aber auf jeden beliebigen Kreis übertragen werden.
 Sei weiter $A=\{(cos n,sin n):n\in\mathbb{Z}\}$. Da $\pi$ irrational ist, gilt $(cos n,sin n)\neq (cos m, sin m)$ für alle $n,m\in\mathbb{Z}$

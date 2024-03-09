@@ -10,6 +10,7 @@ import Mathlib.Topology.MetricSpace.PseudoMetric
 
 import Mathlib.GroupTheory.FreeGroup.Basic
 
+import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 set_option maxHeartbeats 0
 
 
@@ -137,7 +138,7 @@ def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
   (p : Matrix (Fin 3) (Fin 3) Real).vecMul vec
 
 
-def L := {x: r_3 | x ∈ Metric.ball 0 1}
+def L := {w : r_3 | Real.sqrt (Real.sqrt (w 0 ^ 2 + w 1 ^ 2)) + w 2 ^ 2 ≤ 1}
 def origin : r_3 := ![0,0,0]
 def L' := L \ {origin}
 
@@ -159,9 +160,6 @@ inductive erzeuger_t
   deriving DecidableEq
 
 abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
-
-
-
 
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
