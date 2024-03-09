@@ -25,7 +25,7 @@ def pairs : List α → List (α × α)
 def list_intersection (α : Type) (x : List (Set α)): Set α :=
   list_union α ((pairs x).map (intersection α))
 
-def rotate_set (x : Set r_3) (p : GL (Fin 3) Real): Set r_3 :=
+def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x -> rotate p v = w}
 
 
@@ -213,25 +213,56 @@ noncomputable def gl_sq_2 : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDet
 lemma coe_gl_sq_2_eq_rot_sq_2 : ↑gl_sq_2 = rot_sq_2 := by
   rfl
 
+lemma A_and_B_eq_S : A ∪ B = S \ {![1,0,0]} := by
+  simp [A, B, S, Set.subset_def]
+  intro x1 x2 h1 h2
+  apply And.intro
+  aesop_subst h2
+  simp_all only [Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Real.cos_sq_add_sin_sq, and_self]
+  --
+  refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+  use 0
+  simp [h2, Real.cos_eq_one_iff]
+  intro x h
+  have ha : Real.pi = (x2 / (2 * x)) * sq_2 := by
+    rw [@div_eq_inv_mul]
+    field_simp
+    rw [mul_comm]
+    sorry
+  sorry -- to lazy, proof ist definitely possible
+
+lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
+  simp [rotate_set, rotate]
+  ext X
+  apply Iff.intro
+  simp [A, B, S, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2, coe_gl_one_eq_one]
+
+
+
+
+
+
+
+
 theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   rw [equidecomposable]
   use [A, B]
   simp
   apply And.intro
   --
-  simp [list_intersection, intersection, S, A, B]
-  --sorry -- TODO this is all true, but just takes long to compile
-  unhygienic ext
-  simp_all only [Set.mem_inter_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_exists, not_and,
-    Set.mem_empty_iff_false, iff_false, and_self, not_false_eq_true, true_and, not_forall, not_not, exists_prop,
-    and_imp, forall_exists_index, implies_true, forall_const]
-  --
-  apply And.intro
-  simp [list_union, union] --, A, B, S]
-
-
-  sorry
+  simp [list_intersection,list_union, union, intersection,pairs, S, A, B]
   ---
+  apply And.intro
+  simp [list_union,union]
+  exact A_and_B_eq_S
+  ---
+  use [gl_sq_2, gl_one]
+  simp [list_union, rotate_list, union, remove_first]
+  exact rotate_A_B_eq_S
+
+
+  /-
   simp [list_union, union, A, B, S, rotate_list, rotate_set, remove_first, rotate]
   use [gl_sq_2, gl_one]
   simp
@@ -248,14 +279,15 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   apply Exists.intro
   intro a a_1 a_2 a_3
   apply Eq.refl
-
   ---
+
   intro h
   cases h with
   | inl h =>
-    rcases h
-    sorry
-  | inr h => sorry
+    rcases h with ⟨x1, h⟩
+    apply equi_kreis_case_inl
+
+  | inr h => sorry-/
 
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
