@@ -107,11 +107,11 @@ def equidecomposable (X Y : Set r_3) : Prop :=
 --  use [X]
 --  simp [list_union,]
 --  sorry
-
+--def equidecomposable_trans {X Y Z: Set r_3} (h1 : )
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
-  (hy_intersection : Y₁ ∩ Y₂ = Y) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
+  (hy_intersection : Y₁ ∩ Y₂ = ∅) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
     equidecomposable X Y := by
   simp [equidecomposable]
   simp [equidecomposable] at h_equi
@@ -377,22 +377,3 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   use [gl_sq_2, gl_one]
   simp [list_union, rotate_list, union, remove_first]
   exact rotate_A_B_eq_S
-
-
----- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
---- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
-def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
-def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
-
-lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
-  simp [Kreis_in_Kugel, L]
-  intro x h1 h2
-  simp [h2]
-  sorry
-
-lemma origin_in_kreis : origin ∈ Kreis_in_Kugel := by
-  simp [origin, Kreis_in_Kugel]
-
-
-theorem equi_kugel : equidecomposable L L' := by
-  sorry
