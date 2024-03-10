@@ -161,16 +161,16 @@ Da wir nun wissen, dass $L'\backslash D$ mit $L'$ äquidekomponierbar ist, sind 
 Daher kümmern wir uns nun um den Mittelpunkt.
 
 \begin{lemma}[Pi und Wurzel 2 haben kein gemeinsames vielfaches] \label{lemma:ncm_pi_sqrt_2} % no common multiple
-$\nexists p,q\in \Z:\sqrt{2}\cdot \frac{p}{q}=\pi$
+$\nexists p,q\in \mathbb{Z} \sqrt{2}\cdot \frac{p}{q}=\pi$
 \lean{pi_sqrt_two}
 \leanok
 \end{lemma}
 \begin{proof}
-Angenommen es gäbe $p,q\in \Z$ mit $\sqrt{2}\cdot \frac{p}{q}=\pi$. Nach Definition von $\cos^{-1}$ auf dem Intervall $[0;2\pi)$ gilt $\cos^{-1}(-1)=\pi$ und damit wäre $\cos^{-1}(-1)=
+Angenommen es gäbe $p,q\in \mathbb{Z}$ mit $\sqrt{2}\cdot \frac{p}{q}=\pi$. Nach Definition von $\cos^{-1}$ auf dem Intervall $[0;2\pi)$ gilt $\cos^{-1}(-1)=\pi$ und damit wäre $\cos^{-1}(-1)=
 \sqrt{2}\cdot \frac{p}{q}$. Dies ist äquivalent zu $-1=\cos(\sqrt{2}\cdot \frac{p}{q})$. Mit der Taylorreihe des cosinus würde 
-$\sum{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}(2\cdot \frac{p^2}{q^2})^n}=-1$ gelten. Es gilt:
-$$&\sum{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}(2\cdot \frac{p^2}{q^2})^n}=-1\\
- \Leftrightarrow &\sum{n=0}^{\infty}\frac{(2\cdot \frac{p^2}{q^2})^{2n}}{(2n)!}-\sum{n=0}^{\infty}\frac{(2\cdot \frac{p^2}{q^2})^{2n+1}}{(2n)!}$$
+$\sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}(2\cdot \frac{p^2}{q^2})^n}=-1$ gelten. Es gilt:\\
+$\sum_{n=0}^{\infty}{\frac{(-1)^n}{(2n)!}(2\cdot \frac{p^2}{q^2})^n}=-1$
+$\Leftrightarrow \sum_{n=0}^{\infty}\frac{(2\cdot \frac{p^2}{q^2})^{2n}}{(2n)!}-\sum_{n=0}^{\infty}\frac{(2\cdot \frac{p^2}{q^2})^{2n+1}}{(2n)!}$
 \end{proof}
 
 \begin{lemma}[Äquidekomponierbarkeit Kreis] \label{lemma:aequi_kreis}
