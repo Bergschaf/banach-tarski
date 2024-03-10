@@ -31,6 +31,14 @@ def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
 def translate_set (x : Set r_3) (p : r_3) : Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x ∧ translate p v = w}
 
+lemma translate_zero (x : r_3) : translate ![0,0,0] x = x := by
+  simp [translate]
+  exact List.ofFn_inj.mp rfl
+
+lemma translate_set_zero (x : Set r_3) : translate_set x ![0,0,0] = x := by
+  simp [translate_set, translate_zero]
+
+
 -- Define a function to remove the first element of a list
 def remove_first {α : Type} (x : List α) : List α :=
   x.tail
@@ -69,6 +77,20 @@ def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n
       rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
                     :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
 
+lemma rotate_list_length_cons (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n: n = x.length) (h : x.length = p.length) :
+  List.length (rotate_list n x p h_n h) = n := by
+  induction n generalizing x p with
+  | zero => simp [rotate_list]
+  | succ n ih =>
+    simp [rotate_list]
+    have h_n_new : n = List.length (remove_first x) := by
+      simp [remove_first,← h_n]
+    have h_new : List.length (remove_first x) = List.length (remove_first p) := by
+      simp [remove_first, h]
+
+    specialize ih (remove_first x) (remove_first p) (h_n_new) (h_new)
+    apply ih
+
 def translate_list (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
   -- n eq list.length
   match n with
@@ -96,10 +118,46 @@ def translate_list (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n = x.len
       translate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
                     :: translate_list m (remove_first x) (remove_first p) h_n_new h_new
 
+lemma translate_list_zero (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n = x.length) (h : x.length = p.length)
+  (h0: ∀ y ∈ p, y = ![0,0,0]) : translate_list n x p h_n h = x := by
+  induction n generalizing x p with
+  | zero =>
+    simp [translate_list]
+    exact List.IsInfix.eq_of_length (Exists.intro [] (Exists.intro x rfl)) h_n
+  | succ n ih =>
+    simp [translate_list]
+    have h_p_nonempty : p ≠ [] := by
+      rename_i n_1
+      simp_all only [ne_eq]
+      apply Aesop.BuiltinRules.not_intro
+      intro a
+      aesop_subst a
+      simp_all only [List.length_nil, Nat.succ_ne_zero]
+
+    have h_p_head_zero : List.head p h_p_nonempty = ![0,0,0] := by
+      apply h0
+      exact List.head_mem h_p_nonempty
+
+    have h_0_new : ∀ y ∈ (remove_first p), y = ![0,0,0] := by
+      simp [remove_first]
+      intro y hy
+      apply h0
+      exact List.mem_of_mem_tail hy
+
+    rw [h_p_head_zero]
+    rw [translate_set_zero]
+    specialize ih (remove_first x) (remove_first p) (by simp [remove_first, ← h_n])
+       (by simp[remove_first,h]) (h_0_new)
+    rw [ih]
+    simp [remove_first]
+    sorry
+
+
+
 def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
+  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
   list_union r_3 Parts_X = X ∧
-   list_union r_3 (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) = Y
+   list_union r_3 (translate_list Parts_X.length (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) translations (by simp [rotate_list_length_cons]) (by simp [rotate_list_length_cons])) = Y
 
 /--blueprint-/
 --lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
@@ -375,4 +433,8 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   ---
   use [gl_sq_2, gl_one]
   simp [list_union, rotate_list, union, remove_first]
+  use [![0,0,0],![0,0,0]]
+  simp
+  rw [translate_list_zero]
+  simp [union]
   exact rotate_A_B_eq_S
