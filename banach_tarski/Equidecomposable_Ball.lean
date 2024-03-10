@@ -99,26 +99,39 @@ lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_
   exfalso
   contradiction
 
+
 lemma union_A_B_eq_Kreis : list_union r_3 [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel := by
   simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel]
   intro a n h1 h2
   apply And.intro
   . aesop
     ring_nf
-    sorry -- stimmt
-  . sorry -- stimmt
+    simp_all only [Real.cos_sq_add_sin_sq]
+  . apply And.intro
+    . simp [h2]
+    . simp [h2]
+      apply And.intro
+      . rw [← @le_sub_iff_add_le]
+        norm_num
+        apply Real.cos_le_one
+      . rw [mul_comm]
+        apply mul_le_one
+        apply Real.sin_le_one
+        norm_num
+        norm_num
+
 
 lemma equi_kugel_ohne_origin : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
   rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
   simp
   apply And.intro
-  . sorry
+  . simp [list_intersection, list_union, union, pairs, intersection, Kreis_in_Kugel_A, Kreis_in_Kugel_B]
   . apply And.intro
     . exact union_A_B_eq_Kreis
     . use [gl_sq_2, gl_one]
-      simp
       sorry
+
 
 
 theorem equi_kugel : equidecomposable L L' := by
@@ -134,3 +147,4 @@ theorem equi_kugel : equidecomposable L L' := by
   --
   rfl
   --
+  exact equi_kugel_ohne_origin

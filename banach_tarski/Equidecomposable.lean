@@ -125,7 +125,6 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   rcases ha3 with ⟨ha4, ha3⟩
 
   apply And.intro
-  simp [union, intersection, pairs]
   sorry
   --
   apply And.intro
