@@ -276,7 +276,7 @@ lemma A_and_B_eq_S : A ∪ B = S \ {![1,0,0]} := by
     rw [@div_eq_inv_mul]
     rw [mul_assoc]
     rw [← h]
-    ring
+    ring_nf
     rw [mul_inv_cancel]
     simp
     --
@@ -356,7 +356,7 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
     ---- uuuu
     simp
     rw [neg_add_eq_sub, ← Real.sin_sub]
-    ring
+    ring_nf
     ---
     simp
 
@@ -387,8 +387,7 @@ def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   simp [Kreis_in_Kugel, L]
   intro x h1 h2
-  aesop
-
+  simp [h2]
   sorry
 
 lemma origin_in_kreis : origin ∈ Kreis_in_Kugel := by
