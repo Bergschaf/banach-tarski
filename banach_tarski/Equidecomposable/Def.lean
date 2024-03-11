@@ -1,7 +1,6 @@
 import Mathlib.Data.List.Basic
 
 import banach_tarski.Definitions
-import banach_tarski.Lemma_3_1
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Real.Irrational
@@ -15,8 +14,6 @@ def union (α : Type) (a b : Set α) :Set α := a ∪ b
 
 def list_union (α : Type) (x : List (Set α)): Set α :=
   x.foldl (union α) ∅
-
-def len_gt_one {α : Type} (l : List (Set α)) : Prop := 1 < l.length
 
 def pairs : List α → List (α × α)
   | [] => []
@@ -39,7 +36,6 @@ lemma translate_set_zero (x : Set r_3) : translate_set x ![0,0,0] = x := by
   simp [translate_set, translate_zero]
 
 
--- Define a function to remove the first element of a list
 def remove_first {α : Type} (x : List α) : List α :=
   x.tail
 
@@ -51,10 +47,8 @@ lemma remove_first_length_eq {a: Type} {n: Nat} (x : List α ) (h_n: n = x.lengt
 variable (n : Nat)
 
 def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
-  -- n eq list.length
   match n with
   | 0 => []
-  --| 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
   | (Nat.succ m) =>
       have h_new : (remove_first x).length = (remove_first p).length := by
         rw [remove_first]
@@ -92,10 +86,8 @@ lemma rotate_list_length_cons (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 
     apply ih
 
 def translate_list (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
-  -- n eq list.length
   match n with
   | 0 => []
-  --| 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
   | (Nat.succ m) =>
       have h_new : (remove_first x).length = (remove_first p).length := by
         rw [remove_first]
@@ -166,6 +158,12 @@ def equidecomposable (X Y : Set r_3) : Prop :=
 --  sorry
 --def equidecomposable_trans {X Y Z: Set r_3} (h1 : )
 
+lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection α a = ∅) (h2 : list_union α a ∩ X = ∅) :
+  list_intersection α (X::a) = ∅ := by
+  simp [list_intersection] at *
+  sorry
+
+
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
   (hy_intersection : Y₁ ∩ Y₂ = ∅) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
@@ -180,12 +178,24 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   | intro ha2 ha3 =>
   rcases ha3 with ⟨rot, ha3⟩
   rcases ha3 with ⟨ha4, ha3⟩
+  rcases ha3 with ⟨translations, ha3⟩
+  rcases ha3 with ⟨ha5, ha3⟩
 
   apply And.intro
-  sorry
+  . simp
+    apply list_intersection_list
+    exact ha1
+    rw [ha2]
+    rw [← hx_intersection]
+    exact Set.inter_comm X₂ X₁
+
   --
   apply And.intro
-  sorry
+  . simp only [list_union, List.singleton_append, List.foldl_cons, union, Set.empty_union]
+    rw [← hx_union]
+    rw [← ha2]
+    rw [list_union]
+    sorry
   --
   use gl_one::rot
   simp
