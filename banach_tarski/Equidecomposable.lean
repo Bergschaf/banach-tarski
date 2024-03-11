@@ -150,9 +150,8 @@ lemma translate_list_zero (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n 
        (by simp[remove_first,h]) (h_0_new)
     rw [ih]
     simp [remove_first]
-    sorry
-
-
+    refine (List.eq_cons_of_mem_head? (?_)).symm
+    apply List.head?_eq_head
 
 def equidecomposable (X Y : Set r_3) : Prop :=
   ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
@@ -438,3 +437,5 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   rw [translate_list_zero]
   simp [union]
   exact rotate_A_B_eq_S
+  --
+  simp
