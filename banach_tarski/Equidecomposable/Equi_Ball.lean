@@ -1,5 +1,5 @@
-import banach_tarski.Equidecomposable
-
+import banach_tarski.Equidecomposable.Def
+import banach_tarski.Equidecomposable.Equi_Kreis
 
 ---- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
 --- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
