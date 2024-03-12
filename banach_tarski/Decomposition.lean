@@ -13,7 +13,9 @@ def P₂ := rotate_set_around_set M S_A' \ X
 def P₃ := rotate_set_around_set M S_B
 def P₄ := rotate_set_around_set M S_B'
 
-
+/--
+Benötigt eigenschaften der Startpunkte
+--/
 lemma union_parts : L' \ D = P₁ ∪ P₂ ∪ P₃ ∪ P₄ := by
   refine Set.ext ?h
   intro x
