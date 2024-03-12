@@ -1,5 +1,5 @@
 import banach_tarski.Equidecomposable.Def
-
+import banach_tarski.Lemma_3_1
 --- Äqui Kreis
 noncomputable def sq_2 : Real := Real.sqrt 2
 
