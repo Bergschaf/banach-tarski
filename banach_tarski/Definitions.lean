@@ -127,6 +127,14 @@ def zero_one_zero : r_3 := ![0,1,0]
 def rotate (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
   (p : Matrix (Fin 3) (Fin 3) Real).vecMul vec
 
+def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
+  {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
+
+def rotate_n_times (n : ℕ) (p : GL (Fin 3) Real) (vec : r_3) : r_3 :=
+  match n with
+  | 0 => vec
+  | Nat.succ m => rotate_n_times m p (rotate p vec)
+
 def translate (p : r_3) (vec : r_3) : r_3 := p + vec
 
 def L := {w : r_3 | Real.sqrt (Real.sqrt (w 0 ^ 2 + w 1 ^ 2)) + w 2 ^ 2 ≤ 1}
@@ -150,7 +158,13 @@ inductive erzeuger_t
   | gl_b : erzeuger_t
   deriving DecidableEq
 
-abbrev G_list := {w : List (erzeuger_t × Bool) | w = FreeGroup.reduce w}
+abbrev G_list := {w : List (erzeuger_t × Bool) // w = FreeGroup.reduce w}
+
+def S_A := {w : G_list | w.val.head? = some (erzeuger_t.gl_a, true)}
+def S_A' := {w : G_list | w.val.head? = some (erzeuger_t.gl_a, false)}
+def S_B := {w : G_list | w.val.head? = some (erzeuger_t.gl_b, true)}
+def S_B' := {w : G_list | w.val.head? = some (erzeuger_t.gl_b, false)}
+
 
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
@@ -164,3 +178,7 @@ def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   match w with
   | [] => gl_one
   | (head::rest) =>  list_to_matrix rest * item_to_matrix head
+
+
+def rotate_set_around_set (x : Set r_3) (p : Set G_list) : Set r_3 :=
+  {w : r_3 | ∃ pp ∈ p,∃ ww : r_3, ww ∈ x ∧ rotate (list_to_matrix pp) ww = w}

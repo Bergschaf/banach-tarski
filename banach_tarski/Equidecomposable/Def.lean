@@ -7,23 +7,21 @@ import Mathlib.Data.Real.Irrational
 
 import Mathlib.Data.Finset.Basic
 
+import banach_tarski.Lemma_3_1
 
-def intersection (α : Type) (a : Set α × Set α): Set α := a.1 ∩ a.2
+def intersection {α : Type} (a : Set α × Set α): Set α := a.1 ∩ a.2
 
-def union (α : Type) (a b : Set α) :Set α := a ∪ b
+def union {α : Type} (a b : Set α) :Set α := a ∪ b
 
-def list_union (α : Type) (x : List (Set α)): Set α :=
-  x.foldl (union α) ∅
+def list_union {α : Type} (x : List (Set α)): Set α :=
+  x.foldl (union) ∅
 
 def pairs : List α → List (α × α)
   | [] => []
   | x :: xs => xs.map (fun y => (x, y)) ++ pairs xs
 
-def list_intersection (α : Type) (x : List (Set α)): Set α :=
-  list_union α ((pairs x).map (intersection α))
-
-def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
-  {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
+def list_intersection {α : Type} (x : List (Set α)): Set α :=
+  list_union ((pairs x).map (intersection))
 
 def translate_set (x : Set r_3) (p : r_3) : Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x ∧ translate p v = w}
@@ -146,20 +144,40 @@ lemma translate_list_zero (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n 
     apply List.head?_eq_head
 
 def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
-  list_union r_3 Parts_X = X ∧
-   list_union r_3 (translate_list Parts_X.length (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) translations (by simp [rotate_list_length_cons]) (by simp [rotate_list_length_cons])) = Y
+  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection Parts_X = ∅ ∧
+  list_union Parts_X = X ∧
+   list_union (translate_list Parts_X.length (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) translations (by simp [rotate_list_length_cons]) (by simp [rotate_list_length_cons])) = Y
 
-/--blueprint-/
---lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
---  simp [equidecomposable, list_intersection]
---  use [X]
---  simp [list_union,]
---  sorry
---def equidecomposable_trans {X Y Z: Set r_3} (h1 : )
+lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
+  simp [equidecomposable, list_intersection]
+  use [X]
+  simp [list_union, pairs, intersection, union]
+  use [gl_one]
+  simp
+  use [![0,0,0]]
+  simp
+  --
+  rw [translate_list_zero]
+  simp [rotate_list, rotate_set, union, coe_gl_one_eq_one, rotate]
+  simp
 
-lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection α a = ∅) (h2 : list_union α a ∩ X = ∅) :
-  list_intersection α (X::a) = ∅ := by
+def list_list_intersection {α : Type} (x y :List (Set α)) (hx_intersection : list_intersection x = ∅)
+    (hy_intersection : list_intersection y = ∅) (h_y_ge_x : list_union x ⊆ list_union y) : Set α := sorry
+
+--lemma list_list_intersection_correct {α : Type} (x y :List (Set α)) (hx_intersection : list_intersection x = ∅)
+--    (hy_intersection : list_intersection y = ∅) (h_y_ge_x : list_union x ⊆ list_union y) :
+--    list_list_intersection x y _ _ _  = ∅ := by sorry
+
+theorem equidecomposable_trans (X Y Z : Set r_3) (hxy : equidecomposable X Y) (hyz: equidecomposable Y Z) :
+    equidecomposable X Z := by
+    simp [equidecomposable] at *
+    rcases hxy with ⟨Parts_xy, hxy_intersection, hxy_union, rot_xy, hxy_rot, translations_xy, hxy_translations, hxy⟩
+    rcases hyz with ⟨Parts_yz, hyz_intersection, hyz_union, rot_yz, hyz_rot, translations_yz, hyz_translations, hyz⟩
+    sorry
+
+
+lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection a = ∅) (h2 : list_union a ∩ X = ∅) :
+  list_intersection (X::a) = ∅ := by
   simp [list_intersection] at *
   sorry
 
