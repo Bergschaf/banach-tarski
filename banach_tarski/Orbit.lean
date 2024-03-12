@@ -15,7 +15,6 @@ def all_orbits : Set (Set r_3) := {w : Set r_3 | ∃ x : L,(Set.Nonempty w) ∧ 
 
 --def all_orbits_list (punkte : Set r_3) : List (Set r_3) :=
 
-
 noncomputable def rep_punkte (orbits : List (Set r_3)) (h_nonempty: ∀ x ∈ orbits, Set.Nonempty x): List r_3 :=
     match orbits with
     | [] => []
