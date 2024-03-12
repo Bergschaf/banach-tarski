@@ -5,11 +5,11 @@ filename = "file_structure.json"
 
 # Create a file structure
 def elements(directory):
-    elements = {x:None for x in os.listdir(directory)}
-    for element in elements.copy():
+    elements_ = {x:None for x in os.listdir(directory)}
+    for element in elements_.copy():
         if os.path.isdir(directory + element):
-            elements[element] = elements(directory + element + "/")
-    return elements
+            elements_[element] = elements(directory + element + "/")
+    return elements_
 
 # Write the file structure to a file (as json)
 root_dirs = ["banach_tarski", "andere-Theoreme"]
