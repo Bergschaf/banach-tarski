@@ -165,13 +165,6 @@ def S_A' := {w : G_list | w.val.head? = some (erzeuger_t.gl_a, false)}
 def S_B := {w : G_list | w.val.head? = some (erzeuger_t.gl_b, true)}
 def S_B' := {w : G_list | w.val.head? = some (erzeuger_t.gl_b, false)}
 
-abbrev rot_type := {w : GL (Fin 3) Real // w ∈ ({gl_a, gl_b, gl_a', gl_b'} : Set (GL (Fin 3) Real))}
-
-def inv_rotation (p : rot_type) : GL (Fin 3) Real :=
-  match p with
-  | gl_a => ↑gl_a'
-  | gl_a' )>
-
 
 def item_to_matrix (i : erzeuger_t × Bool) : GL (Fin 3) Real :=
   match i with
