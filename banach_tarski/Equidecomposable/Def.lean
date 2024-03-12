@@ -22,9 +22,6 @@ def pairs : List α → List (α × α)
 def list_intersection (α : Type) (x : List (Set α)): Set α :=
   list_union α ((pairs x).map (intersection α))
 
-def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
-  {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
-
 def translate_set (x : Set r_3) (p : r_3) : Set r_3 :=
   {w : r_3  | ∃ v, v ∈ x ∧ translate p v = w}
 
