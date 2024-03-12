@@ -12,9 +12,17 @@ def list_intersection_pairwise (α : Type) (w : List (Set α)) : Prop :=
 
 def all_orbits : Set (Set r_3) := {w : Set r_3 | ∃ x : L,(Set.Nonempty w) ∧  orbit_A x = w}
 
+noncomputable def choose (x : Set r_3) (hx: x ∈ all_orbits) : r_3 := Id.run do
+    have h: ∃ a : r_3, a ∈ x := by
+        rw [all_orbits] at hx
+        refine Set.nonempty_def.mp ?_
+        rcases hx with ⟨Fin.heq_ext_iff, b, _⟩
+        exact b
+    return Classical.choose h
 
---def all_orbits_list (punkte : Set r_3) : List (Set r_3) :=
+def M : Set r_3 := {w : r_3 | ∃ x : Set  r_3, ∃ hx : (x ∈ all_orbits), choose x hx = w}
 
+/--
 noncomputable def rep_punkte (orbits : List (Set r_3)) (h_nonempty: ∀ x ∈ orbits, Set.Nonempty x): List r_3 :=
     match orbits with
     | [] => []
@@ -25,4 +33,4 @@ noncomputable def rep_punkte (orbits : List (Set r_3)) (h_nonempty: ∀ x ∈ or
         have h_nonempty_new : ∀ x ∈ tail, Set.Nonempty x := by
             exact fun x_1 a ↦ h_nonempty x_1 (List.Mem.tail x a)
 
-        (Classical.choose h)::(rep_punkte tail h_nonempty_new)
+        (Classical.choose h)::(rep_punkte tail h_nonempty_new)-/
