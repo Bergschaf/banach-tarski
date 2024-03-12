@@ -100,9 +100,9 @@ lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_
   contradiction
 
 
-lemma union_A_B_eq_Kreis : list_union r_3 [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel := by
+lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel := by
   simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel]
-  intro a n h1 h2
+  intro a n _ h2
   apply And.intro
   . aesop
     ring_nf
