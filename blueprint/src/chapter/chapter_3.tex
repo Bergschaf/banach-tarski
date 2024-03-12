@@ -12,6 +12,14 @@ Zwei Punkte $a$ und $b$ gehören zum selben Orbit, genau dann, wenn ein $\rho$ i
 \leanok \lean{same_orbit}
 \end{definition}
 
+\begin{lemma}[Abzählbarkeit aller Orbits] \label{lemma:all_orbits_countable} 
+Die Menge aller Orbits ist abzählbar.
+\leanok \lean{all_orbits_countable}   
+\end{lemma}
+\begin{proof}
+    \uses{def:orbit}
+\end{proof}
+
 %\begin{definition}[Auswahlfunktion] \label{def:auswahlfunktion}
 %Sei $A$ eine Menge nichtleerer Mengen. Dann heißt $F:A\rightarrow\bigcup\limits_{I\in A}I$ eine Auswahlfunktion von $A$,
 %falls zu jedem Element $I\in A$ ein Element $F(I)\in I$ zugeordnet wird.    
@@ -26,13 +34,15 @@ Zwei Punkte $a$ und $b$ gehören zum selben Orbit, genau dann, wenn ein $\rho$ i
 
 \begin{lemma}[repräsentative Punkte] \label{theorem:rep_punkte}
 Wir können uns aus jedem Orbit einen repräsentativen Punkt auswählen.
+\lean{rep_punkte} \leanok
 \end{lemma}
-\begin{proof} \uses{def:orbit}
+\begin{proof} \uses{def:orbit} \leanok
 Dies folgt direkt mit dem Auswahlaxiom.
 \end{proof}
 
-\begin{definition}[Menge aller  Repräsentaten] \label{def:menge_rep_punkte} \uses{theorem:rep_punkte}
+\begin{definition}[Menge aller  Repräsentanten] \label{def:menge_rep_punkte} \uses{theorem:rep_punkte}
 $M$ ist die Menge aller ausgwählten repräsentativen Punkte.
+\lean{M} \leanok
 \end{definition} 
 
 Wir können nun jeden Punkt aus $L'$ erreichen, indem wir eine Rotation aus $G$ auf ein bestimmtes Element in $M$ anwenden.
@@ -128,7 +138,8 @@ Zerlegung von $L'\backslash D$ und kümmern uns später um die Fixpunkte.
 
 \begin{lemma}[Abzählbarkeit der repräsentativen Punkte] \label{lemma:abz_menge_rep_punkte}
 Die Menge der Repräsentativen Punkte ist abzählbar.
-\uses{def:menge_rep_punkte}
+\uses{def:menge_rep_punkte,lemma:all_orbits_countable}
+\leanok \lean{M_countable}
 \end{lemma}
 \begin{proof}
     TODO

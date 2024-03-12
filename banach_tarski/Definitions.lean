@@ -51,57 +51,47 @@ theorem matrix_a_inverse :  matrix_a * matrix_a' = matrix_one := by
   simp
 
   simp
-  ring
+  ring_nf
   simp
-  --rw [Real.sq_sqrt]
-  ring
+  ring_nf
   rw [@Matrix.one_fin_three]
   exact rfl
-  --norm_num
 
 theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   rw [matrix_a]
   rw [Matrix.det_fin_three]
   simp
   norm_num
-  ring
+  ring_nf
   simp
-  --rw [Real.sq_sqrt]
   norm_num
-  --norm_num
 
 theorem matrix_a'_det_neq_zero : Matrix.det matrix_a' ≠ 0 := by
   rw [matrix_a']
   rw [Matrix.det_fin_three]
   simp
   norm_num
-  ring
+  ring_nf
   simp
-  --rw [Real.sq_sqrt]
   norm_num
-  --norm_num
 
 theorem matrix_b_det_neq_zero : Matrix.det matrix_b ≠ 0 := by
   rw [matrix_b]
   rw [Matrix.det_fin_three]
   simp
   norm_num
-  ring
+  ring_nf
   simp
-  --rw [Real.sq_sqrt]
   norm_num
-  --norm_num
 
 theorem matrix_b'_det_neq_zero : Matrix.det matrix_b' ≠ 0 := by
   rw [matrix_b']
   rw [Matrix.det_fin_three]
   simp
   norm_num
-  ring
+  ring_nf
   simp
-  --rw [Real.sq_sqrt]
   norm_num
-  --norm_num
 
 theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [matrix_one]
@@ -174,11 +164,3 @@ def list_to_matrix (w : List (erzeuger_t × Bool)) : GL (Fin 3) Real :=
   match w with
   | [] => gl_one
   | (head::rest) =>  list_to_matrix rest * item_to_matrix head
-
-
---lemma G_in_G_list : ∀ p : G, ∃ l : G_list, p = list_to_matrix l := by
---  simp [G_list, list_to_matrix]
-
-
---lemma G_list_G : ∀ l : G_list, ∃ p : G, p = list_to_matrix l := by
---  sorry
