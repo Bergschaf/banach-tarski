@@ -1,112 +1,4 @@
-import Mathlib.Data.List.Basic
-
-import banach_tarski.Definitions
-import banach_tarski.Lemma_3_1
-
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Data.Real.Irrational
-
-import Mathlib.Data.Finset.Basic
-
-
-def intersection (α : Type) (a : Set α × Set α): Set α := a.1 ∩ a.2
-
-def union (α : Type) (a b : Set α) :Set α := a ∪ b
-
-def list_union (α : Type) (x : List (Set α)): Set α :=
-  x.foldl (union α) ∅
-
-def len_gt_one {α : Type} (l : List (Set α)) : Prop := 1 < l.length
-
-def pairs : List α → List (α × α)
-  | [] => []
-  | x :: xs => xs.map (fun y => (x, y)) ++ pairs xs
-
-def list_intersection (α : Type) (x : List (Set α)): Set α :=
-  list_union α ((pairs x).map (intersection α))
-
-def rotate_set (x : Set r_3) (p : GL (Fin 3) Real) : Set r_3 :=
-  {w : r_3  | ∃ v, v ∈ x ∧ rotate p v = w}
-
-
--- Define a function to remove the first element of a list
-def remove_first {α : Type} (x : List α ):List α :=
-  x.tail
-
-lemma remove_first_length_eq {a: Type} {n: Nat} (x : List α ) (h_n: n = x.length): (remove_first x).length = n - 1 := by
-  rw [remove_first]
-  simp
-  rw [h_n]
-
-variable (n : Nat)
-
-def rotate_list (n : Nat) (x : List (Set r_3)) (p : List (GL (Fin 3) Real)) (h_n: n = x.length) (h : x.length = p.length): List (Set r_3) :=
-  -- n eq list.length
-  match n with
-  | 0 => []
-  --| 1 => [rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))]
-  | (Nat.succ m) =>
-      have h_new : (remove_first x).length = (remove_first p).length := by
-        rw [remove_first]
-        rw [remove_first]
-        simp
-        rw [h]
-
-      have h_n_new : m = (remove_first x).length := by
-        rw [remove_first]
-        simp
-        exact eq_tsub_of_add_eq h_n
-
-      have h1 : 0 < x.length :=  by
-        exact (Nat.mem_range_succ (List.length x)).mp (Exists.intro m h_n)
-
-      have h2: 0 < p.length := by
-        rw [← h]
-        exact h1
-
-      rotate_set (x.head (List.length_pos.mp h1)) (p.head (List.length_pos.mp h2))
-                    :: rotate_list m (remove_first x) (remove_first p) h_n_new h_new
-
-
-def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length}, list_intersection r_3 Parts_X = ∅ ∧
-  list_union r_3 Parts_X = X ∧
-   list_union r_3 (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) = Y
-
-/--blueprint-/
---lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
---  simp [equidecomposable, list_intersection]
---  use [X]
---  simp [list_union,]
---  sorry
-
-
-lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
-  (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
-  (hy_intersection : Y₁ ∩ Y₂ = Y) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
-    equidecomposable X Y := by
-  simp [equidecomposable]
-  simp [equidecomposable] at h_equi
-  rcases h_equi with ⟨a, ha⟩
-  use [X₁] ++ a
-  cases ha with
-  | intro ha1 ha2 =>
-  cases ha2 with
-  | intro ha2 ha3 =>
-  rcases ha3 with ⟨rot, ha3⟩
-  rcases ha3 with ⟨ha4, ha3⟩
-
-  apply And.intro
-  simp [union, intersection, pairs]
-  sorry
-  --
-  apply And.intro
-  sorry
-  --
-  use gl_one::rot
-  simp
-  use ha4
-  sorry
+import banach_tarski.Equidecomposable.Def
 
 --- Äqui Kreis
 noncomputable def sq_2 : Real := Real.sqrt 2
@@ -248,7 +140,7 @@ lemma A_and_B_eq_S : A ∪ B = S \ {![1,0,0]} := by
     rw [@div_eq_inv_mul]
     rw [mul_assoc]
     rw [← h]
-    ring
+    ring_nf
     rw [mul_inv_cancel]
     simp
     --
@@ -328,7 +220,7 @@ lemma rotate_A_B_eq_S : rotate_set A gl_sq_2 ∪ rotate_set B gl_one = S := by
     ---- uuuu
     simp
     rw [neg_add_eq_sub, ← Real.sin_sub]
-    ring
+    ring_nf
     ---
     simp
 
@@ -348,24 +240,10 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   ---
   use [gl_sq_2, gl_one]
   simp [list_union, rotate_list, union, remove_first]
+  use [![0,0,0],![0,0,0]]
+  simp
+  rw [translate_list_zero]
+  simp [union]
   exact rotate_A_B_eq_S
-
-
----- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
---- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
-def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0}
-def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
-
-lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
-  simp [Kreis_in_Kugel, L]
-  intro x h1 h2
-  aesop
-
-  sorry
-
-lemma origin_in_kreis : origin ∈ Kreis_in_Kugel := by
-  simp [origin, Kreis_in_Kugel]
-
-
-theorem equi_kugel : equidecomposable L L' := by
-  sorry
+  --
+  simp
