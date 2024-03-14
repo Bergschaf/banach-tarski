@@ -1,7 +1,7 @@
 import banach_tarski.Definitions
 import banach_tarski.Orbit
 
-/--
+/--hallo
 TODO überprüfen ob Blueprint stimmt
 ist X die Menge aller Elemente von M welche Ausschließlich aus Rotationen um A⁻¹ bestehen
 ODER ist X die Menge aller Punkte die von M aus Ausschließlich durch Rotationen um A⁻¹ erreicht werden können
