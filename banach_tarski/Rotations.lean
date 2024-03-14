@@ -11,14 +11,6 @@ lemma tail_reduced_eq_reduced {α : Type} [DecidableEq α] (x : List (α × Bool
         sorry
 
 
-
-
-
-
-
-
-
-
 lemma rotate_back_S_A (start : Set r_3) :
     rotate_set (rotate_set_around_set start S_A) gl_a' =
     (rotate_set_around_set start S_A) ∪ (rotate_set_around_set start S_B)
