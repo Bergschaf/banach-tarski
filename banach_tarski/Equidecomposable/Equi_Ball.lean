@@ -131,7 +131,57 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
   . apply And.intro
     . exact union_A_B_eq_Kreis
     . use [gl_sq_2, gl_one]
-      sorry
+      simp
+      use [![-1/2,0,0],![0,0,0]]
+      simp [translate_list, translate_set, remove_first, rotate_list, rotate_set, translate_zero, translate,
+          rotate, coe_gl_one_eq_one, coe_gl_sq_2_eq_rot_sq_2, list_union, union, Matrix.vecHead, Matrix.vecTail]
+
+      ext x
+      apply Iff.intro
+      . intro h
+        sorry --rotations are false
+
+
+
+
+
+        /-        cases h with
+        | inl h =>
+          save
+          simp [Kreis_in_Kugel_A] at h
+          cases h with
+          | intro w h =>
+          cases h with
+          | intro left right =>
+          cases left with
+          | intro w1 h =>
+          cases h with
+          | intro left1 right1 =>
+          rw [← right, right1]
+          simp [rot_sq_2, Kreis_in_Kugel_ohne_Origin]
+          apply And.intro
+          . simp [Kreis_in_Kugel]
+            apply And.intro
+            ring_nf
+            simp [Real.sin_sq_eq_half_sub, Real.cos_sq]
+            ring_nf
+
+
+
+
+
+
+          . simp [origin]
+            ring
+            sorry
+
+
+
+        | inr h =>
+          sorry
+      . sorry-/
+
+
 
 
 
