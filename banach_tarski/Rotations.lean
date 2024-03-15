@@ -18,9 +18,9 @@ lemma list_to_matrix_inj_FreeGroup_reduce (L₁ L₂ : List (erzeuger_t × Bool)
 
 
 
-
 lemma rotate_SA :
   ∀ x ∈ S_A, ∃ y ∈ S_B ∪ S_B' ∪ S_A, list_to_matrix ((erzeuger_t.gl_a, false)::x) = list_to_matrix y := by
+    intro x hx
     sorry
 
 
@@ -54,6 +54,10 @@ lemma reduce_len {α : Type} [DecidableEq α] (L: List (α × Bool)) (x : α × 
 lemma tail_reduced_eq_reduced {α : Type} [DecidableEq α] (L : List (α × Bool)) (x : α × Bool) (h: FreeGroup.reduce (x::L) = x::L) :
   FreeGroup.reduce L = L := by
   rw [← reduce_len_eq] at *
+  sorry
+
+lemma tail_reduced_eq_reduced_ {α : Type} [DecidableEq α] (L : List (α × Bool)) (x : α × Bool) (h: FreeGroup.reduce L = L) :
+  L.tail = FreeGroup.reduce L.tail := by
   sorry
 
 
@@ -97,3 +101,25 @@ lemma rotate_back_S_A (start : Set r_3) :
       simp [rotate_set_around_set, rotate_set, rotate] at *
       rcases h with ⟨rot, ⟨h_rot_reduced, h_rot_in_SB⟩, x2, hx2_in_start, hx2_2⟩
       sorry
+
+
+lemma SA_tail :
+  ∀ x ∈ S_A, ∃ y ∈ S_B ∪ S_B' ∪ S_A,x.val ≠ [] -> x.val.tail = y := by
+    intro x hx
+    simp
+    use x.val.tail
+    simp [tail_reduced_eq_reduced]
+    have h : List.tail x = FreeGroup.reduce (List.tail x.val) := by
+      simp [S_A, G_list] at x
+      apply tail_reduced_eq_reduced_
+      use erzeuger_t.gl_a -- why??
+      use true -- why???
+      symm
+      apply x.property
+
+    use h
+    sorry
+
+--lemma S_A_tail :
+--  ∀ x ∈ S_A, List.tail x ∈ S_B ∪ S_B' ∪ S_A := by
+--  sorry
