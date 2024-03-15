@@ -11,6 +11,7 @@ def BB := L \ Kreis_in_Kugel
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel \ Kreis_in_Kugel_A
 
+--def rot_sq_2_around_point : Matrix (Fin 3) (Fin 3) Real := !![]
 
 lemma Kreis_subset_L : BB ∪ Kreis_in_Kugel = L := by
   simp [Kreis_in_Kugel, L, BB]
@@ -121,7 +122,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
         norm_num
 
 
-lemma equi_kugel_ohne_origin : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
+lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
   rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
   simp
@@ -143,8 +144,6 @@ theorem equi_kugel : equidecomposable L L' := by
   --
   exact BB_and_Kreis_in_Kugel_ohne_origin_eq_L'
   --
-  exact intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil
-  --
   rfl
   --
-  exact equi_kugel_ohne_origin
+  exact equi_kreis_in_kugel
