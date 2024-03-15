@@ -143,10 +143,25 @@ lemma translate_list_zero (n : Nat) (x : List (Set r_3)) (p : List r_3) (h_n: n 
     refine (List.eq_cons_of_mem_head? (?_)).symm
     apply List.head?_eq_head
 
+lemma translate_list_length_cons (n : Nat) (x : List (Set r_3)) (p :List r_3) (h_n: n = x.length) (h : x.length = p.length) :
+  List.length (translate_list n x p h_n h) = n := by
+  induction n generalizing x p with
+  | zero => simp [translate_list]
+  | succ n ih =>
+    simp [translate_list]
+    have h_n_new : n = List.length (remove_first x) := by
+      simp [remove_first,← h_n]
+    have h_new : List.length (remove_first x) = List.length (remove_first p) := by
+      simp [remove_first, h]
+
+    specialize ih (remove_first x) (remove_first p) (h_n_new) (h_new)
+    apply ih
+
+
 def equidecomposable (X Y : Set r_3) : Prop :=
   ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection Parts_X = ∅ ∧
   list_union Parts_X = X ∧
-   list_union (translate_list Parts_X.length (rotate_list Parts_X.length Parts_X g_s (by simp)  (by simp)) translations (by simp [rotate_list_length_cons]) (by simp [rotate_list_length_cons])) = Y
+   list_union (rotate_list Parts_X.length (translate_list Parts_X.length  Parts_X translations (by simp) (by simp)) g_s (by simp [translate_list_length_cons]) (by simp [translate_list_length_cons])) = Y
 
 lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
   simp [equidecomposable, list_intersection]
@@ -157,10 +172,10 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
   use [![0,0,0]]
   simp
   --
-  rw [translate_list_zero]
-  simp [rotate_list, rotate_set, union, coe_gl_one_eq_one, rotate]
-  simp
-
+  simp only [rotate_list, rotate_set, List.mem_singleton, imp_self, forall_const,
+    translate_list_zero, List.head_cons, rotate, coe_gl_one_eq_one, Units.val_one,
+    Matrix.vecMul_one, exists_eq_right, Set.setOf_mem_eq, List.foldl_cons, union, Set.empty_union,
+    List.foldl_nil]
 
 
 instance union_isAssoc : Std.Associative (α := Set α) (union . .) := by
@@ -250,8 +265,9 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   save
   simp [list_union, translate_list, rotate_list, remove_first, translate_set, union, rotate_set, rotate]
   save
-  have h_x1 : {w | ∃ a ∈ X₁, translate ![0, 0, 0] (Matrix.vecMul a ↑gl_one) = w} = X₁ := by
+  have h_x1 : {w | ∃ a ∈ X₁,Matrix.vecMul (translate ![0, 0, 0] a) ↑gl_one = w} = X₁ := by
     simp [translate_zero, coe_gl_one_eq_one]
+
   rw [h_x1]
   simp [list_union] at ha3
   rw [foldl_union]

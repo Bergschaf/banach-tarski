@@ -241,9 +241,5 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   use [gl_sq_2, gl_one]
   simp [list_union, rotate_list, union, remove_first]
   use [![0,0,0],![0,0,0]]
-  simp
-  rw [translate_list_zero]
-  simp [union]
+  simp [translate_list_zero]
   exact rotate_A_B_eq_S
-  --
-  simp
