@@ -143,8 +143,6 @@ theorem equi_kugel : equidecomposable L L' := by
   --
   exact BB_and_Kreis_in_Kugel_ohne_origin_eq_L'
   --
-  exact intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil
-  --
   rfl
   --
   exact equi_kugel_ohne_origin
