@@ -51,8 +51,11 @@ lemma rot_A_P₂ : rotate_set P₂ gl_a = P₂ ∪ P₃ ∪ P₄ := by
   rcases h with ⟨x2,⟨h1,h3⟩,h2⟩
   simp [rotate_set_around_set, rotate] at h1
   rcases h1 with ⟨rot_list, ⟨h_rot_reduced, h_rot_list⟩ , m, h_m, h1⟩
+  simp [rotate_set_around_set]
+  right -- temporary
   sorry
 
+  --
   save
   intro h
   rcases h with ⟨h1, h2⟩

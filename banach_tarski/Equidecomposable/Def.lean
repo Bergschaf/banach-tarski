@@ -161,30 +161,55 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
   simp [rotate_list, rotate_set, union, coe_gl_one_eq_one, rotate]
   simp
 
-def list_list_intersection {α : Type} (x y :List (Set α)) (hx_intersection : list_intersection x = ∅)
-    (hy_intersection : list_intersection y = ∅) (h_y_ge_x : list_union x ⊆ list_union y) : Set α := sorry
 
---lemma list_list_intersection_correct {α : Type} (x y :List (Set α)) (hx_intersection : list_intersection x = ∅)
---    (hy_intersection : list_intersection y = ∅) (h_y_ge_x : list_union x ⊆ list_union y) :
---    list_list_intersection x y _ _ _  = ∅ := by sorry
 
-theorem equidecomposable_trans (X Y Z : Set r_3) (hxy : equidecomposable X Y) (hyz: equidecomposable Y Z) :
-    equidecomposable X Z := by
-    simp [equidecomposable] at *
-    rcases hxy with ⟨Parts_xy, hxy_intersection, hxy_union, rot_xy, hxy_rot, translations_xy, hxy_translations, hxy⟩
-    rcases hyz with ⟨Parts_yz, hyz_intersection, hyz_union, rot_yz, hyz_rot, translations_yz, hyz_translations, hyz⟩
-    sorry
+instance union_isAssoc : Std.Associative (α := Set α) (union . .) := by
+  simp [union]
+  exact Set.union_isAssoc
+
+
+lemma foldl_union {α : Type} (L : List (Set α)) (X : Set α) :
+  List.foldl union X L = List.foldl union ∅ L ∪ X := by
+  induction L with
+  | nil =>
+    simp
+  | cons head tail =>
+      simp
+      rw [List.foldl_assoc]
+      simp [union]
+      unhygienic ext
+      simp_all only [Set.mem_union]
+      apply Iff.intro
+      · intro a
+        unhygienic aesop_cases a
+        · simp_all only [or_true]
+        · simp_all only [true_or]
+      · intro a
+        unhygienic aesop_cases a
+        · simp_all only [or_true]
+        · simp_all only [true_or]
+
 
 
 lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection a = ∅) (h2 : list_union a ∩ X = ∅) :
   list_intersection (X::a) = ∅ := by
-  simp [list_intersection] at *
-  sorry
+  simp [list_intersection, pairs, list_union] at *
+  rw [foldl_union, h1]
+  simp
+
+  induction a with
+  | nil =>
+    simp
+  | cons head tail ih =>
+    simp [union, intersection]
+    sorry
+
+
 
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
-  (hy_intersection : Y₁ ∩ Y₂ = ∅) (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
+  (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
     equidecomposable X Y := by
   simp [equidecomposable]
   simp [equidecomposable] at h_equi
@@ -213,9 +238,24 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
     rw [← hx_union]
     rw [← ha2]
     rw [list_union]
-    sorry
+    rw [Set.union_comm]
+    exact foldl_union a X₁
   --
   use gl_one::rot
   simp
   use ha4
-  sorry
+  use ![0,0,0]::translations
+  simp [ha5]
+  --
+  save
+  simp [list_union, translate_list, rotate_list, remove_first, translate_set, union, rotate_set, rotate]
+  save
+  have h_x1 : {w | ∃ a ∈ X₁, translate ![0, 0, 0] (Matrix.vecMul a ↑gl_one) = w} = X₁ := by
+    simp [translate_zero, coe_gl_one_eq_one]
+  rw [h_x1]
+  simp [list_union] at ha3
+  rw [foldl_union]
+  rw [ha3]
+  rw [hxy_eq]
+  rw [Set.union_comm]
+  exact hy_union
