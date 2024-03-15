@@ -139,13 +139,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
       ext x
       apply Iff.intro
       . intro h
-        sorry --rotations are false
-
-
-
-
-
-        /-        cases h with
+        cases h with
         | inl h =>
           save
           simp [Kreis_in_Kugel_A] at h
@@ -157,6 +151,23 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
           | intro w1 h =>
           cases h with
           | intro left1 right1 =>
+          rw [right1] at right
+          simp at right
+          ring_nf at right
+          rw [← right]
+          simp [rot_sq_2, Kreis_in_Kugel_ohne_Origin]
+          apply And.intro
+          simp [Kreis_in_Kugel]
+          apply And.intro
+          ring
+          simp [Real.sin_sq_eq_half_sub, Real.cos_sq]
+          ring
+          sorry -- always contradiction
+
+
+
+
+          /-
           rw [← right, right1]
           simp [rot_sq_2, Kreis_in_Kugel_ohne_Origin]
           apply And.intro
@@ -164,7 +175,8 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             apply And.intro
             ring_nf
             simp [Real.sin_sq_eq_half_sub, Real.cos_sq]
-            ring_nf
+            ring_nf-/
+
 
 
 
@@ -179,7 +191,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
 
         | inr h =>
           sorry
-      . sorry-/
+      . sorry
 
 
 
