@@ -125,7 +125,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
   rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
-  simp
+  simp; save
   apply And.intro
   . simp [list_intersection, list_union, union, pairs, intersection, Kreis_in_Kugel_A, Kreis_in_Kugel_B]; save
   . apply And.intro
@@ -169,7 +169,13 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             field_simp
             rw [@add_assoc]
             rw [← Real.cos_sub]
-            sorry
+            ring_nf
+            rw [← @le_neg_add_iff_add_le]
+            ring_nf
+            norm_num
+            apply Real.cos_le_one
+          
+
 
 
         | inr h => sorry
