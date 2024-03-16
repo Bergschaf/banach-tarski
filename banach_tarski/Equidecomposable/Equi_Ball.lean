@@ -125,8 +125,45 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
 
 lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
     {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
-      {w | ∃ a ∈ Kreis_in_Kugel_B, translate ![0, 0, 0] (rotate 1 (translate ![0, 0, 0] a)) = w} →
-  x ∈ Kreis_in_Kugel_ohne_Origin := by sorry
+    {w | ∃ a ∈ Kreis_in_Kugel_B, translate ![0, 0, 0] (rotate 1 (translate ![0, 0, 0] a)) = w} →
+    x ∈ Kreis_in_Kugel_ohne_Origin := by
+    intro h1
+    rcases h1 with ⟨x1, ⟨h1, h2⟩⟩ | ⟨x1, ⟨h1, h2⟩⟩
+    . simp only [Kreis_in_Kugel_A, Set.coe_setOf, one_div, Set.mem_setOf_eq, Subtype.exists,
+      gt_iff_lt, exists_prop] at h1; save
+      rcases h1 with ⟨n, ⟨h4, h3⟩⟩
+      rw [h3] at h2
+      simp only [translate, rotate, Matrix.add_cons, Matrix.vecHead, Matrix.cons_val_zero,
+        Matrix.vecTail, Function.comp_apply, Fin.succ_zero_eq_one, Matrix.cons_val_one, zero_add,
+        Fin.succ_one_eq_two, Matrix.cons_val_two, Matrix.cons_val_fin_one, add_zero,
+        Matrix.empty_add_empty, coe_gl_sq_2_eq_rot_sq_2, Matrix.cons_add] at h2; save
+      rw [← h2]
+      simp only [rot_sq_2, Matrix.vecMul_cons, Matrix.head_cons, Matrix.smul_cons, smul_eq_mul,
+        mul_neg, mul_zero, Matrix.smul_empty, Matrix.tail_cons, zero_smul, Matrix.empty_vecMul,
+        add_zero, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Kreis_in_Kugel_ohne_Origin, Kreis_in_Kugel, origin, Set.mem_diff, Set.mem_setOf_eq,
+        neg_add_le_iff_le_add, true_and, Set.mem_singleton_iff];save
+      apply And.intro
+      . apply And.intro
+        . ring_nf
+          simp only [Real.cos_sq, one_div, Real.sin_sq_eq_half_sub]
+          ring
+        . apply And.intro
+          . ring_nf; save
+            field_simp; save
+            rw [@add_assoc]
+            rw [← Real.cos_sub]
+            ring_nf; save
+            rw [← @le_neg_add_iff_add_le]
+            ring_nf; save
+            norm_num; save
+            apply Real.cos_le_one
+          . 
+          
+
+
+
+
 
 lemma equi_kreis_in_kugel_aux_2 (x: r_3) : x ∈ Kreis_in_Kugel_ohne_Origin →
   x ∈
