@@ -123,6 +123,16 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
         norm_num
         norm_num
 
+lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
+    {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
+      {w | ∃ a ∈ Kreis_in_Kugel_B, translate ![0, 0, 0] (rotate 1 (translate ![0, 0, 0] a)) = w} →
+  x ∈ Kreis_in_Kugel_ohne_Origin := by sorry
+
+lemma equi_kreis_in_kugel_aux_2 (x: r_3) : x ∈ Kreis_in_Kugel_ohne_Origin →
+  x ∈
+    {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
+      {w | ∃ a ∈ Kreis_in_Kugel_B, translate ![0, 0, 0] (rotate 1 (translate ![0, 0, 0] a)) = w} := by sorry
+
 set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
   rw [equidecomposable]
@@ -135,10 +145,15 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
     . use [gl_sq_2, gl_one]
       simp
       use [![-1/2,0,0], ![0,0,0]]
-      simp
+      simp;save
       use [![1/2,0,0], ![0,0,0]]
-      simp
+      simp  [translate_list, rotate_list, translate_set, rotate_set, coe_gl_one_eq_one, remove_first, list_union, union]
+      ext x
+      apply Iff.intro
+      . apply equi_kreis_in_kugel_aux_1
+      . apply equi_kreis_in_kugel_aux_2
 
+      /-
       save; simp [list_union, translate_list, rotate_list, Matrix.vecHead, Matrix.vecTail,coe_gl_one_eq_one,Kreis_in_Kugel,
         union, translate_set, rotate_set, translate, rotate, remove_first, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin]
       ;save
@@ -241,15 +256,8 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
       intro h1
       simp;save
       rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
-      sorry
+      sorry-/
       
-
-
-
-
-
-
-
 
 theorem equi_kugel : equidecomposable L L' := by
   apply equidecomposable_subset L L' BB Kreis_in_Kugel BB Kreis_in_Kugel_ohne_Origin
