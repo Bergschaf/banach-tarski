@@ -104,20 +104,24 @@ lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_
   contradiction
 
 
-lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel := by
-  simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel]
-  intro a n _ h2
+lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
+  simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel, Kreis_in_Kugel_ohne_Origin, origin]
+  intro a h
   apply And.intro
   . aesop
     ring_nf
     simp_all only [Real.cos_sq_add_sin_sq]
-  . apply And.intro
-    . simp [h2]
-    . simp [h2]
-      rw [← @le_sub_iff_add_le]
-      norm_num
-      apply Real.cos_le_one
+    ring_nf
+    sorry
+  . simp at *
+    rcases h with ⟨n, ⟨h1, h2⟩⟩
+    rw [h2]
+    refine Function.ne_iff.mpr ?_
+    use 0
+    simp
+    sorry
 
+    
 
 lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
     {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
@@ -315,7 +319,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
       rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
       sorry-/
       
-
+--- Falsch rum, rotation müsste anders rein als bei Equi_kres
 theorem equi_kugel : equidecomposable L L' := by
   apply equidecomposable_subset L L' BB Kreis_in_Kugel BB Kreis_in_Kugel_ohne_Origin
   --
