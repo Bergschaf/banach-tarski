@@ -107,7 +107,8 @@ lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_
 
 set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in_Kugel := by
-  rw [equidecomposable]
+  sorry
+  /-rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
   simp; save
   apply And.intro
@@ -228,7 +229,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
       intro h1
       simp;save
       rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
-      sorry-/
+      sorry-/-/
       
 --- Falsch rum, rotation müsste anders rein als bei Equi
 theorem equi_kugel : equidecomposable L' L := by
