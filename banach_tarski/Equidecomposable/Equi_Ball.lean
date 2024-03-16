@@ -44,7 +44,22 @@ def BB := L' \ Kreis_in_Kugel_ohne_Origin
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
-lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by sorry
+lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
+  simp [BB, Kreis_in_Kugel, L', L, Kreis_in_Kugel, Kreis_in_Kugel_ohne_Origin, origin]
+  ext x
+  apply Iff.intro
+  . sorry
+  . intro h
+    simp only [Set.mem_union, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_and,
+      not_not, and_imp]
+    by_cases h2:((Real.sqrt (Real.sqrt (x 0 ^ 2 + x 1 ^ 2)) + x 2 ^ 2 ≤ 1 ∧ ¬x = ![0, 0, 0]) ∧
+        ((2 * x 0 - 1) ^ 2 + (2 * x 1) ^ 2 = 1 → x 2 = 0 → x 0 ≤ 1 → x = ![0, 0, 0]))
+    . left
+      exact h2
+    . right
+      apply And.intro
+      sorry
+  
 
 lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
   simp [BB, Kreis_in_Kugel_ohne_Origin, L', origin]--, Kreis_in_Kugel, origin, L', L]
@@ -71,7 +86,7 @@ lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_
   simp [BB, Kreis_in_Kugel_ohne_Origin]
 
 
-lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
+/-lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
   simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel, Kreis_in_Kugel_ohne_Origin, origin]
   intro a h
   apply And.intro
@@ -86,7 +101,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
     refine Function.ne_iff.mpr ?_
     use 0
     simp
-    sorry
+    sorry-/
 
     
 
