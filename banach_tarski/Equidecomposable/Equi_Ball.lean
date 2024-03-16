@@ -141,9 +141,9 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
 
       save; simp [list_union, translate_list, rotate_list, Matrix.vecHead, Matrix.vecTail,coe_gl_one_eq_one,Kreis_in_Kugel,
         union, translate_set, rotate_set, translate, rotate, remove_first, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin]
-      save
+      ;save
       ext x
-      apply Iff.intro
+      apply Iff.intro;save
       . intro h
         cases h with
         | inl h =>
@@ -219,6 +219,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             rw [← Bool.coe_false]
             apply pi_sqrt_two
             use q
+          
 
         | inr h => 
           simp [origin]; save
@@ -236,11 +237,19 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
           apply_fun (. - (2 * w 1)^2) at h2
           simp at h2
           sorry
+      save
+      intro h1
+      simp;save
+      rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
+      by_cases h:((∃ a,
+    (∃ a_1, 0 < a_1 ∧ a = ![2⁻¹ * Real.cos (↑a_1 * sq_2) + 2⁻¹, 2⁻¹ * Real.sin (↑a_1 * sq_2), 0]) ∧
+      ![2⁻¹ + Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 0,
+          Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 1, Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 2] =
+        x))
+      
 
 
 
-          
-          
 
 
 
