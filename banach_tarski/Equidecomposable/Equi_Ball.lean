@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 
 ---- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
 --- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
-def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ p 0 ≤ 1 ∧ p 1 ≤ 1}
+def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ p 0 ≤ 1}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
 def BB := L \ Kreis_in_Kugel
@@ -15,9 +15,12 @@ def Kreis_in_Kugel_B := Kreis_in_Kugel \ Kreis_in_Kugel_A
 
 --def rot_sq_2_around_point : Matrix (Fin 3) (Fin 3) Real := !![]
 
+lemma origin_not_in_B : origin ∉ Kreis_in_Kugel_B := by
+  
+
 lemma Kreis_subset_L : BB ∪ Kreis_in_Kugel = L := by
   simp [Kreis_in_Kugel, L, BB]
-  intro x h1 h2 h3 h4
+  intro x h1 h2 h3
   simp [h2]
   rw [← h1]
   ring_nf
@@ -73,7 +76,7 @@ lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origi
   simp [BB, Kreis_in_Kugel_ohne_Origin, L']--, Kreis_in_Kugel, origin, L', L]
   apply union_div_trans
   simp [Kreis_in_Kugel, L]
-  intro x h1 h2 h3 h4
+  intro x h1 h2 h3
   simp [h2]
   rw [← h1]
   ring_nf
@@ -113,15 +116,10 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
   . apply And.intro
     . simp [h2]
     . simp [h2]
-      apply And.intro
-      . rw [← @le_sub_iff_add_le]
-        norm_num
-        apply Real.cos_le_one
-      . rw [mul_comm]
-        apply mul_le_one
-        apply Real.sin_le_one
-        norm_num
-        norm_num
+      rw [← @le_sub_iff_add_le]
+      norm_num
+      apply Real.cos_le_one
+
 
 lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
     {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
@@ -148,21 +146,47 @@ lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
         . ring_nf
           simp only [Real.cos_sq, one_div, Real.sin_sq_eq_half_sub]
           ring
-        . apply And.intro
-          . ring_nf; save
-            field_simp; save
-            rw [@add_assoc]
-            rw [← Real.cos_sub]
-            ring_nf; save
-            rw [← @le_neg_add_iff_add_le]
-            ring_nf; save
-            norm_num; save
-            apply Real.cos_le_one
-          . 
-          
+        . ring_nf; save
+          field_simp; save
+          rw [@add_assoc]
+          rw [← Real.cos_sub]
+          ring_nf; save
+          rw [← @le_neg_add_iff_add_le]
+          ring_nf; save
+          norm_num; save
+          apply Real.cos_le_one
+      . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+        use 0
+        simp only [Matrix.cons_val_zero, ne_eq]
+        ring_nf
+        apply_fun (. * 2 - 1)
+        ring_nf; save
+        rw [← Real.cos_sub]
+        norm_num
+        rw [Real.cos_eq_neg_one_iff]
+        simp
+        intro x2
+        intro h
+        have hx : ∃ q : ℚ, Real.pi = q * sq_2 := by
+          use (n + 1) / (x2 * 2 + 1)
+          field_simp
+          sorry ----------------------
 
 
+        rcases hx with ⟨b, hb⟩
+        rw [← Bool.coe_false]
+        apply pi_sqrt_two 
+        use b
+    
+    . rw [← h2]
+      simp [Kreis_in_Kugel_B] at h1
+      rcases h1 with ⟨h1, h3⟩
+      simp only [rotate, translate_zero, Units.val_one, Matrix.vecMul_one,
+        Kreis_in_Kugel_ohne_Origin, Set.mem_diff, h1, Set.mem_singleton_iff, true_and]; save
+      
 
+
+      
 
 
 lemma equi_kreis_in_kugel_aux_2 (x: r_3) : x ∈ Kreis_in_Kugel_ohne_Origin →
