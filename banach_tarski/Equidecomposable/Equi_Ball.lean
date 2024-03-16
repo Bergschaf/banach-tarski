@@ -174,7 +174,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             ring_nf
             norm_num
             apply Real.cos_le_one
-          
+          . 
 
 
 
