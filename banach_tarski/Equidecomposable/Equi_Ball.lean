@@ -241,12 +241,9 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
       intro h1
       simp;save
       rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
-      by_cases h:((∃ a,
-    (∃ a_1, 0 < a_1 ∧ a = ![2⁻¹ * Real.cos (↑a_1 * sq_2) + 2⁻¹, 2⁻¹ * Real.sin (↑a_1 * sq_2), 0]) ∧
-      ![2⁻¹ + Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 0,
-          Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 1, Matrix.vecMul ![-1 / 2 + a 0, a 1, a 2] (↑gl_sq_2) 2] =
-        x))
+      sorry
       
+
 
 
 
