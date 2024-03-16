@@ -1,6 +1,8 @@
 import banach_tarski.Equidecomposable.Def
 import banach_tarski.Equidecomposable.Equi_Kreis
 
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
+
 ---- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
 --- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ p 0 ≤ 1 ∧ p 1 ≤ 1}
@@ -121,7 +123,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
         norm_num
         norm_num
 
-
+set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_Origin := by
   rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
@@ -174,8 +176,25 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             ring_nf
             norm_num
             apply Real.cos_le_one
-          . 
-
+          . ring_nf
+            field_simp
+            rw [@le_iff_exists_nonneg_add]
+            use -Real.sin (↑w1 * sq_2) * Real.cos sq_2 / 2 + (2 + Real.cos (↑w1 * sq_2) * Real.sin sq_2) / 2
+            ring_nf
+            simp; save
+            field_simp
+            sorry
+          
+          refine Function.ne_iff.mpr ?_
+          use 0
+          simp
+          ring_nf
+          apply_fun (. * 2 - 1)
+          ring
+          rw [← Real.cos_sub]
+          simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]
+          intro x
+          
 
 
         | inr h => sorry
