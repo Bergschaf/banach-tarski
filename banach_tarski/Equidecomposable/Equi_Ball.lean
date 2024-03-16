@@ -127,11 +127,52 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
   simp
   apply And.intro
-  . simp [list_intersection, list_union, union, pairs, intersection, Kreis_in_Kugel_A, Kreis_in_Kugel_B]
+  . simp [list_intersection, list_union, union, pairs, intersection, Kreis_in_Kugel_A, Kreis_in_Kugel_B]; save
   . apply And.intro
     . exact union_A_B_eq_Kreis
-    . use [sorry, gl_one]
-      sorry
+    . use [gl_sq_2, gl_one]
+      simp
+      use [![-1/2,0,0], ![0,0,0]]
+      simp
+      use [![1/2,0,0], ![0,0,0]]
+      simp
+
+      save; simp [list_union, translate_list, rotate_list, Matrix.vecHead, Matrix.vecTail,coe_gl_one_eq_one,Kreis_in_Kugel,
+        union, translate_set, rotate_set, translate, rotate, remove_first, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin]
+      save
+      ext x
+      apply Iff.intro
+      . intro h
+        cases h with
+        | inl h =>
+          simp at *
+          cases h with
+          | intro w h =>
+          cases h with
+          | intro left right =>
+          rw [← right]
+          cases left with
+          | intro w1 h1 =>
+          cases h1 with
+          | intro left1 right1 =>
+          rw [right1]
+          simp [origin,coe_gl_sq_2_eq_rot_sq_2, rot_sq_2]
+          save
+          apply And.intro
+          apply And.intro
+          ring
+          simp [Real.cos_sq, Real.sin_sq_eq_half_sub]; save
+          ring; save
+          --
+          apply And.intro
+          . ring; save
+            field_simp
+            rw [@add_assoc]
+            rw [← Real.cos_sub]
+            sorry
+
+
+        | inr h => sorry
 
 
 

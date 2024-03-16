@@ -242,4 +242,7 @@ theorem equi_kreis : equidecomposable (S \ {![1,0,0]}) S:= by
   simp [list_union, rotate_list, union, remove_first]
   use [![0,0,0],![0,0,0]]
   simp [translate_list_zero]
+  use [![0,0,0],![0,0,0]]
+  save
+  simp [translate_list_zero, union]
   exact rotate_A_B_eq_S

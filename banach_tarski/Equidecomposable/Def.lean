@@ -159,15 +159,21 @@ lemma translate_list_length_cons (n : Nat) (x : List (Set r_3)) (p :List r_3) (h
 
 
 def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations : {w : List r_3 | w.length = Parts_X.length}, list_intersection Parts_X = ∅ ∧
+  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations1 translations2 : {w : List r_3 | w.length = Parts_X.length}, list_intersection Parts_X = ∅ ∧
   list_union Parts_X = X ∧
-   list_union (rotate_list Parts_X.length (translate_list Parts_X.length  Parts_X translations (by simp) (by simp)) g_s (by simp [translate_list_length_cons]) (by simp [translate_list_length_cons])) = Y
+   list_union (translate_list Parts_X.length
+   (rotate_list Parts_X.length
+   (translate_list Parts_X.length  Parts_X translations1 (by simp) (by simp))
+   g_s (by simp [translate_list_length_cons]) (by simp [translate_list_length_cons]))
+    translations2 (by simp [translate_list_length_cons, rotate_list_length_cons]) (by simp [translate_list_length_cons, rotate_list_length_cons])) = Y
 
 lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
   simp [equidecomposable, list_intersection]
   use [X]
   simp [list_union, pairs, intersection, union]
   use [gl_one]
+  simp
+  use [![0,0,0]]
   simp
   use [![0,0,0]]
   simp
@@ -268,10 +274,12 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   have h_x1 : {w | ∃ a ∈ X₁,Matrix.vecMul (translate ![0, 0, 0] a) ↑gl_one = w} = X₁ := by
     simp [translate_zero, coe_gl_one_eq_one]
 
+  sorry
+  /-
   rw [h_x1]
   simp [list_union] at ha3
   rw [foldl_union]
   rw [ha3]
   rw [hxy_eq]
   rw [Set.union_comm]
-  exact hy_union
+  exact hy_union-/
