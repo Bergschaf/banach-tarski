@@ -11,12 +11,10 @@ def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 def BB := L \ Kreis_in_Kugel
 
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
-def Kreis_in_Kugel_B := Kreis_in_Kugel \ Kreis_in_Kugel_A
+def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
 --def rot_sq_2_around_point : Matrix (Fin 3) (Fin 3) Real := !![]
 
-lemma origin_not_in_B : origin ∉ Kreis_in_Kugel_B := by
-  
 
 lemma Kreis_subset_L : BB ∪ Kreis_in_Kugel = L := by
   simp [Kreis_in_Kugel, L, BB]
@@ -170,7 +168,7 @@ lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
         have hx : ∃ q : ℚ, Real.pi = q * sq_2 := by
           use (n + 1) / (x2 * 2 + 1)
           field_simp
-          sorry ----------------------
+          sorry
 
 
         rcases hx with ⟨b, hb⟩
@@ -183,12 +181,10 @@ lemma equi_kreis_in_kugel_aux_1 (x : r_3) :  x ∈
       rcases h1 with ⟨h1, h3⟩
       simp only [rotate, translate_zero, Units.val_one, Matrix.vecMul_one,
         Kreis_in_Kugel_ohne_Origin, Set.mem_diff, h1, Set.mem_singleton_iff, true_and]; save
-      
+      simp [Kreis_in_Kugel_ohne_Origin] at h1
+      exact h1
 
-
-      
-
-
+  
 lemma equi_kreis_in_kugel_aux_2 (x: r_3) : x ∈ Kreis_in_Kugel_ohne_Origin →
   x ∈
     {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
