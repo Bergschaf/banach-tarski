@@ -184,25 +184,64 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
             simp; save
             field_simp
             sorry
-          
-          refine Function.ne_iff.mpr ?_
-          use 0
-          simp
-          ring_nf
-          apply_fun (. * 2 - 1)
-          ring
-          rw [← Real.cos_sub]
-          simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]; save
-          intro x hx
-          ring_nf! at hx; save
-          have hx2 : Real.pi * ↑(x * 2 + 1) = (↑w1 - 1) * sq_2 := by
+          . refine Function.ne_iff.mpr ?_
+            use 0
             simp
+            ring_nf
+            apply_fun (. * 2 - 1)
+            ring
+            rw [← Real.cos_sub]
+            simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]; save
+            intro x hx
+            ring_nf! at hx; save
+            have hx2 : Real.pi * (↑x * 2 + 1) = (↑w1 - 1) * sq_2 := by
+              ring_nf
+              rw [← hx]
+            
+            have hx3 : ∃ q w: ℚ, Real.pi * w = sq_2 * q := by
+              use (↑w1 - 1)
+              use ↑(x * 2 + 1)
+              simp [hx2]
+              ring
+            
+            have hx4 : ∃ q : ℚ, Real.pi = q * sq_2 := by
+              cases hx3 with
+              | intro w h =>
+              cases h with
+              | intro q h =>
+              use (w/q)
+              simp
+              save
+              sorry
+            
+            cases hx4 with 
+            | intro q h =>
+            rw [← Bool.coe_false]
+            apply pi_sqrt_two
+            use q
+
+        | inr h => 
+          simp [origin]; save
+          rcases h with ⟨w, ⟨⟨h2, ⟨h3, h4⟩⟩, h⟩, h1⟩
+          apply And.intro
+          apply And.intro
+          simp only [← h1, h3, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, h2]
+          --
+          apply And.intro
+          simp [← h1, h3]
+          --
+          simp [← h1, h4]
+          --
+          rw [← h1]
+          apply_fun (. - (2 * w 1)^2) at h2
+          simp at h2
+          sorry
 
 
 
+          
+          
 
-
-        | inr h => sorry
 
 
 
