@@ -192,9 +192,14 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel Kreis_in_Kugel_ohne_
           apply_fun (. * 2 - 1)
           ring
           rw [← Real.cos_sub]
-          simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]
-          intro x
-          
+          simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]; save
+          intro x hx
+          ring_nf! at hx; save
+          have hx2 : Real.pi * ↑(x * 2 + 1) = (↑w1 - 1) * sq_2 := by
+            simp
+
+
+
 
 
         | inr h => sorry
