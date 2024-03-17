@@ -80,8 +80,8 @@ lemma coe_rot_besser : ↑gl_rot_besser = rot_besser := by
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
-lemma rotate_works : rotate gl_sq_2_inv ![1/2 * Real.cos sq_2,1/2 * Real.sin sq_2, 0] = ![1/2,0,0] := by
-  simp [rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, rot_sq_2_inv]
+lemma rotate_works : rotate gl_rot_besser ![1/2 * Real.cos sq_2,1/2 * Real.sin sq_2, 0] = ![-1/2,0,0] := by
+  simp [rotate, coe_rot_besser, rot_besser]
   ext i
   fin_cases i
   simp
@@ -235,11 +235,18 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2�
 
       . simp at hc2; save
         simp [hc2, Kreis_in_Kugel_A]; save
-        use ![1/2 * Real.cos sq_2  + 1/2, 1/2 * Real.sin sq_2, 0]
+        use ![1/2 * Real.cos sq_2 + 1/2, 1/2 * Real.sin sq_2, 0]
         apply And.intro
         . use 1
           simp; save
-        . simp [rot_sq_2_inv, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, origin, Matrix.vecHead, Matrix.vecTail]; save
+        . simp [translate, Matrix.vecHead, Matrix.vecTail]
+          ring
+          simp
+
+
+
+
+          simp [rot_sq_2_inv, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, origin, Matrix.vecHead, Matrix.vecTail]; save
           ext i
           fin_cases i
           . simp; save
