@@ -44,16 +44,30 @@ def BB := L' \ Kreis_in_Kugel_ohne_Origin
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
+lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
+  simp [Kreis_in_Kugel,L]
+  intro a h1 h2 h3
+  rw [h2]
+  simp
+  apply_fun (. - (2 * a 0 - 1) ^ 2) at h1
+  ring_nf at h1
+  apply_fun (. / 4) at h1
+  ring_nf at h1
+  rw [h1]
+  simp
+  exact h3
+
 lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
   simp [BB, L', Kreis_in_Kugel_ohne_Origin]
   rw [Set.diff_diff]
   rw [Set.union_diff_cancel]
   simp only [Set.diff_union_self, Set.union_eq_left]
 
-  sorry
+  exact Kreis_subset_L
 
   simp [origin, Kreis_in_Kugel]
   
+
 
 lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
   simp [BB, Kreis_in_Kugel_ohne_Origin, L', origin]--, Kreis_in_Kugel, origin, L', L]
@@ -79,151 +93,51 @@ lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origi
 lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
   simp [BB, Kreis_in_Kugel_ohne_Origin]
 
-
-/-lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
-  simp [list_union, union, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel, Kreis_in_Kugel_ohne_Origin, origin]
-  intro a h
+lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
+  simp [list_union, union, Kreis_in_Kugel_B, Kreis_in_Kugel_A, Kreis_in_Kugel_ohne_Origin, Kreis_in_Kugel, origin]
+  save ;intro x h1
+  simp at h1
+  rcases h1 with ⟨n, ⟨h1, h2⟩⟩
+  rw [h2]
+  simp; save
   apply And.intro
-  . aesop
-    ring_nf
-    simp_all only [Real.cos_sq_add_sin_sq]
-    ring_nf
-    sorry
-  . simp at *
-    rcases h with ⟨n, ⟨h1, h2⟩⟩
-    rw [h2]
-    refine Function.ne_iff.mpr ?_
+  . apply And.intro
+    . ring_nf
+      simp only [Real.cos_sq_add_sin_sq]
+    . sorry
+  . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
     use 0
-    simp
-    sorry-/
+    simp only [Matrix.cons_val_zero, ne_eq]
+    apply_fun (. - 2⁻¹)
+    ring_nf
+    apply_fun (. * 2)
+    ring_nf
+    simp only [ne_eq]
+    rw  [Real.cos_eq_neg_one_iff]
+    intro h3
+    sorry
 
-    
+
+lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := by
+  simp [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
+
 
 set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in_Kugel := by
-  sorry
-  /-rw [equidecomposable]
+  rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
-  simp; save
+  simp only [List.length_cons, List.length_singleton, Set.coe_setOf, Nat.reduceSucc,
+    Set.mem_setOf_eq, exists_and_left, Subtype.exists]; save
   apply And.intro
-  . simp [list_intersection, list_union, union, pairs, intersection, Kreis_in_Kugel_A, Kreis_in_Kugel_B]; save
-  . apply And.intro
-    . exact union_A_B_eq_Kreis
-    . use [gl_sq_2, gl_one]
-      simp
-      use [![-1/2,0,0], ![0,0,0]]
-      simp;save
-      use [![1/2,0,0], ![0,0,0]]
-      simp  [translate_list, rotate_list, translate_set, rotate_set, coe_gl_one_eq_one, remove_first, list_union, union]
-      ext x
-      apply Iff.intro
-      . apply equi_kreis_in_kugel_aux_1
-      . apply equi_kreis_in_kugel_aux_2
+  . simp [list_intersection, intersection, pairs, list_union, union, intersection_A_B_eq_nil]; save
+  apply And.intro
+  . exact union_A_B_eq_Kreis
+  use [gl_sq_2, gl_one]
+  simp only [List.length_nil, Nat.reduceSucc, List.length_cons, List.length_singleton,
+    exists_true_left]; save
+  use [![-1/2, 0, 0], ![0, 0, 0]]
+  
 
-      /-
-      save; simp [list_union, translate_list, rotate_list, Matrix.vecHead, Matrix.vecTail,coe_gl_one_eq_one,Kreis_in_Kugel,
-        union, translate_set, rotate_set, translate, rotate, remove_first, Kreis_in_Kugel_A, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin]
-      ;save
-      ext x
-      apply Iff.intro;save
-      . intro h
-        cases h with
-        | inl h =>
-          simp at *
-          cases h with
-          | intro w h =>
-          cases h with
-          | intro left right =>
-          rw [← right]
-          cases left with
-          | intro w1 h1 =>
-          cases h1 with
-          | intro left1 right1 =>
-          rw [right1]
-          simp [origin,coe_gl_sq_2_eq_rot_sq_2, rot_sq_2]
-          save
-          apply And.intro
-          apply And.intro
-          ring
-          simp [Real.cos_sq, Real.sin_sq_eq_half_sub]; save
-          ring; save
-          --
-          apply And.intro
-          . ring; save
-            field_simp
-            rw [@add_assoc]
-            rw [← Real.cos_sub]
-            ring_nf
-            rw [← @le_neg_add_iff_add_le]
-            ring_nf
-            norm_num
-            apply Real.cos_le_one
-          . ring_nf
-            field_simp
-            rw [@le_iff_exists_nonneg_add]
-            use -Real.sin (↑w1 * sq_2) * Real.cos sq_2 / 2 + (2 + Real.cos (↑w1 * sq_2) * Real.sin sq_2) / 2
-            ring_nf
-            simp; save
-            field_simp
-            sorry
-          . refine Function.ne_iff.mpr ?_
-            use 0
-            simp
-            ring_nf
-            apply_fun (. * 2 - 1)
-            ring
-            rw [← Real.cos_sub]
-            simp only [ne_eq, Real.cos_eq_neg_one_iff, not_exists]; save
-            intro x hx
-            ring_nf! at hx; save
-            have hx2 : Real.pi * (↑x * 2 + 1) = (↑w1 - 1) * sq_2 := by
-              ring_nf
-              rw [← hx]
-            
-            have hx3 : ∃ q w: ℚ, Real.pi * w = sq_2 * q := by
-              use (↑w1 - 1)
-              use ↑(x * 2 + 1)
-              simp [hx2]
-              ring
-            
-            have hx4 : ∃ q : ℚ, Real.pi = q * sq_2 := by
-              cases hx3 with
-              | intro w h =>
-              cases h with
-              | intro q h =>
-              use (w/q)
-              simp
-              save
-              sorry
-            
-            cases hx4 with 
-            | intro q h =>
-            rw [← Bool.coe_false]
-            apply pi_sqrt_two
-            use q
-          
-
-        | inr h => 
-          simp [origin]; save
-          rcases h with ⟨w, ⟨⟨h2, ⟨h3, h4⟩⟩, h⟩, h1⟩
-          apply And.intro
-          apply And.intro
-          simp only [← h1, h3, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, h2]
-          --
-          apply And.intro
-          simp [← h1, h3]
-          --
-          simp [← h1, h4]
-          --
-          rw [← h1]
-          apply_fun (. - (2 * w 1)^2) at h2
-          simp at h2
-          sorry
-      save
-      intro h1
-      simp;save
-      rcases h1 with ⟨⟨h2,⟨h3, ⟨h4, h5⟩⟩⟩, h1⟩
-      sorry-/-/
       
 --- Falsch rum, rotation müsste anders rein als bei Equi
 theorem equi_kugel : equidecomposable L' L := by
