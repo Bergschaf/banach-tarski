@@ -36,7 +36,7 @@ lemma union_div_trans {α : Type} (a b c : Set α) (ha : b ⊆ a) (hb : c ⊆ b)
 
 ---- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
 --- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
-def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) - 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ p 0 ≤ 1}
+def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) + 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ p 0 ≤ 1}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
 def BB := L' \ Kreis_in_Kugel_ohne_Origin
@@ -77,7 +77,7 @@ lemma coe_rot_besser : ↑gl_rot_besser = rot_besser := by
 
 
 
-def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) + 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
+def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) - 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
 lemma rotate_works : rotate gl_rot_besser ![1/2 * Real.cos sq_2,1/2 * Real.sin sq_2, 0] = ![-1/2,0,0] := by
@@ -160,7 +160,11 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
     apply_fun (. * 2)
     ring_nf
     simp only [ne_eq]
-    rw  [Real.cos_eq_neg_one_iff]
+    rw [← ne_eq]
+    apply_fun (. + 2)
+    ring_nf
+    rw [ne_eq]
+    rw  [Real.cos_eq_one_iff]
     intro h3
     sorry
 
@@ -169,8 +173,8 @@ lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := b
   simp [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
 
 
-lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0]
-    (rotate gl_sq_2_inv (translate ![-1 / 2, 0, 0] a)) = w} ∪
+lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/2, 0, 0]
+    (rotate gl_sq_2_inv (translate ![2⁻¹, 0, 0] a)) = w} ∪
     {w | ∃ v ∈ Kreis_in_Kugel_B, rotate 1 v = w} =
   Kreis_in_Kugel := by
   ext x
@@ -196,20 +200,47 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2�
     . left
       simp [rotate] at hc; save
       by_cases hc2:(x ≠ origin)
-      use translate ![1/2, 0, 0] (rotate gl_rot_besser (translate ![-1/2, 0, 0] x))
+      use translate ![-1/2, 0, 0] (rotate gl_rot_besser (translate ![1/2, 0, 0] x))
       simp [translate, rotate, coe_rot_besser, rot_besser, Matrix.vecHead, Matrix.vecTail]; save
-      apply And.intro
-      . simp [Kreis_in_Kugel_B] at hc; save
-        apply hc
-        simp [Kreis_in_Kugel_ohne_Origin, h, hc2]; save
-
-      . have h2 : x ∈ Kreis_in_Kugel_A := by
+      --
+      have h2 : x ∈ Kreis_in_Kugel_A := by
           simp [Kreis_in_Kugel_B] at hc; save
           apply hc
           simp [Kreis_in_Kugel_ohne_Origin, h, hc2]; save
-        simp [Kreis_in_Kugel_A] at h2
-        rcases h2 with ⟨a, ⟨h1, h2⟩⟩; save
-        rw [h2]
+      --
+      simp [Kreis_in_Kugel_A] at h2
+      rcases h2 with ⟨a, ⟨h1, h2⟩⟩; save
+      apply And.intro
+      .   simp [Kreis_in_Kugel_B] at hc; save
+          simp [Kreis_in_Kugel_A]
+          use a + 1
+          simp [h2, hc2]
+          ext i
+          fin_cases i
+          . simp
+            ring_nf
+            apply_fun (. + 1/2)
+            ring_nf
+            apply_fun (. * 2)
+            ring_nf
+            rw [← Real.cos_add]
+            --
+            rw [Function.Injective]
+            intro a₁ a₂ a_1
+            aesop_subst h2
+            simp_all only [mul_eq_mul_right_iff, OfNat.ofNat_ne_zero, or_false, ne_eq]
+            --
+            rw [Function.Injective]
+            intro a₁ a₂ a_1
+            aesop_subst h2
+            simp_all only [one_div, add_left_inj, ne_eq]
+
+          . simp
+            ring_nf
+            sorry
+          . simp
+
+      . rw [h2]
         simp [translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, rot_sq_2_inv]; save
         ext i
         fin_cases i
@@ -225,7 +256,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2�
         intro ha
         aesop_subst h2
         simp_all only [sub_left_inj, mul_eq_mul_right_iff, OfNat.ofNat_ne_zero, or_false, ne_eq]
-        ----
+        --
         simp
         ring
         simp [Real.cos_sq, Real.sin_sq_eq_half_sub]
@@ -235,28 +266,24 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2�
 
       . simp at hc2; save
         simp [hc2, Kreis_in_Kugel_A]; save
-        use ![1/2 * Real.cos sq_2 + 1/2, 1/2 * Real.sin sq_2, 0]
+        use ![1/2 * Real.cos sq_2 - 1/2, 1/2 * Real.sin sq_2, 0]
         apply And.intro
         . use 1
           simp; save
-        . simp [translate, Matrix.vecHead, Matrix.vecTail]
-          ring
-          simp
 
-
-
-
-          simp [rot_sq_2_inv, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, origin, Matrix.vecHead, Matrix.vecTail]; save
+        . simp [rot_sq_2_inv, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, origin, Matrix.vecHead, Matrix.vecTail]; save
           ext i
           fin_cases i
           . simp; save
             ring; save
+            apply_fun (. * 2 + 1)
+            ring_nf
+            simp
+            ---
             sorry
-          . sorry
-          . sorry
-
-
-
+          . simp
+            ring
+          . simp
 
 
 
@@ -273,9 +300,9 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
   use [gl_sq_2_inv, gl_one]
   simp only [List.length_nil, Nat.reduceSucc, List.length_cons, List.length_singleton,
     exists_true_left]; save
-  use [![-1/2, 0, 0], ![0, 0, 0]]
+  use [![1/2, 0, 0], ![0, 0, 0]]
   simp; save
-  use [![1/2, 0, 0], ![0,0,0]]
+  use [![-1/2, 0, 0], ![0,0,0]]
   simp [translate_list, translate_zero, remove_first, rotate_set, rotate_list, translate_set, coe_gl_one_eq_one, list_union, union]; save
   exact equi_kreis_in_kugel_aux
 
