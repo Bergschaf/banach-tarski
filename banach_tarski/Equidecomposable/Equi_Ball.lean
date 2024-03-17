@@ -66,7 +66,7 @@ lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
   exact Kreis_subset_L
 
   simp [origin, Kreis_in_Kugel]
-  
+
 
 
 lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
@@ -122,6 +122,30 @@ lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := b
   simp [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
 
 
+lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![2⁻¹, 0, 0] (rotate gl_sq_2 (translate ![-1 / 2, 0, 0] a)) = w} ∪
+    {w | ∃ v ∈ Kreis_in_Kugel_B, rotate 1 v = w} =
+  Kreis_in_Kugel := by
+  ext x
+  apply Iff.intro
+  . intro h
+    simp [Kreis_in_Kugel_A, translate, rotate, coe_gl_sq_2_eq_rot_sq_2, Matrix.vecHead, Matrix.vecTail, rot_sq_2, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin, origin, Kreis_in_Kugel] at h; save
+    rcases h with ⟨x1, ⟨⟨n,⟨h3, h1⟩⟩, h2⟩⟩ | ⟨⟨⟨h2, ⟨h3, h4⟩⟩, h1⟩, h⟩; save
+    . simp [← h2]
+      simp [Kreis_in_Kugel]
+      apply And.intro
+      . simp [h1, Real.cos_sq]; save
+        ring; save
+        simp [Real.cos_sq]; save
+        sorry
+      . simp [h1]; save
+        sorry
+    . simp [Kreis_in_Kugel, h3, h4, h2]; save
+
+  . intro h
+    sorry
+
+
+
 set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in_Kugel := by
   rw [equidecomposable]
@@ -138,11 +162,9 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
   use [![-1/2, 0, 0], ![0, 0, 0]]
   simp; save
   use [![1/2, 0, 0], ![0,0,0]]
-  
+  simp [translate_list, translate_zero, remove_first, rotate_set, rotate_list, translate_set, coe_gl_one_eq_one, list_union, union]; save
+  exact equi_kreis_in_kugel_aux
 
-  
-
-      
 --- Falsch rum, rotation müsste anders rein als bei Equi
 theorem equi_kugel : equidecomposable L' L := by
   apply equidecomposable_subset L' L BB Kreis_in_Kugel_ohne_Origin BB Kreis_in_Kugel
