@@ -187,7 +187,6 @@ lemma equi_comm (X Y: Set r_3) : equidecomposable X Y → equidecomposable Y X :
   intro h
   rw [equidecomposable] at *
   rcases h with ⟨Parts_X, rotations, translations1, translations2, hx_intersection, hx_union, g⟩
-  use (translate_list (List.length Parts_X)
   sorry
   
 
