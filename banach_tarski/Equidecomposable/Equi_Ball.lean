@@ -45,20 +45,14 @@ def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
 
 lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
-  simp [BB, Kreis_in_Kugel, L', L, Kreis_in_Kugel, Kreis_in_Kugel_ohne_Origin, origin]
-  ext x
-  apply Iff.intro
-  . sorry
-  . intro h
-    simp only [Set.mem_union, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff, not_and,
-      not_not, and_imp]
-    by_cases h2:((Real.sqrt (Real.sqrt (x 0 ^ 2 + x 1 ^ 2)) + x 2 ^ 2 ≤ 1 ∧ ¬x = ![0, 0, 0]) ∧
-        ((2 * x 0 - 1) ^ 2 + (2 * x 1) ^ 2 = 1 → x 2 = 0 → x 0 ≤ 1 → x = ![0, 0, 0]))
-    . left
-      exact h2
-    . right
-      apply And.intro
-      sorry
+  simp [BB, L', Kreis_in_Kugel_ohne_Origin]
+  rw [Set.diff_diff]
+  rw [Set.union_diff_cancel]
+  simp only [Set.diff_union_self, Set.union_eq_left]
+
+  sorry
+
+  simp [origin, Kreis_in_Kugel]
   
 
 lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
