@@ -136,6 +136,10 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
   simp only [List.length_nil, Nat.reduceSucc, List.length_cons, List.length_singleton,
     exists_true_left]; save
   use [![-1/2, 0, 0], ![0, 0, 0]]
+  simp; save
+  use [![1/2, 0, 0], ![0,0,0]]
+  
+
   
 
       
