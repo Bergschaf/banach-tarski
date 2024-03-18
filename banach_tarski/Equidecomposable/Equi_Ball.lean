@@ -132,6 +132,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
       simp only [Real.cos_sq_add_sin_sq]
     . rw [← @tsub_le_iff_left]
       norm_num
+      gcongr
       sorry
 
   . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
