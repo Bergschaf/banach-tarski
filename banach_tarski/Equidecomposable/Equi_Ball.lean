@@ -130,7 +130,10 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
   . apply And.intro
     . ring_nf
       simp only [Real.cos_sq_add_sin_sq]
-    . sorry
+    . rw [← @tsub_le_iff_left]
+      norm_num
+      sorry
+
   . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
     use 0
     simp only [Matrix.cons_val_zero, ne_eq]
@@ -144,8 +147,40 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
     ring_nf
     rw [ne_eq]
     rw  [Real.cos_eq_one_iff]
+
     intro h3
-    sorry
+    have h: ∃ q : ℚ, Real.pi = q * sq_2 := by
+      rcases h3 with ⟨n1, h3⟩
+      have hn1 : (↑n1 : Real) ≠ 0 := by
+        apply_fun (. / (2 * Real.pi)) at h3
+        ring_nf at h3
+        rw [mul_assoc] at h3
+        rw [mul_inv_cancel] at h3
+        simp at h3
+        rw [h3]
+        simp
+        intro hx
+        rcases hx with ⟨a | c⟩ | b
+        convert a
+        simp [Real.pi_ne_zero]
+        --
+        convert c
+        simp
+        exact Nat.pos_iff_ne_zero.mp h1
+        --
+        convert b
+        simp [sq_2]
+        --
+        simp [Real.pi_ne_zero]
+
+      use (↑n / (↑n1 * 2))
+      field_simp
+      rw [← h3]
+      ring
+
+    rw [← Bool.coe_false]
+    apply pi_sqrt_two
+    exact h
 
 
 lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := by
