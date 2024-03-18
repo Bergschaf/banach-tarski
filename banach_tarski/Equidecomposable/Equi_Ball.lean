@@ -240,7 +240,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
           simp [Kreis_in_Kugel_ohne_Origin, h, hc2]; save
       --
       simp [Kreis_in_Kugel_A] at h2
-      rcases h2 with ⟨a, ⟨h1, h2⟩⟩; save
+      rcases h2 with ⟨a, ⟨_, h2⟩⟩; save
       apply And.intro
       .   simp [Kreis_in_Kugel_B] at hc; save
           simp [Kreis_in_Kugel_A]
