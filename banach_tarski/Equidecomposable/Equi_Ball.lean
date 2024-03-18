@@ -132,8 +132,12 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
       simp only [Real.cos_sq_add_sin_sq]
     . rw [← @tsub_le_iff_left]
       norm_num
-      gcongr
-      sorry
+      have h_c : -(1 / 2) ≤ 1 / 2 * Real.cos (↑n * sq_2) := calc
+        -(1 / 2) ≤ (1 / 2) * (-1) := by simp
+        _ ≤ (1 / 2) * (Real.cos (n * sq_2)) := by
+          gcongr
+          exact Real.neg_one_le_cos (n * sq_2)
+      exact h_c
 
   . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
     use 0
