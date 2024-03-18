@@ -193,6 +193,14 @@ lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := b
 
 set_option maxHeartbeats 0
 
+lemma sin_le_cos (x : Real) : Real.sin x ≤ 1 + Real.cos x := by
+  sorry
+
+lemma le_lemma (n : Nat) (h : 0 < n) :
+      Real.sin (↑n * sq_2) * Real.sin sq_2 * (-1 / 2) ≤
+       1 / 2 + Real.cos (↑n * sq_2) * Real.cos sq_2 * (1 / 2) := by
+        sorry
+
 lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/2, 0, 0]
     (rotate gl_sq_2_inv (translate ![2⁻¹, 0, 0] a)) = w} ∪
     {w | ∃ v ∈ Kreis_in_Kugel_B, rotate 1 v = w} =
@@ -211,7 +219,8 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
         ring_nf
       . simp [h1]; save
         ring_nf; save
-        sorry
+        apply le_lemma
+        exact h3
 
     . simp [Kreis_in_Kugel, h3, h4, h2]; save
 

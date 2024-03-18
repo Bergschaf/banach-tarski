@@ -221,17 +221,12 @@ lemma foldl_union {α : Type} (L : List (Set α)) (X : Set α) :
 
 lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection a = ∅) (h2 : list_union a ∩ X = ∅) :
   list_intersection (X::a) = ∅ := by
-  simp [list_intersection, pairs, list_union] at *
-  rw [foldl_union, h1]
-  simp
+  simp [list_intersection, list_union] at *; save
 
   induction a with
-  | nil =>
-    simp
+  | nil => simp [union, pairs]
   | cons head tail ih =>
-    simp [union, intersection]
     sorry
-
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
