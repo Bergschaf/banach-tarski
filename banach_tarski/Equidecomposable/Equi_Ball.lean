@@ -4,9 +4,6 @@ import banach_tarski.Equidecomposable.Equi_Kreis
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 
 
-lemma x_le_one_if_dist_le_one (x : r_3) : x 2 = 0 ∧ x 0 ^ 2 + x 1 ^ 2 ≤ 1 -> -x 0 ≤ 1 := by sorry
-
-
 lemma union_div_trans {α : Type} (a b c : Set α) (ha : b ⊆ a) (hb : c ⊆ b): a \ b ∪ b \ c = a \ c := by
   refine Set.ext_iff.mpr ?_
   intro x
@@ -154,6 +151,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
 lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := by
   simp [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
 
+set_option maxHeartbeats 0
 
 lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/2, 0, 0]
     (rotate gl_sq_2_inv (translate ![2⁻¹, 0, 0] a)) = w} ∪
@@ -169,10 +167,12 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
       apply And.intro
       . simp [h1, Real.cos_sq]; save
         ring; save
-        simp [Real.cos_sq]; save
-        sorry
+        simp [Real.cos_sq, Real.sin_sq_eq_half_sub]; save
+        ring_nf
       . simp [h1]; save
+        ring_nf; save
         sorry
+
     . simp [Kreis_in_Kugel, h3, h4, h2]; save
 
   . intro h
@@ -210,13 +210,15 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
             intro a₁ a₂ a_1
             aesop_subst h2
             simp_all only [mul_eq_mul_right_iff, OfNat.ofNat_ne_zero, or_false, ne_eq]
+            simp at a_1
+            simp [a_1]
             --
           . simp
             ring_nf
             field_simp
-            sorry
-            --rw [← Real.cos_add]
-            sorry
+            rw [Real.sin_add]
+            rw [add_comm]
+
           . simp
 
       . rw [h2]
@@ -258,15 +260,15 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
             apply_fun (. * 2 + 1)
             ring_nf
             simp
+            --
+            simp [Function.Injective]
             ---
-            sorry
           . simp
             ring
           . simp
 
 
 
-set_option maxHeartbeats 0
 lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in_Kugel := by
   rw [equidecomposable]
   use [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
