@@ -183,12 +183,12 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
     Matrix.vecMul_one, exists_eq_right, Set.setOf_mem_eq, List.foldl_cons, union, Set.empty_union,
     List.foldl_nil]
 
-lemma equi_comm (X Y: Set r_3) : equidecomposable X Y → equidecomposable Y X := by
+/-lemma equi_comm (X Y: Set r_3) : equidecomposable X Y → equidecomposable Y X := by
   intro h
   rw [equidecomposable] at *
   rcases h with ⟨Parts_X, rotations, translations1, translations2, hx_intersection, hx_union, g⟩
-  sorry
-  
+  sorry-/
+
 
 
 instance union_isAssoc : Std.Associative (α := Set α) (union . .) := by
@@ -233,8 +233,6 @@ lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : 
     sorry
 
 
-
-
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
   (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
@@ -243,20 +241,13 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   simp [equidecomposable] at h_equi
   rcases h_equi with ⟨a, ha⟩
   use [X₁] ++ a
-  cases ha with
-  | intro ha1 ha2 =>
-  cases ha2 with
-  | intro ha2 ha3 =>
-  rcases ha3 with ⟨rot, ha3⟩
-  rcases ha3 with ⟨ha4, ha3⟩
-  rcases ha3 with ⟨translations, ha3⟩
-  rcases ha3 with ⟨ha5, ha3⟩
+  rcases ha with ⟨h1, h2, rotations, h3, translations1, h4, translations2, h5, h6⟩
 
   apply And.intro
   . simp
     apply list_intersection_list
-    exact ha1
-    rw [ha2]
+    exact h1
+    rw [h2]
     rw [← hx_intersection]
     exact Set.inter_comm X₂ X₁
 
@@ -264,29 +255,26 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   apply And.intro
   . simp only [list_union, List.singleton_append, List.foldl_cons, union, Set.empty_union]
     rw [← hx_union]
-    rw [← ha2]
+    rw [← h2]
     rw [list_union]
     rw [Set.union_comm]
     exact foldl_union a X₁
   --
-  use gl_one::rot
+  use gl_one::rotations
   simp
-  use ha4
-  use ![0,0,0]::translations
-  simp [ha5]
+  use h3
+  use ![0,0,0]::translations1
+  simp [h4]
   --
   save
-  simp [list_union, translate_list, rotate_list, remove_first, translate_set, union, rotate_set, rotate]
-  save
-  have h_x1 : {w | ∃ a ∈ X₁,Matrix.vecMul (translate ![0, 0, 0] a) ↑gl_one = w} = X₁ := by
-    simp [translate_zero, coe_gl_one_eq_one]
+  use ![0,0,0]::translations2
+  simp [h5]; save
 
-  sorry
-  /-
-  rw [h_x1]
-  simp [list_union] at ha3
+  simp [list_union,coe_gl_one_eq_one, translate_list, rotate_list, remove_first, translate_set, union, rotate_set, rotate, translate_zero]; save
+
+  simp [list_union] at h6
   rw [foldl_union]
-  rw [ha3]
+  rw [h6]
   rw [hxy_eq]
   rw [Set.union_comm]
-  exact hy_union-/
+  exact hy_union
