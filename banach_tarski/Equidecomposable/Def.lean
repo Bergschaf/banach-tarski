@@ -218,7 +218,6 @@ lemma foldl_union {α : Type} (L : List (Set α)) (X : Set α) :
         · simp_all only [true_or]
 
 
-
 lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : list_intersection a = ∅) (h2 : list_union a ∩ X = ∅) :
   list_intersection (X::a) = ∅ := by
   simp [list_intersection, list_union] at *; save
@@ -226,20 +225,31 @@ lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : 
   induction a with
   | nil => simp [union, pairs]
   | cons head tail ih =>
-    sorry
+    rw [@List.foldl_map] at *
+    rw [pairs]
+    simp
+
+    have h: ((List.foldl (fun (x : Set α) y ↦ union x (intersection y)) (union ∅ (intersection (X, head)))
+      (List.map (fun y ↦ (X, y)) tail)) : Set α) = ∅ := by
+      simp [union, intersection]
+      --have h_intersection : X ∩ head = ∅ := by
+      --  sorry
+      sorry
+    rw [h]
+    exact h1
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)
   (hxy_eq : X₁ = Y₁) (h_equi : equidecomposable X₂ Y₂):
     equidecomposable X Y := by
-  simp [equidecomposable]
-  simp [equidecomposable] at h_equi
+  simp [equidecomposable]; save
+  simp [equidecomposable] at h_equi; save
   rcases h_equi with ⟨a, ha⟩
   use [X₁] ++ a
   rcases ha with ⟨h1, h2, rotations, h3, translations1, h4, translations2, h5, h6⟩
 
   apply And.intro
-  . simp
+  . simp [list_intersection, list_union, intersection, pairs]
     apply list_intersection_list
     exact h1
     rw [h2]
