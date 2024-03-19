@@ -88,7 +88,7 @@ lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   apply_fun (. / 4) at h1
   ring_nf at h1
   rw [h1]
-  ring
+  ring_nf
   exact h3
 
 lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
@@ -113,7 +113,7 @@ lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origi
   apply_fun (. / 4) at h1
   ring_nf at h1
   rw [h1]
-  ring
+  ring_nf
   exact h3
 
 lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
@@ -193,7 +193,7 @@ lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := b
 
 set_option maxHeartbeats 0
 
-lemma le_lemma (n : Nat) (h : 0 < n) :
+lemma le_lemma (n : Nat):
       Real.sin (↑n * sq_2) * Real.sin sq_2 * (-1 / 2) ≤
        1 / 2 + Real.cos (↑n * sq_2) * Real.cos sq_2 * (1 / 2) := by
         rw [← @tsub_le_iff_right]
@@ -223,18 +223,17 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
   apply Iff.intro
   . intro h
     simp [Kreis_in_Kugel_A, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, Matrix.vecHead, Matrix.vecTail, rot_sq_2_inv, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin, origin, Kreis_in_Kugel] at h; save
-    rcases h with ⟨x1, ⟨⟨n,⟨h3, h1⟩⟩, h2⟩⟩ | ⟨⟨⟨h2, ⟨h3, h4⟩⟩, h1⟩, h⟩; save
+    rcases h with ⟨x1, ⟨⟨n,⟨_, h1⟩⟩, h2⟩⟩ | ⟨⟨⟨h2, ⟨h3, h4⟩⟩, _⟩, _⟩; save
     . simp [← h2]
       simp [Kreis_in_Kugel]
       apply And.intro
       . simp [h1, Real.cos_sq]; save
-        ring; save
+        ring_nf; save
         simp [Real.cos_sq, Real.sin_sq_eq_half_sub]; save
         ring_nf
       . simp [h1]; save
         ring_nf; save
         apply le_lemma
-        exact h3
 
     . simp [Kreis_in_Kugel, h3, h4, h2]; save
 
@@ -302,7 +301,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
         simp_all only [sub_left_inj, mul_eq_mul_right_iff, OfNat.ofNat_ne_zero, or_false, ne_eq]
         --
         simp
-        ring
+        ring_nf
         simp [Real.cos_sq, Real.sin_sq_eq_half_sub]
         ring
         --
@@ -319,7 +318,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
           ext i
           fin_cases i
           . simp; save
-            ring; save
+            ring_nf; save
             apply_fun (. * 2 + 1)
             ring_nf
             simp

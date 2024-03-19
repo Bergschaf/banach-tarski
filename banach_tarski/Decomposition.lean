@@ -59,4 +59,10 @@ lemma rot_A_P₂ : rotate_set P₂ gl_a = P₂ ∪ P₃ ∪ P₄ := by
   save
   intro h
   rcases h with ⟨h1, h2⟩
+  simp
+  use rotate gl_a' x1
+  simp [rotate, rotate_set_around_set]
+  apply And.intro
+  apply And.intro
+
   repeat sorry
