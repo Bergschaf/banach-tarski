@@ -51,14 +51,33 @@ lemma reduce_len {α : Type} [DecidableEq α] (L: List (α × Bool)) (x : α × 
   simp
   sorry
 
-lemma tail_reduced_eq_reduced {α : Type} [DecidableEq α] (L : List (α × Bool)) (x : α × Bool) (h: FreeGroup.reduce (x::L) = x::L) :
-  FreeGroup.reduce L = L := by
-  rw [← reduce_len_eq] at *
-  sorry
+variable {α : Type} [DecidableEq α] {x : List (α × Bool)}
 
-lemma tail_reduced_eq_reduced_ {α : Type} [DecidableEq α] (L : List (α × Bool)) (x : α × Bool) (h: FreeGroup.reduce L = L) :
-  L.tail = FreeGroup.reduce L.tail := by
-  sorry
+lemma reduce_ne_inv_pair {L : List (α × Bool)} : FreeGroup.reduce x ≠ (a, b) :: (a, !b) :: L := by
+  have : (a, b) :: (a, !b) :: L = [] ++ (a, b) :: (a, !b) :: L := by rw [List.nil_append]
+  rw [this]
+  exact FreeGroup.reduce.not
+
+lemma tail_reduced_eq_reduced (hx : x = FreeGroup.reduce x)
+  : x.tail = FreeGroup.reduce x.tail := by
+  cases x with
+  | nil => exact hx
+  | cons head tail =>
+    rw [FreeGroup.reduce.cons] at hx
+    by_cases h1 : FreeGroup.reduce tail = []
+    · simp [h1] at hx
+      simp [hx, FreeGroup.reduce]
+    · obtain ⟨b, L, h2⟩ := List.exists_cons_of_ne_nil h1
+      simp only [h2] at hx
+      split_ifs at hx with h3
+      · cases b; cases head
+        simp only at h3
+        cases' h3 with h4 h5
+        rw [← hx, h4, h5] at h2
+        exact (reduce_ne_inv_pair h2).elim
+      · rw [List.cons_inj] at hx
+        rw [List.tail_cons, h2]
+        exact hx
 
 
 lemma rotate_back_S_A (start : Set r_3) :
@@ -104,22 +123,14 @@ lemma rotate_back_S_A (start : Set r_3) :
 
 
 lemma SA_tail :
-  ∀ x ∈ S_A, ∃ y ∈ S_B ∪ S_B' ∪ S_A,x.val ≠ [] -> x.val.tail = y := by
+  ∀ x ∈ S_A, ∃ y ∈ S_B ∪ S_B' ∪ S_A, x.val ≠ [] -> x.val.tail = y := by
     intro x hx
     simp
     use x.val.tail
     simp [tail_reduced_eq_reduced]
     have h : List.tail x = FreeGroup.reduce (List.tail x.val) := by
       simp [S_A, G_list] at x
-      apply tail_reduced_eq_reduced_
-      use erzeuger_t.gl_a -- why??
-      use true -- why???
-      symm
+      apply tail_reduced_eq_reduced
       apply x.property
-
     use h
     sorry
-
---lemma S_A_tail :
---  ∀ x ∈ S_A, List.tail x ∈ S_B ∪ S_B' ∪ S_A := by
---  sorry
