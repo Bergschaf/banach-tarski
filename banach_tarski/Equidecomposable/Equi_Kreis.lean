@@ -56,8 +56,13 @@ lemma origin_not_in_A : ![1,0,0] ∉ A := by
 
   rcases h1 with ⟨a, ha⟩
   have a_nonzero : a ≠ 0 := by
-    aesop
-    simp [sq_2] at h_1
+    simp [sq_2] at ha
+    simp_all only [ne_eq]
+    apply Aesop.BuiltinRules.not_intro
+    intro a_1
+    aesop_subst a_1
+    simp_all only [Int.cast_zero, zero_mul, zero_eq_mul, Nat.cast_eq_zero, Nat.ofNat_nonneg, Real.sqrt_eq_zero,
+      OfNat.ofNat_ne_zero, or_false, lt_self_iff_false]
 
   have haa : Real.pi = (x / (2 * a)) * sq_2 := by
     rw [@div_eq_inv_mul]
