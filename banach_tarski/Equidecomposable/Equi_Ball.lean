@@ -5,41 +5,10 @@ import banach_tarski.Equidecomposable.Rotations
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 
 
-lemma union_div_trans {α : Type} (a b c : Set α) (ha : b ⊆ a) (hb : c ⊆ b): a \ b ∪ b \ c = a \ c := by
-  refine Set.ext_iff.mpr ?_
-  intro x
-  apply Iff.intro
-  . simp
-    intro h
-    cases h with
-    | inl h =>
-      apply And.intro
-      . exact Set.mem_of_mem_diff h
-      . apply Set.not_mem_subset hb
-        exact Set.not_mem_of_mem_diff h
-    | inr h =>
-      apply And.intro
-      . unhygienic with_reducible aesop_destruct_products
-        apply ha
-        simp_all only
-      . exact Set.not_mem_of_mem_diff h
-  . intro h1
-    simp
-    by_cases h2:(x ∈ b)
-    . right
-      apply And.intro
-      . exact h2
-      . exact Set.not_mem_of_mem_diff h1
-    . left
-      apply And.intro
-      . exact Set.mem_of_mem_diff h1
-      . exact h2
-
-
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) + 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ -p 0 ≤ 1}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
-def BB := L' \ Kreis_in_Kugel_ohne_Origin
+def Part_B := L' \ Kreis_in_Kugel_ohne_Origin
 
 
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) - 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
@@ -59,8 +28,8 @@ lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   ring_nf
   exact h3
 
-lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
-  simp [BB, L', Kreis_in_Kugel_ohne_Origin]
+lemma Part_B_union_Kreis_in_Kugel_eq_L : Part_B ∪ Kreis_in_Kugel = L := by
+  simp [Part_B, L', Kreis_in_Kugel_ohne_Origin]
   rw [Set.diff_diff]
   rw [Set.union_diff_cancel]
   simp only [Set.diff_union_self, Set.union_eq_left]
@@ -71,8 +40,8 @@ lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
 
 
 
-lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
-  simp [BB, Kreis_in_Kugel_ohne_Origin, L', origin]--, Kreis_in_Kugel, origin, L', L]
+lemma Part_B_and_Kreis_in_Kugel_ohne_origin_eq_L' : Part_B ∪ Kreis_in_Kugel_ohne_Origin = L' := by
+  simp [Part_B, Kreis_in_Kugel_ohne_Origin, L', origin]
   simp [Kreis_in_Kugel, L]
   intro x h1 h2 h3
   simp [h2]
@@ -84,8 +53,8 @@ lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origi
   ring_nf
   exact h3
 
-lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
-  simp [BB, Kreis_in_Kugel_ohne_Origin]
+lemma intersection_Part_B_Kreis_in_Kugel_ohne_Origin_eq_nil : Part_B ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
+  simp [Part_B, Kreis_in_Kugel_ohne_Origin]
 
 lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
   simp [list_union, union, Kreis_in_Kugel_B, Kreis_in_Kugel_A, Kreis_in_Kugel_ohne_Origin, Kreis_in_Kugel, origin]
@@ -107,7 +76,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
           exact Real.neg_one_le_cos (n * sq_2)
       exact h_c
 
-  . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+  . refine Function.ne_iff.mpr ?_
     use 0
     simp only [Matrix.cons_val_zero, ne_eq]
     apply_fun (. - 2⁻¹)
@@ -319,13 +288,13 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
 
 
 theorem equi_kugel : equidecomposable L' L := by
-  apply equidecomposable_subset L' L BB Kreis_in_Kugel_ohne_Origin BB Kreis_in_Kugel
+  apply equidecomposable_subset L' L Part_B Kreis_in_Kugel_ohne_Origin Part_B Kreis_in_Kugel
   --
-  exact BB_and_Kreis_in_Kugel_ohne_origin_eq_L'
+  exact Part_B_and_Kreis_in_Kugel_ohne_origin_eq_L'
   --
-  exact intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil
+  exact intersection_Part_B_Kreis_in_Kugel_ohne_Origin_eq_nil
   --
-  exact BB_union_Kreis_in_Kugel_eq_L
+  exact Part_B_union_Kreis_in_Kugel_eq_L
   --
   rfl
   --
