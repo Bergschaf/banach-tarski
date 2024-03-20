@@ -3,13 +3,16 @@
         "Lemma_3_1.lean": null,
         "Lemma_3_2.lean": null,
         "G_countable.lean": null,
+        "Equidecomposable": {
+            "Equi_Kreis.lean": null,
+            "Equi_Ball.lean": null,
+            "Def.lean": null,
+            "Rotations.lean": null
+        },
         "Definitions.lean": null,
         "Orbit.lean": null,
-        "Equidecomposable": {
-            "Def.lean": null,
-            "Equi_Ball.lean": null,
-            "Equi_Kreis.lean": null
-        }
+        "Rotations.lean": null,
+        "Decomposition.lean": null
     },
     "andere-Theoreme": {
         "complex_numbers.lean": null,
