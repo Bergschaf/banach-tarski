@@ -249,7 +249,7 @@ lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   rcases ha with ⟨h1, h2, rotations, h3, translations1, h4, translations2, h5, h6⟩
 
   apply And.intro
-  . simp [list_intersection, list_union, intersection, pairs]
+  . simp [list_union, intersection, pairs]
     apply list_intersection_list
     exact h1
     rw [h2]
