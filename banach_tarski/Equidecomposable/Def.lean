@@ -183,13 +183,6 @@ lemma equidecomposable_self (X : Set r_3) : equidecomposable X X := by
     Matrix.vecMul_one, exists_eq_right, Set.setOf_mem_eq, List.foldl_cons, union, Set.empty_union,
     List.foldl_nil]
 
-/-lemma equi_comm (X Y: Set r_3) : equidecomposable X Y → equidecomposable Y X := by
-  intro h
-  rw [equidecomposable] at *
-  rcases h with ⟨Parts_X, rotations, translations1, translations2, hx_intersection, hx_union, g⟩
-  sorry-/
-
-
 
 instance union_isAssoc : Std.Associative (α := Set α) (union . .) := by
   simp [union]
