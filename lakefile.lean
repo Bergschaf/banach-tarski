@@ -6,9 +6,13 @@ package banach_tarski where
     ⟨`relaxedAutoImplicit, true⟩, -- prevents typos to be interpreted as new free variables
     ⟨`pp.unicode.fun, true⟩, -- pretty-prints `fun a ↦ b`
     ⟨`pp.proofs.withType, false⟩]
+  moreLinkArgs := #["-L./.lake/packages/LeanCopilot/.lake/build/lib", "-lctranslate2"]
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @ "master"
+
+require LeanCopilot from git
+  "https://github.com/lean-dojo/LeanCopilot.git" @ "v1.1.2"
 
 meta if get_config? env = some "dev" then
 require «doc-gen4» from git
