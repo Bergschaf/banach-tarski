@@ -98,13 +98,6 @@ theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [Matrix.det_fin_three]
   simp
   repeat rw [Matrix.one_apply_ne]
-  norm_num
-  rw [@ne_iff_lt_or_gt]
-  simp
-  exact Fin.ne_of_lt (Nat.le.step Nat.le.refl)
-  exact Fin.ne_of_gt Nat.le.refl
-  exact Fin.ne_of_lt Nat.le.refl
-
 
 noncomputable section
 def gl_a   : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero matrix_a matrix_a_det_neq_zero
