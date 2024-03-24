@@ -22,40 +22,6 @@ def matrix_b'  : Matrix (Fin 3) (Fin 3) Real := !![1/3, 2/3*Real.sqrt 2, 0; (-2/
 def matrix_one : Matrix (Fin 3) (Fin 3) Real := 1
 end noncomputable section
 
-theorem matrix_a_inverse :  matrix_a * matrix_a' = matrix_one := by
-  rw [matrix_a]
-  rw [matrix_a']
-  rw [matrix_one]
-  norm_num
-  ext h1 h2
-  fin_cases h1
-  simp
-  rw [@Matrix.one_fin_three]
-  simp
-
-  simp
-  norm_num
-  rw [@mul_mul_mul_comm]
-  norm_num
-  simp
-  rw [div_eq_mul_inv]
-  rw [← mul_assoc]
-  rw [← mul_assoc]
-  rw [@Mathlib.Tactic.RingNF.add_neg]
-  rw [@mul_assoc]
-  rw [mul_comm 3⁻¹]
-  rw [mul_comm 3⁻¹]
-  rw [← mul_assoc]
-  rw [sub_self]
-  rw [@Matrix.one_fin_three]
-  simp
-
-  simp
-  ring_nf
-  simp
-  ring_nf
-  rw [@Matrix.one_fin_three]
-  exact rfl
 
 theorem matrix_a_det_neq_zero : Matrix.det matrix_a ≠ 0 := by
   rw [matrix_a]
@@ -97,13 +63,6 @@ theorem matrix_one_det_neq_zero : Matrix.det matrix_one ≠ 0 := by
   rw [matrix_one]
   rw [Matrix.det_fin_three]
   simp
-  repeat rw [Matrix.one_apply_ne]
-  norm_num
-  rw [@ne_iff_lt_or_gt]
-  simp
-  exact Fin.ne_of_lt (Nat.le.step Nat.le.refl)
-  exact Fin.ne_of_gt Nat.le.refl
-  exact Fin.ne_of_lt Nat.le.refl
 
 
 noncomputable section
