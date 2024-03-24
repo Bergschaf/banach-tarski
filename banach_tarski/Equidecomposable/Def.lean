@@ -207,7 +207,18 @@ lemma list_intersection_list {α : Type} (X : Set α) (a : List (Set α)) (h1 : 
   induction a with
   | nil => simp only [pairs, List.map_nil, List.append_nil, List.foldl_nil]
   | cons head tail ih =>
-    sorry
+    rw [@List.foldl_map] at *
+    rw [pairs]
+    simp
+
+    have h: ((List.foldl (fun (x : Set α) y ↦ union x (intersection y)) (union ∅ (intersection (X, head)))
+      (List.map (fun y ↦ (X, y)) tail)) : Set α) = ∅ := by
+      simp [union, intersection]
+      --have h_intersection : X ∩ head = ∅ := by
+      --  sorry
+      sorry
+    rw [h]
+    exact h1
 
 lemma equidecomposable_subset (X Y : Set r_3) (X₁ X₂ Y₁ Y₂ : Set r_3)
   (hx_union : X₁ ∪ X₂ = X) (hx_intersection : X₁ ∩ X₂ = ∅) (hy_union : Y₁ ∪ Y₂ = Y)

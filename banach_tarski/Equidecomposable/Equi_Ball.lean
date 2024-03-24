@@ -1,78 +1,15 @@
 import banach_tarski.Equidecomposable.Def
 import banach_tarski.Equidecomposable.Equi_Kreis
+import banach_tarski.Equidecomposable.Rotations
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 
 
-lemma union_div_trans {α : Type} (a b c : Set α) (ha : b ⊆ a) (hb : c ⊆ b): a \ b ∪ b \ c = a \ c := by
-  refine Set.ext_iff.mpr ?_
-  intro x
-  apply Iff.intro
-  . simp
-    intro h
-    cases h with
-    | inl h =>
-      apply And.intro
-      . exact Set.mem_of_mem_diff h
-      . apply Set.not_mem_subset hb
-        exact Set.not_mem_of_mem_diff h
-    | inr h =>
-      apply And.intro
-      . unhygienic with_reducible aesop_destruct_products
-        apply ha
-        simp_all only
-      . exact Set.not_mem_of_mem_diff h
-  . intro h1
-    simp
-    by_cases h2:(x ∈ b)
-    . right
-      apply And.intro
-      . exact h2
-      . exact Set.not_mem_of_mem_diff h1
-    . left
-      apply And.intro
-      . exact Set.mem_of_mem_diff h1
-      . exact h2
-
----- TODO kreis nicht mit weirder formel sondern mit funktion die den normalen kreis verschiebt und skaliert
---- -> beweis dass ein verschobenener Kreis immnernoch equidekomponierbar ist
 def Kreis_in_Kugel : Set r_3 := {p : r_3 | ((2 * (p 0) + 1)) ^ 2 + (2 * (p 1)) ^ 2 = 1 ∧ p 2 = 0 ∧ -p 0 ≤ 1}
 def Kreis_in_Kugel_ohne_Origin : Set r_3 := Kreis_in_Kugel \ {origin}
 
-def BB := L' \ Kreis_in_Kugel_ohne_Origin
+def Part_B := L' \ Kreis_in_Kugel_ohne_Origin
 
-noncomputable def rot_sq_2_inv : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (sq_2), -Real.sin sq_2, 0; Real.sin (sq_2), Real.cos (sq_2), 0; 0,0,1]
-lemma rot_sq_2_inv_det_ne_zero : Matrix.det rot_sq_2_inv ≠ 0 := by
-  simp [rot_sq_2_inv, Matrix.det_fin_three, sq_2]
-  rw [@mul_self_add_mul_self_eq_zero]
-  intro h1
-  cases h1 with
-  | intro left right =>
-    rw [← Bool.coe_false]
-    apply sin_sqrt_2_neq_0
-    exact right
-
-
-noncomputable def gl_sq_2_inv : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero rot_sq_2_inv rot_sq_2_inv_det_ne_zero
-lemma coe_gl_sq_2_inv_eq_rot_sq_2_inv : ↑gl_sq_2_inv = rot_sq_2_inv := by
-  rfl
-
-------
-noncomputable def rot_besser : Matrix (Fin 3) (Fin 3) Real := !![Real.cos (sq_2), Real.sin sq_2, 0; -Real.sin (sq_2), Real.cos (sq_2), 0; 0,0,1]
-lemma det_rot_besser : Matrix.det rot_besser ≠ 0 := by
-  simp [rot_besser, Matrix.det_fin_three, sq_2]
-  rw [@mul_self_add_mul_self_eq_zero]
-  intro h1
-  cases h1 with
-  | intro left right =>
-    rw [← Bool.coe_false]
-    apply sin_sqrt_2_neq_0
-    exact right
-
-
-noncomputable def gl_rot_besser : GL (Fin 3) Real := Matrix.GeneralLinearGroup.mkOfDetNeZero rot_besser det_rot_besser
-lemma coe_rot_besser : ↑gl_rot_besser = rot_besser := by
-  rfl
 
 def Kreis_in_Kugel_A : Set r_3 := {w : r_3 | ∃ n : {x : ℕ | x > 0}, w = ![1/2 * Real.cos (n * sq_2) - 1/2,1/2 * Real.sin (n * sq_2),0]} -- TODO
 def Kreis_in_Kugel_B := Kreis_in_Kugel_ohne_Origin \ Kreis_in_Kugel_A
@@ -88,11 +25,11 @@ lemma Kreis_subset_L : Kreis_in_Kugel ⊆ L := by
   apply_fun (. / 4) at h1
   ring_nf at h1
   rw [h1]
-  ring
+  ring_nf
   exact h3
 
-lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
-  simp [BB, L', Kreis_in_Kugel_ohne_Origin]
+lemma Part_B_union_Kreis_in_Kugel_eq_L : Part_B ∪ Kreis_in_Kugel = L := by
+  simp [Part_B, L', Kreis_in_Kugel_ohne_Origin]
   rw [Set.diff_diff]
   rw [Set.union_diff_cancel]
   simp only [Set.diff_union_self, Set.union_eq_left]
@@ -103,8 +40,8 @@ lemma BB_union_Kreis_in_Kugel_eq_L : BB ∪ Kreis_in_Kugel = L := by
 
 
 
-lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origin = L' := by
-  simp [BB, Kreis_in_Kugel_ohne_Origin, L', origin]--, Kreis_in_Kugel, origin, L', L]
+lemma Part_B_and_Kreis_in_Kugel_ohne_origin_eq_L' : Part_B ∪ Kreis_in_Kugel_ohne_Origin = L' := by
+  simp [Part_B, Kreis_in_Kugel_ohne_Origin, L', origin]
   simp [Kreis_in_Kugel, L]
   intro x h1 h2 h3
   simp [h2]
@@ -113,11 +50,11 @@ lemma BB_and_Kreis_in_Kugel_ohne_origin_eq_L' : BB ∪ Kreis_in_Kugel_ohne_Origi
   apply_fun (. / 4) at h1
   ring_nf at h1
   rw [h1]
-  ring
+  ring_nf
   exact h3
 
-lemma intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil : BB ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
-  simp [BB, Kreis_in_Kugel_ohne_Origin]
+lemma intersection_Part_B_Kreis_in_Kugel_ohne_Origin_eq_nil : Part_B ∩ Kreis_in_Kugel_ohne_Origin = ∅ := by
+  simp [Part_B, Kreis_in_Kugel_ohne_Origin]
 
 lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kreis_in_Kugel_ohne_Origin := by
   simp [list_union, union, Kreis_in_Kugel_B, Kreis_in_Kugel_A, Kreis_in_Kugel_ohne_Origin, Kreis_in_Kugel, origin]
@@ -139,7 +76,7 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
           exact Real.neg_one_le_cos (n * sq_2)
       exact h_c
 
-  . refine Function.ne_iff.mpr ?_ -- TODO sehr gutes ding
+  . refine Function.ne_iff.mpr ?_
     use 0
     simp only [Matrix.cons_val_zero, ne_eq]
     apply_fun (. - 2⁻¹)
@@ -191,9 +128,8 @@ lemma union_A_B_eq_Kreis : list_union [Kreis_in_Kugel_A, Kreis_in_Kugel_B] = Kre
 lemma intersection_A_B_eq_nil : Kreis_in_Kugel_A ∩ Kreis_in_Kugel_B = ∅ := by
   simp [Kreis_in_Kugel_A, Kreis_in_Kugel_B]
 
-set_option maxHeartbeats 0
 
-lemma le_lemma (n : Nat) (h : 0 < n) :
+lemma le_lemma (n : Nat):
       Real.sin (↑n * sq_2) * Real.sin sq_2 * (-1 / 2) ≤
        1 / 2 + Real.cos (↑n * sq_2) * Real.cos sq_2 * (1 / 2) := by
         rw [← @tsub_le_iff_right]
@@ -216,25 +152,24 @@ lemma le_lemma (n : Nat) (h : 0 < n) :
 
 
 lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/2, 0, 0]
-    (rotate gl_sq_2_inv (translate ![2⁻¹, 0, 0] a)) = w} ∪
+    (rotate gl_sq_2 (translate ![2⁻¹, 0, 0] a)) = w} ∪
     {w | ∃ v ∈ Kreis_in_Kugel_B, rotate 1 v = w} =
   Kreis_in_Kugel := by
   ext x
   apply Iff.intro
   . intro h
-    simp [Kreis_in_Kugel_A, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, Matrix.vecHead, Matrix.vecTail, rot_sq_2_inv, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin, origin, Kreis_in_Kugel] at h; save
-    rcases h with ⟨x1, ⟨⟨n,⟨h3, h1⟩⟩, h2⟩⟩ | ⟨⟨⟨h2, ⟨h3, h4⟩⟩, h1⟩, h⟩; save
+    simp [Kreis_in_Kugel_A, translate, rotate, coe_gl_sq_2_eq_rot_sq_2, Matrix.vecHead, Matrix.vecTail, rot_sq_2, Kreis_in_Kugel_B, Kreis_in_Kugel_ohne_Origin, origin, Kreis_in_Kugel] at h; save
+    rcases h with ⟨x1, ⟨⟨n,⟨_, h1⟩⟩, h2⟩⟩ | ⟨⟨⟨h2, ⟨h3, h4⟩⟩, _⟩, _⟩; save
     . simp [← h2]
       simp [Kreis_in_Kugel]
       apply And.intro
       . simp [h1, Real.cos_sq]; save
-        ring; save
+        ring_nf; save
         simp [Real.cos_sq, Real.sin_sq_eq_half_sub]; save
         ring_nf
       . simp [h1]; save
         ring_nf; save
         apply le_lemma
-        exact h3
 
     . simp [Kreis_in_Kugel, h3, h4, h2]; save
 
@@ -245,8 +180,8 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
     . left
       simp [rotate] at hc; save
       by_cases hc2:(x ≠ origin)
-      use translate ![-1/2, 0, 0] (rotate gl_rot_besser (translate ![1/2, 0, 0] x))
-      simp [translate, rotate, coe_rot_besser, rot_besser, Matrix.vecHead, Matrix.vecTail]; save
+      use translate ![-1/2, 0, 0] (rotate gl_sq_2_inv (translate ![1/2, 0, 0] x))
+      simp [translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, rot_sq_2_inv, Matrix.vecHead, Matrix.vecTail]; save
       --
       have h2 : x ∈ Kreis_in_Kugel_A := by
           simp [Kreis_in_Kugel_B] at hc; save
@@ -285,7 +220,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
           . simp
 
       . rw [h2]
-        simp [translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, rot_sq_2_inv]; save
+        simp [translate, rotate, coe_gl_sq_2_eq_rot_sq_2, rot_sq_2]; save
         ext i
         fin_cases i
         --
@@ -302,7 +237,7 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
         simp_all only [sub_left_inj, mul_eq_mul_right_iff, OfNat.ofNat_ne_zero, or_false, ne_eq]
         --
         simp
-        ring
+        ring_nf
         simp [Real.cos_sq, Real.sin_sq_eq_half_sub]
         ring
         --
@@ -315,11 +250,11 @@ lemma equi_kreis_in_kugel_aux : {w | ∃ a ∈ Kreis_in_Kugel_A, translate ![-1/
         . use 1
           simp; save
 
-        . simp [rot_sq_2_inv, translate, rotate, coe_gl_sq_2_inv_eq_rot_sq_2_inv, origin, Matrix.vecHead, Matrix.vecTail]; save
+        . simp [rot_sq_2, translate, rotate, coe_gl_sq_2_eq_rot_sq_2, origin, Matrix.vecHead, Matrix.vecTail]; save
           ext i
           fin_cases i
           . simp; save
-            ring; save
+            ring_nf; save
             apply_fun (. * 2 + 1)
             ring_nf
             simp
@@ -341,7 +276,7 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
   . simp [list_intersection, intersection, pairs, list_union, union, intersection_A_B_eq_nil]; save
   apply And.intro
   . exact union_A_B_eq_Kreis
-  use [gl_sq_2_inv, gl_one]
+  use [gl_sq_2, gl_one]
   simp only [List.length_nil, Nat.reduceSucc, List.length_cons, List.length_singleton,
     exists_true_left]; save
   use [![1/2, 0, 0], ![0, 0, 0]]
@@ -350,15 +285,16 @@ lemma equi_kreis_in_kugel : equidecomposable Kreis_in_Kugel_ohne_Origin Kreis_in
   simp [translate_list, translate_zero, remove_first, rotate_set, rotate_list, translate_set, coe_gl_one_eq_one, list_union, union]; save
   exact equi_kreis_in_kugel_aux
 
---- Falsch rum, rotation müsste anders rein als bei Equi
+
+
 theorem equi_kugel : equidecomposable L' L := by
-  apply equidecomposable_subset L' L BB Kreis_in_Kugel_ohne_Origin BB Kreis_in_Kugel
+  apply equidecomposable_subset L' L Part_B Kreis_in_Kugel_ohne_Origin Part_B Kreis_in_Kugel
   --
-  exact BB_and_Kreis_in_Kugel_ohne_origin_eq_L'
+  exact Part_B_and_Kreis_in_Kugel_ohne_origin_eq_L'
   --
-  exact intersection_BB_Kreis_in_Kugel_ohne_Origin_eq_nil
+  exact intersection_Part_B_Kreis_in_Kugel_ohne_Origin_eq_nil
   --
-  exact BB_union_Kreis_in_Kugel_eq_L
+  exact Part_B_union_Kreis_in_Kugel_eq_L
   --
   rfl
   --
