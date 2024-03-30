@@ -6,6 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Data.Real.Irrational
 
 import Mathlib.Data.Finset.Basic
+import Mathlib.Order.Partition.Finpartition
 
 import banach_tarski.Lemma_3_1
 
@@ -149,8 +150,7 @@ lemma translate_list_length_cons (n : Nat) (x : List (Set r_3)) (p :List r_3) (h
 
 
 def equidecomposable (X Y : Set r_3) : Prop :=
-  ∃ Parts_X : List (Set r_3),∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.length},∃ translations1 translations2 : {w : List r_3 | w.length = Parts_X.length}, list_intersection Parts_X = ∅ ∧
-  list_union Parts_X = X ∧
+  ∃ Parts_X : Finpartition X, ∃ g_s : {w : List (GL (Fin 3) Real) | w.length = Parts_X.parts.card},∃ translations1 translations2 : {w : List r_3 | w.length = Parts_X.parts.card},
    list_union (translate_list Parts_X.length
    (rotate_list Parts_X.length
    (translate_list Parts_X.length  Parts_X translations1 (by rfl) (by simp only [Set.mem_setOf_eq, Vector.length_val]))
