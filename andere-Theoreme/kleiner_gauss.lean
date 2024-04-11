@@ -1,7 +1,6 @@
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
-import LeanCopilot
 
 def sum_up_to (n : Nat): ℕ :=
   match n with
@@ -12,4 +11,3 @@ def sum_up_to (n : Nat): ℕ :=
 
 theorem kleiner_gauss (n: Nat) :
   sum_up_to n * 2 = n * (n + 1) := by
-  
