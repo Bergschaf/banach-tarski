@@ -4,9 +4,9 @@ import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Matrix.Notation
 import Mathlib.Data.Matrix.Basic
 
-import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 
-import Mathlib.Topology.MetricSpace.PseudoMetric
+--import Mathlib.Topology.MetricSpace.PseudoMetric
 
 import Mathlib.GroupTheory.FreeGroup.Basic
 

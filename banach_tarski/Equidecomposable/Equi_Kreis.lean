@@ -1,6 +1,8 @@
 import banach_tarski.Equidecomposable.Def
 import banach_tarski.Equidecomposable.Rotations
-import banach_tarski.Lemma_3_1
+--import banach_tarski.Lemma_3_1
+
+
 
 
 
